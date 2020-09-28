@@ -1,23 +1,113 @@
-.col-md-3{
-    width: 25%;
+.col-lg-2, .col-sm-6, .col-md-4 {
+    width: 20%;
     float: right;
     padding: 10px;
     box-sizing: border-box;
 }
-.lwp-produ-wrap{
+
+.col-sm-6 {
+    width: 50%;
+}
+
+.col-md-4 {
+    width: 33.3333%;
+}
+
+.col-lg-2 {
+    width: 20%;
+}
+
+.lwp-produ-wrap {
     background-color: #fff;
     padding: 10px;
     border-radius: 10px;
     text-align: center;
 }
-.creditor{
+
+.creditor {
     margin-top: 20px;
     background-color: #407e12;
     color: #fff;
     padding: 20px;
-    font-size: 30px;
+    font-size: 20px;
+    overflow: hidden;
 }
-.lwp-shop-buy a{
+.lwp_modal_body{
+    clear: both;
+}
+.lwp_close{
+
+    float: right;
+    display: block;
+    margin-bottom: 10px;
+    clear: both;
+    color: #f00;
+    font-size: 25px;
+    border: 0;
+    padding: 0;
+    background-color: #fff;
+    cursor: pointer;
+
+}
+.lwp_modal{
+    position: fixed;
+    background-color: #fff;
+    z-index: 999;
+    max-width: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    box-sizing: border-box;
+}
+.lwp_modal_body ul li {
+    margin: 0 10px;
+    line-height: 25px;
+    font-size: 13px;
+}
+.lwp_modal_overlay{
+    position: fixed;
+    background-color: rgba(0,0,0,.7);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9;
+}
+.lwp_button{
+    display: block;
+    text-align: center;
+    background-color: #428446;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    border: 0;
+    box-shadow: none;
+    width: 100%;
+    cursor: pointer;
+}
+.creditor .df{
+    margin-right: 10px;
+    float: right;
+}
+.rtl .creditor .df{
+    float: left;
+}
+.creditor .df a{
+    color: #000;
+}
+
+.rtl .creditor .df{
+    margin-left: 10px;
+}
+.button-primary.refreshShop{
+    float: right;
+}
+.rtl .button-primary.refreshShop{
+    float: left;
+}
+.lwp-shop-buy a {
     background-color: #5c9d2b;
     padding: 10px;
     display: block;
@@ -28,16 +118,57 @@
     color: #fff;
     text-decoration: none;
 }
-.lwp-shop-price{
+#lwp_phone_number,#lwp_secod{
+    direction: ltr;
+    text-align: left;
+}
+.lwp-shop-price {
     font-size: 18px;
 }
-.lwp-shop-title{
+.alwaysDisplayNone{
+    display: none;
+}
+.lwp-shop-title {
     padding: 30px 0;
     color: #000;
     font-size: 22px;
     border-bottom: 1px solid #f1f1f1;
     margin-bottom: 15px;
 }
-.chargeAccount{
+.none{
+    display: none !important;
+}
+ .ilwplabel th{
+    padding-left: 10px;
+}
+ .idehweb_phone_number_ccode_wrap{
+     display: inline;
+ }
+.rtl .ilwplabel th{
+    padding-right: 10px;
+}
+.chargeAccount {
     overflow: hidden;
+    width: 100%;
+}
+.ilwplabel{
+    background-color: #fff;
+}
+@media screen and (max-width: 1080px) {
+    .col-lg-2 {
+        width: 33.3333%;
+    }
+
+}
+@media screen and (max-width: 720px) {
+    .col-lg-2 {
+        width: 50%;
+    }
+#wp-admin-bar-lwpcreditbar{
+    display: block !important;
+}
+    .lwp_modal {
+
+        min-width: 90%;
+    }
 }

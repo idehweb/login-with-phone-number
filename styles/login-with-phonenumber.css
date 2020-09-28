@@ -1,18 +1,28 @@
 form.ajax-auth{
     display: none;
     z-index: 999;
-    position: fixed;
-    top: 50%;
-    left: 50%;
+
+    min-width: 300px;
+    height: auto !important;
     max-width: 350px !important;
-    transform: translate(-50%, -50%);
     padding: 40px 25px 25px 25px;
     background-color: #FFFFFF;
     border-radius: 8px;
-    font-family: Iransans,Arial, Helvetica, sans-serif;
+    font-family: inherit;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
     color: #878787;
+    margin: 30px auto;
+    position: relative;
     font-size: 11px;
+}
+.sticky form.ajax-auth{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+
+
 }
 
 .ajax-auth h1, .ajax-auth h3{
@@ -26,7 +36,7 @@ form.ajax-auth{
     font-size: 27px;
     text-align: center;
     margin: 30px 0 20px 0;
-    font-family: Iransans;
+    font-family: inherit;
 
 }
 
@@ -62,7 +72,7 @@ form.ajax-auth{
     width: 325px;
     margin: 7px 0 20px 0;
     background-color: #F9F9F9;
-    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    font-family: inherit;
 }
 
 .ajax-auth input#username:focus,
@@ -102,20 +112,83 @@ form.ajax-auth{
 }
 
 .ajax-auth a.close{
+    display: none;
     color: #e96262;
     font-size: 23px;
     position: absolute;
     right: 25px;
     top: 15px;
 }
-
+.sticky .ajax-auth a.close{
+    display: block;
+}
 .ajax-auth a.text-link{
     color: #B4B2B2;
     float: left;
     margin: 10px 0 0 0;
 }
+.ajax-auth input{
+    color: #000;
+}
 .ajax-auth input,.ajax-auth label,.ajax-auth button{
     font-size: 15px;
+    width: 100%;
+    font-family: inherit;
+    display: block;
+    box-sizing: border-box;
+}
+.lwp_email{
+    direction: ltr;
+}
+input.lwp_username::-webkit-outer-spin-button,
+input.lwp_username::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input.lwp_username{
+    -moz-appearance:textfield;
+}
+.rtl .lwp_email::placeholder{
+    direction: rtl;
+}
+#lwp_country_codes{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    padding: 2px 0;
+    direction: ltr;
+    height: 30px;
+    min-width: 70px;
+    box-sizing: border-box;
+}
+/*.lwp_country_codes_span{*/
+    /*line-height: 23px;*/
+    /*float: left;*/
+    /*display: block;*/
+    /*background-color: #f6f6f6;*/
+    /*height: 30px;*/
+    /*padding: 2px 10px;*/
+    /*width: 45px;*/
+    /*font-size: 15px;*/
+    /*border: 1px solid #757575;*/
+    /*margin-right: 4px;*/
+    /*font-weight: bold;*/
+    /*border-radius: 3px;*/
+    /*color: #000;*/
+    /*box-sizing: border-box;*/
+/*}*/
+.rtl #lwp_login.ajax-auth input.lwp_username::placeholder{
+    text-align: left;
+}
+#lwp_login.ajax-auth input.lwp_username{
+    width: calc(100% - 80px);
+    height: 30px;
+    direction: ltr;
+    float: left;
+    box-sizing: border-box;
+    border: 1px solid #757575;
+    margin-bottom: 10px;
 }
 .ajax-auth p.status{
     text-align: center;
@@ -134,7 +207,7 @@ form.ajax-auth{
     margin-top: 10px;
 }
 a.login_button{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: inherit;
     padding: 5px 7px 5px 7px;
     background-color: #FFF;
     border-radius: 3px;
@@ -144,11 +217,14 @@ a.login_button{
     font-size: 11px;
 }
 
-.login_overlay{
+.lwp_login_overlay{
     height: 100%;
     width: 100%;
     background-color: #F6F6F6;
     opacity: 0.9;
     position: fixed;
     z-index: 998;
+    /*z-index: 9998;*/
+    top: 0;
+    left: 0;
 }

@@ -1,8 +1,8 @@
 === Plugin Name ===
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
-Tested up to: 5.4.2 
-Stable tag: 1.0.0
+Tested up to: 5.5.1 
+Stable tag: 1.1.04
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,33 @@ Login with phone number - sending sms - activate user by phone number - limit pa
 1. Use the `[idehweb_lwp]` shortcode in your posts and pages where you want user to force login 
 
 == Changelog ==
+= 1.1.04 =
+country code optimize
+
+= 1.1.03 =
+chat and support updated
+
+= 1.1.01 =
+languages updated
+
+= 1.1.01 =
+add tutorial and guid
+
+= 1.1.0 =
+enable sticky position style
+
+
+= 1.0.9 =
+stable version
+
+= 1.0.8 =
+login with password
+add more countries 
+
+= 1.0.1 =
+login with email
+add persian translation
+add redirect link
 
 = 1.0 =
 Initial release

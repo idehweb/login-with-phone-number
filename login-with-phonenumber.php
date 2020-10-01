@@ -1,17 +1,18 @@
 <?php
 /*
 Plugin Name: Login with phone number
-Plugin URI: http://idehweb.com/login-with-phonenumber
+Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.1.04
-Author: Hamid alinia - Idehweb
+Version: 1.1.11
+Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
-Text Domain: idehwebLwp
+Text Domain: login-with-phone-number
+Domain Path: /languages
 */
 
 class idehwebLwp
 {
-    public $textdomain = 'idehwebLwp';
+    public $textdomain = 'login-with-phone-number';
 
     function __construct()
     {
@@ -360,25 +361,25 @@ class idehwebLwp
                         var wrap = $('.wrap');
                         wrap.prepend('<div class="lwp_modal_overlay"></div>')
                             .prepend('<div class="lwp_modal">' +
-                            '<div class="lwp_modal_header">' +
-                            '<div class="lwp_l"></div>' +
-                            '<div class="lwp_r"><button class="lwp_close">x</button></div>' +
-                            '</div>' +
-                            '<div class="lwp_modal_body">' +
-                            '<ul>' +
-                            '<li>'+'<?php _e("1. create a page and name it login or register or what ever", $this->textdomain) ?>'+'</li>' +
-                            '<li>'+'<?php _e("2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step 1", $this->textdomain) ?>'+'</li>' +
-                            '<li>'+'<?php _e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", $this->textdomain) ?>'+
-                            '</li>' +
-                            '<li>' +
-                                    '<?php _e("for more information visit: ", $this->textdomain) ?>'+'<a target="_blank" href="https://idehweb.com/login-with-phone-number/?lang=en">Idehweb</a>'+
-                            '</li>' +
-                            '</ul>' +
-                            '</div>' +
-                            '<div class="lwp_modal_footer">' +
-                            '<button class="lwp_button"><?php _e("got it ", $this->textdomain) ?></button>' +
-                            '</div>' +
-                            '</div>');
+                                '<div class="lwp_modal_header">' +
+                                '<div class="lwp_l"></div>' +
+                                '<div class="lwp_r"><button class="lwp_close">x</button></div>' +
+                                '</div>' +
+                                '<div class="lwp_modal_body">' +
+                                '<ul>' +
+                                '<li>'+'<?php _e("1. create a page and name it login or register or what ever", $this->textdomain) ?>'+'</li>' +
+                                '<li>'+'<?php _e("2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step 1", $this->textdomain) ?>'+'</li>' +
+                                '<li>'+'<?php _e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", $this->textdomain) ?>'+
+                                '</li>' +
+                                '<li>' +
+                                '<?php _e("for more information visit: ", $this->textdomain) ?>'+'<a target="_blank" href="https://idehweb.com/login-with-phone-number/?lang=en">Idehweb</a>'+
+                                '</li>' +
+                                '</ul>' +
+                                '</div>' +
+                                '<div class="lwp_modal_footer">' +
+                                '<button class="lwp_button"><?php _e("got it ", $this->textdomain) ?></button>' +
+                                '</div>' +
+                                '</div>');
 
                     }
                 });

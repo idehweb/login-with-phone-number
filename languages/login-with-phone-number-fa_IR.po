@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Login with phone number\n"
-"POT-Creation-Date: 2020-09-16 02:05+0430\n"
-"PO-Revision-Date: 2020-09-16 02:11+0430\n"
+"POT-Creation-Date: 2020-09-29 17:07+0330\n"
+"PO-Revision-Date: 2020-09-29 17:07+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fa_IR\n"
@@ -77,19 +77,19 @@ msgstr "تنظیمات ذخیره شد."
 msgid "Save Changes"
 msgstr "ذخیره تغییرات"
 
-#: login-with-phonenumber.php:225
+#: login-with-phonenumber.php:227
 msgid "Your Credit:"
 msgstr "اعتبار شما:"
 
-#: login-with-phonenumber.php:254
+#: login-with-phonenumber.php:256
 msgid "Buy"
 msgstr "خرید"
 
-#: login-with-phonenumber.php:367
+#: login-with-phonenumber.php:369
 msgid "1. create a page and name it login or register or what ever"
 msgstr "1. یک برگه بسازید"
 
-#: login-with-phonenumber.php:368
+#: login-with-phonenumber.php:370
 msgid ""
 "2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you "
 "created at step 1"
@@ -97,7 +97,7 @@ msgstr ""
 "2. این کد کوتاه را کپی کنید و در برگه ای که ساختید پیست کنید "
 "<code>[idehweb_lwp]</code"
 
-#: login-with-phonenumber.php:369
+#: login-with-phonenumber.php:371
 msgid ""
 "3. now, that is your login page. check your login page with other device or "
 "browser that you are not logged in!"
@@ -105,246 +105,246 @@ msgstr ""
 "3. خب حالا صفحه ورود شما درست شده. حواستون باشه فرم ورود به کاربران خارج شده "
 "از سایت نشان داده میشود"
 
-#: login-with-phonenumber.php:372
+#: login-with-phonenumber.php:374
 msgid "for more information visit: "
 msgstr "برای اطلاعات و راهنمایی بیشتر به این لینک مراجعه کنید:"
 
-#: login-with-phonenumber.php:377
+#: login-with-phonenumber.php:379
 msgid "got it "
 msgstr "فهمیدم"
 
-#: login-with-phonenumber.php:408
+#: login-with-phonenumber.php:410
 msgid "I want user login with email"
 msgstr "من میخواهم کاربر با ایمیل وارد شود"
 
-#: login-with-phonenumber.php:422
+#: login-with-phonenumber.php:424
 msgid "I want user login with phone number"
 msgstr "‫من میخواهم کاربر با شماره موبایل وارد شود"
 
-#: login-with-phonenumber.php:436
+#: login-with-phonenumber.php:438
 msgid "I want user login with password too"
 msgstr "من میخواهم کاربر با رمز عبور نیز وارد شود"
 
-#: login-with-phonenumber.php:446
+#: login-with-phonenumber.php:448
 msgid "I want form shows on page in fix position"
 msgstr "من میخواهم فرم به حالت ثابت و فیکس روی صفحه نمایش  داده شود"
 
-#: login-with-phonenumber.php:499
+#: login-with-phonenumber.php:501
 msgid "Choose a country..."
 msgstr "یک کشور انتخاب کنید..."
 
-#: login-with-phonenumber.php:516
+#: login-with-phonenumber.php:518
 msgid "Authenticate"
 msgstr "اهراز هویت"
 
-#: login-with-phonenumber.php:516
+#: login-with-phonenumber.php:518
 msgid "activate sms login"
 msgstr "فعال سازی ورود با  اس ام اس"
 
-#: login-with-phonenumber.php:518 login-with-phonenumber.php:761
+#: login-with-phonenumber.php:520 login-with-phonenumber.php:763
 msgid "Activate"
 msgstr "فعالسازی"
 
-#: login-with-phonenumber.php:518
+#: login-with-phonenumber.php:520
 msgid "activate account"
 msgstr "فعال سازی حساب کاربری"
 
-#: login-with-phonenumber.php:533
+#: login-with-phonenumber.php:535
 msgid "enter api key"
 msgstr "کلید api را وارد نمایید"
 
-#: login-with-phonenumber.php:547
+#: login-with-phonenumber.php:549
 msgid "enter redirect url"
 msgstr "لینکی که کاربر بعد از ورود باید به آن هدایت شود را وارد کنید"
 
-#: login-with-phonenumber.php:579
+#: login-with-phonenumber.php:581
 msgid ""
 "make a page and name it login, put the shortcode inside it, now you have a "
 "login page!"
 msgstr "یک برگه بسازید و کد کوتاه را درون آن قرار دهید!"
 
-#: login-with-phonenumber.php:581
+#: login-with-phonenumber.php:583
 msgid ""
 "To use idehwebLwp manually in your theme template use the following PHP code:"
 msgstr "برای استفاده در پوسته از کد زیر استفاده کنید:"
 
-#: login-with-phonenumber.php:583
+#: login-with-phonenumber.php:585
 msgid "Need more help?"
 msgstr "کمک بیشتری نیاز دارید؟"
 
-#: login-with-phonenumber.php:620
+#: login-with-phonenumber.php:622
 msgid "Check credit"
 msgstr "چک کردن اعتبار"
 
-#: login-with-phonenumber.php:624
+#: login-with-phonenumber.php:626
 #, fuzzy
 #| msgid "Refresh shop"
 msgid "Refresh"
 msgstr "بروزرسانی فروشگاه"
 
-#: login-with-phonenumber.php:626
+#: login-with-phonenumber.php:628
 msgid "phone number:"
 msgstr "شماره موبایل:"
 
-#: login-with-phonenumber.php:628
+#: login-with-phonenumber.php:630
 msgid "change"
 msgstr "عوض کردن"
 
-#: login-with-phonenumber.php:659
+#: login-with-phonenumber.php:661
 msgid "please wait..."
 msgstr "لطفا صبر کنید..."
 
-#: login-with-phonenumber.php:686
+#: login-with-phonenumber.php:688
 msgid "login"
 msgstr "ورود"
 
-#: login-with-phonenumber.php:693 login-with-phonenumber.php:731
+#: login-with-phonenumber.php:695 login-with-phonenumber.php:733
 msgid "Login / register"
 msgstr "ورود / عضویت"
 
-#: login-with-phonenumber.php:696 login-with-phonenumber.php:1303
+#: login-with-phonenumber.php:698 login-with-phonenumber.php:1306
 msgid "Phone number"
 msgstr "شماره موبایل"
 
-#: login-with-phonenumber.php:711
+#: login-with-phonenumber.php:713
 msgid "9*********"
 msgstr "9*********"
 
-#: login-with-phonenumber.php:714 login-with-phonenumber.php:739
+#: login-with-phonenumber.php:716 login-with-phonenumber.php:741
 msgid "Submit"
 msgstr "ثبت"
 
-#: login-with-phonenumber.php:720
+#: login-with-phonenumber.php:722
 msgid "Login with email"
 msgstr "ورود با ایمیل"
 
-#: login-with-phonenumber.php:734
+#: login-with-phonenumber.php:736
 msgid "Your email:"
 msgstr "ایمیل شما:"
 
-#: login-with-phonenumber.php:736
+#: login-with-phonenumber.php:738
 msgid "Please enter your email"
 msgstr "لطفا ایمیل خود را وارد کنید"
 
 #. Plugin Name of the plugin/theme
-#: login-with-phonenumber.php:745
+#: login-with-phonenumber.php:747
 msgid "Login with phone number"
 msgstr "ورود با شماره موبایل"
 
-#: login-with-phonenumber.php:753
+#: login-with-phonenumber.php:755
 msgid "Activation"
 msgstr "فعال سازی"
 
-#: login-with-phonenumber.php:757
+#: login-with-phonenumber.php:759
 msgid "Security code"
 msgstr "کد امنیتی"
 
-#: login-with-phonenumber.php:773 login-with-phonenumber.php:949
+#: login-with-phonenumber.php:775 login-with-phonenumber.php:951
 msgid "Update password"
 msgstr "بروزرسانی رمز عبور"
 
-#: login-with-phonenumber.php:776
+#: login-with-phonenumber.php:778
 msgid "Enter new password:"
 msgstr "یک  رمز عبور جدید برگزینید"
 
-#: login-with-phonenumber.php:778
+#: login-with-phonenumber.php:780
 msgid "Please choose a password"
 msgstr "لطفا یک رمزعبور برای خود وارد کنید"
 
-#: login-with-phonenumber.php:781
+#: login-with-phonenumber.php:783
 msgid "Update"
 msgstr "بروزرسانی"
 
-#: login-with-phonenumber.php:787
+#: login-with-phonenumber.php:789
 msgid "Enter password"
 msgstr "رمز عبور را وارد کنید"
 
-#: login-with-phonenumber.php:790
+#: login-with-phonenumber.php:792
 msgid "Your password:"
 msgstr "رمز عبور شما:"
 
-#: login-with-phonenumber.php:792
+#: login-with-phonenumber.php:794
 msgid "Please enter your password"
 msgstr "لطفا رمزعبور خود را وارد کنید"
 
-#: login-with-phonenumber.php:795
+#: login-with-phonenumber.php:797
 msgid "Login"
 msgstr "ورود"
 
-#: login-with-phonenumber.php:798
+#: login-with-phonenumber.php:800
 msgid "Forgot password"
 msgstr "فراموشی رمز عبور"
 
-#: login-with-phonenumber.php:851 login-with-phonenumber.php:926
-#: login-with-phonenumber.php:1153 login-with-phonenumber.php:1164
+#: login-with-phonenumber.php:853 login-with-phonenumber.php:928
+#: login-with-phonenumber.php:1155 login-with-phonenumber.php:1166
 msgid "phone number is wrong!"
 msgstr "شماره موبایل اشتباه وارد شده!"
 
-#: login-with-phonenumber.php:876
+#: login-with-phonenumber.php:878
 msgid "This username is already registered."
 msgstr "این نام کاربری از قبل وجود دارد."
 
-#: login-with-phonenumber.php:883 login-with-phonenumber.php:1048
+#: login-with-phonenumber.php:885 login-with-phonenumber.php:1050
 msgid "This email address is already registered."
 msgstr "این ایمیل از قبل وجود دارد."
 
-#: login-with-phonenumber.php:918
+#: login-with-phonenumber.php:920
 msgid "Sms sent successfully!"
 msgstr "اس ام اس ارسال شد!"
 
-#: login-with-phonenumber.php:983
+#: login-with-phonenumber.php:985
 msgid "Password is incorrect!"
 msgstr "رمز عبور اشتباه است!"
 
-#: login-with-phonenumber.php:991
+#: login-with-phonenumber.php:993
 msgid "Redirecting..."
 msgstr "در حال هدایت ..."
 
-#: login-with-phonenumber.php:1012
+#: login-with-phonenumber.php:1014
 msgid "Password set successfully! redirecting..."
 msgstr " رمزعبور با موفقیت بروز شد، در حال هدایت..."
 
-#: login-with-phonenumber.php:1020
+#: login-with-phonenumber.php:1022
 msgid "User not found"
 msgstr "کاربر یافت نشد"
 
-#: login-with-phonenumber.php:1085
+#: login-with-phonenumber.php:1087
 msgid "Email sent successfully!"
 msgstr "ایمیل با موفقیت ارسال شد!"
 
-#: login-with-phonenumber.php:1093
+#: login-with-phonenumber.php:1095
 msgid "email is wrong!"
 msgstr "ایمیل اشتباه است!"
 
-#: login-with-phonenumber.php:1104
+#: login-with-phonenumber.php:1106
 msgid "your activation code: "
 msgstr "کد فعالسازی شما:"
 
-#: login-with-phonenumber.php:1185
+#: login-with-phonenumber.php:1187
 msgid "loading..."
 msgstr "در حال بروزرسانی…"
 
-#: login-with-phonenumber.php:1188
+#: login-with-phonenumber.php:1190
 msgid "wrong"
 msgstr "خطا"
 
-#: login-with-phonenumber.php:1198
+#: login-with-phonenumber.php:1200
 msgid "entered code is wrong!"
 msgstr "کد فعالسازی وارد شده اشتباه است!"
 
-#: login-with-phonenumber.php:1209
+#: login-with-phonenumber.php:1211
 msgid "user does not exist!"
 msgstr "کاربر وجود ندارد!"
 
-#: login-with-phonenumber.php:1234
+#: login-with-phonenumber.php:1236
 msgid "Wrong username or password."
 msgstr "نام کاربری و رمز عبور اشتباه است."
 
-#: login-with-phonenumber.php:1237
+#: login-with-phonenumber.php:1239
 msgid " successful, redirecting..."
 msgstr " موفقیت آمیز، در حال هدایت ..."
 
-#: login-with-phonenumber.php:1304
+#: login-with-phonenumber.php:1307
 msgid "Activation code"
 msgstr "کد فعالسازی"
 

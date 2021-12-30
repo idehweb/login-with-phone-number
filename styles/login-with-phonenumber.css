@@ -15,7 +15,7 @@ form.ajax-auth{
     position: relative;
     font-size: 11px;
 }
-.sticky form.ajax-auth{
+.lw-sticky form.ajax-auth{
     position: fixed;
     top: 50%;
     left: 50%;
@@ -24,7 +24,9 @@ form.ajax-auth{
 
 
 }
-
+#lwp_country_codes{
+    float: left;
+}
 .ajax-auth h1, .ajax-auth h3{
 
     font-weight: 100;
@@ -32,7 +34,7 @@ form.ajax-auth{
     line-height: 1;
 }
 
-.ajax-auth h1{
+.ajax-auth .lh1{
     font-size: 27px;
     text-align: center;
     margin: 30px 0 20px 0;
@@ -119,7 +121,7 @@ form.ajax-auth{
     right: 25px;
     top: 15px;
 }
-.sticky .ajax-auth a.close{
+.lw-sticky .ajax-auth a.close{
     display: block;
 }
 .ajax-auth a.text-link{
@@ -157,10 +159,24 @@ input.lwp_username{
     float: left;
     margin-right: 10px;
     padding: 2px 0;
+    border: 1px solid #757575;
+    background-image: none;
     direction: ltr;
     height: 30px;
     min-width: 70px;
     box-sizing: border-box;
+}
+.required.lwp_email{
+    border-width: 1px ;
+    border-style: solid;
+    border-color: #757575;
+    margin-left: 0;
+    margin-right: 0;
+
+}
+#lwp_country_codes:focus,
+.required.lwp_email:focus{
+    outline: none;
 }
 /*.lwp_country_codes_span{*/
     /*line-height: 23px;*/
@@ -178,17 +194,33 @@ input.lwp_username{
     /*color: #000;*/
     /*box-sizing: border-box;*/
 /*}*/
+.lwp_country_codes_wrap{
+    width: 80px;
+    float: left;
+    box-sizing: border-box;
+    direction: ltr;
+}
 .rtl #lwp_login.ajax-auth input.lwp_username::placeholder{
     text-align: left;
 }
 #lwp_login.ajax-auth input.lwp_username{
     width: calc(100% - 80px);
+    max-width: 100%;
     height: 30px;
     direction: ltr;
     float: left;
     box-sizing: border-box;
     border: 1px solid #757575;
     margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+}
+.lwp_top_activation{
+    text-align: center;
+}
+#lwp_login.ajax-auth input.lwp_username:focus{
+    outline: 0;
 }
 .ajax-auth p.status{
     text-align: center;
@@ -206,6 +238,9 @@ input.lwp_username{
     color: #fff;
     margin-top: 10px;
 }
+.lwp_bottom_activation{
+    text-align: right;
+}
 a.login_button{
     font-family: inherit;
     padding: 5px 7px 5px 7px;
@@ -216,6 +251,18 @@ a.login_button{
     text-decoration: none;
     font-size: 11px;
 }
+.ajax-auth .lwp_line{
+    width: 90%;
+    display: block;
+    margin-top: 20px !important;
+    margin-bottom: 10px !important;
+    margin:auto;
+    background-color: #e6e6e6;
+    height: 1px;
+    max-width: 100%;
+    border: 1px solid;
+}
+
 
 .lwp_login_overlay{
     height: 100%;
@@ -227,4 +274,14 @@ a.login_button{
     /*z-index: 9998;*/
     top: 0;
     left: 0;
+}
+.lwp_none{
+    display: none !important;
+}
+.submit_button.lwp_disable{
+    border: 1px solid #999999 !important;
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed;
+    pointer-events:none;
 }

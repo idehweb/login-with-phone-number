@@ -1,5 +1,6 @@
+var lwp_refreshIntervalId;
 jQuery(document).ready(function ($) {
-    var UserId = 0;
+
     $(document).on('click', '.lwp_login_overlay, .close', function (e) {
         e.preventDefault();
         $('form#lwp_login, form#lwp_login_email, form#lwp_activate').fadeOut(500, function () {
@@ -11,8 +12,9 @@ jQuery(document).ready(function ($) {
     // Show the login/signup popup on click
 
     $('body').on('click', '#show_login , .show_login', function (e) {
+        e.preventDefault();
         var sticky = $(this).attr('data-sticky');
-        if (sticky && sticky==='1')
+        if (sticky && sticky === '1')
             $('body').append('<div class="lwp_login_overlay"></div>');
         // if ($(this).attr('id') == 'show_login')
         if ($('form#lwp_login').length > 0) {
@@ -28,6 +30,8 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
     });
     $('body').on('click', '.auth_with_phoneNumber', function (e) {
+        e.preventDefault();
+
         // if ($(this).attr('id') == 'show_login')
         $('#lwp_login_email').fadeOut(10);
         $('#lwp_login').fadeIn(500);
@@ -35,8 +39,11 @@ jQuery(document).ready(function ($) {
         //     $('form#register').fadeIn(500);
         e.preventDefault();
     });
-    $('body').on('click', '.forgot_password', function (e) {
+    $('body').on('click', '.forgot_password , .lwp_didnt_r_c', function (e) {
+        e.preventDefault();
         if (!$(this).valid()) return false;
+        if (typeof firebaseConfig !== 'undefined') return false;
+
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
         var username = $('.lwp_username').val();
@@ -50,6 +57,7 @@ jQuery(document).ready(function ($) {
         $('#lwp_enter_password').fadeOut(10);
 
         $('#lwp_activate').fadeIn(500);
+        window.lwp_runTimer();
         $.ajax({
             dataType: 'json',
             url: idehweb_lwp.ajaxurl,
@@ -57,16 +65,16 @@ jQuery(document).ready(function ($) {
                 'action': action,
                 'phone_number': username,
                 'email': email,
-                'ID': UserId,
+                'ID': idehweb_lwp.UserId,
             },
             success: function (data) {
 
 
             }
         });
-        e.preventDefault();
     });
     $('body').on('click', '.auth_with_email', function (e) {
+
         // if ($(this).attr('id') == 'show_login')
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeIn(500);
@@ -76,9 +84,12 @@ jQuery(document).ready(function ($) {
     });
     $('#show_login').click();
     // Perform AJAX login/register on form submit
-    $('form#lwp_login').on('submit', function (e) {
+    $('body').on('submit','form#lwp_login', function (e) {
+        e.preventDefault();
+
         if (!$(this).valid()) return false;
 
+        if (typeof firebaseConfig !== 'undefined') return false;
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login';
         var username = $('.lwp_username').val();
@@ -104,7 +115,9 @@ jQuery(document).ready(function ($) {
                 if (data.success == true) {
                     $('#lwp_login_email').fadeOut(10);
                     $('#lwp_login').fadeOut(10);
-                    UserId = data.ID;
+                    idehweb_lwp.UserId = data.ID;
+                    $('.lwp_line').css('display','block');
+                    $('.lwp_bottom_activation').css('display','block');
                     if (data.authWithPass) {
                         if (data.showPass) {
                             $('#lwp_enter_password').fadeIn(500);
@@ -112,11 +125,13 @@ jQuery(document).ready(function ($) {
 
                         } else {
                             $('#lwp_activate').fadeIn(500);
+                            window.lwp_runTimer();
                             console.log('xdwcffffef');
 
                         }
                     } else {
                         $('#lwp_activate').fadeIn(500);
+                        window.lwp_runTimer();
                         console.log('xdwcef543');
 
 
@@ -125,9 +140,8 @@ jQuery(document).ready(function ($) {
                 }
             }
         });
-        e.preventDefault();
     });
-    $('form#lwp_login_email').on('submit', function (e) {
+    $('body').on('submit','form#lwp_login_email', function (e) {
         if (!$(this).valid()) return false;
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
@@ -150,7 +164,9 @@ jQuery(document).ready(function ($) {
                 if (data.success == true) {
                     $('#lwp_login_email').fadeOut(10);
                     $('#lwp_login').fadeOut(10);
-                    UserId = data.ID;
+                    idehweb_lwp.UserId = data.ID;
+                    $('.lwp_line').css('display','none');
+                    $('.lwp_bottom_activation').css('display','none');
                     if (data.authWithPass) {
 
                         if (data.showPass) {
@@ -172,8 +188,11 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('form#lwp_activate').on('submit', function (e) {
+    $('body').on('submit','form#lwp_activate', function (e) {
+        e.preventDefault();
         if (!$(this).valid()) return false;
+        if (typeof firebaseConfig !== 'undefined') return false;
+
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_register';
@@ -229,12 +248,14 @@ jQuery(document).ready(function ($) {
                 // }
             }
         });
-        e.preventDefault();
     });
 
 
-    $('form#lwp_update_password').on('submit', function (e) {
+    $('body').on('submit','form#lwp_update_password', function (e) {
+        e.preventDefault();
+
         if (!$(this).valid()) return false;
+
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_update_password_action';
@@ -279,9 +300,9 @@ jQuery(document).ready(function ($) {
                 // }
             }
         });
-        e.preventDefault();
     });
-    $('form#lwp_enter_password').on('submit', function (e) {
+    $('body').on('submit','form#lwp_enter_password', function (e) {
+        console.log('act 2', idehweb_lwp.UserId);
         if (!$(this).valid()) return false;
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
@@ -295,7 +316,7 @@ jQuery(document).ready(function ($) {
         var obj = {
             'action': action,
             'password': lwp_up_password,
-            'ID': UserId,
+            'ID': idehweb_lwp.UserId,
             'email': lwp_email,
             'phoneNumber': lwp_username
 
@@ -317,6 +338,37 @@ jQuery(document).ready(function ($) {
     });
 
 
+    $('body').on('click', '.lwp_change_pn', function (e) {
+        e.preventDefault();
+        clearInterval(lwp_refreshIntervalId);
+        $('.lwp_didnt_r_c').removeClass('lwp_disable');
+        $('.lwp_timer').empty();
+        $('#lwp_activate').fadeOut(10);
+        $('#lwp_enter_password').fadeOut(10);
+        $('.ajax-auth .status').hide().empty();
+        $('.lwp_didnt_r_c').addClass('lwp_none');
+        $('.lwp_username').val('');
+
+        $('#lwp_login').fadeIn(500);
+
+    });
+
+
     if (jQuery("#lwp_login").length)
         jQuery("#lwp_login").validate();
+
+    window.lwp_runTimer = function () {
+        if(idehweb_lwp.timer && (idehweb_lwp.timer=='1' || idehweb_lwp.timer==1)) {
+            var lwp_start = idehweb_lwp.timer_count || 60;
+            lwp_refreshIntervalId = setInterval(function () {
+                if (lwp_start >= 0)
+                    $('.lwp_timer').text(lwp_start--);
+                else {
+                    clearInterval(lwp_refreshIntervalId);
+                    $('.lwp_didnt_r_c').removeClass('lwp_disable');
+                    $('.lwp_timer').empty();
+                }
+            }, 1000);
+        }
+    }
 });

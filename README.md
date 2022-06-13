@@ -1,273 +1,372 @@
-=== Plugin Name ===
-Contributors: idehweb, hamid alinia
-Requires at least: 3.4
-Tested up to: 5.8.1
-Stable tag: 1.3.6
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# Login With Phone Number
 
+- Contributors: idehweb, hamid alinia
 
-== Description ==
+- Requires at least: 3.4
+
+- Tested up to: 5.8.1
+
+- Stable tag: 1.3.6
+
+- License: GPLv2 or later
+
+- License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+## Description
 
 Login/register with phone number
 
-NEW FEATURE: 
-you can change style and appearance of forms 
+## NEW FEATURE
 
+You can change style and appearance of forms 
 
-you can use firebase for sending sms (10,000 free otp sms from firebase)
+You can use Firebase for sending SMS (10,000 free otp SMS from Firebase)
 
-For docs and more help please go to: 
-[Login with phone number documentations](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login & register with phone number")
+For documents and more help: 
+[Documentation](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login & register with phone number")
 
-Login/register with email
+### Woocommerce
 
-wordpress login form
+- Registration form
 
-woocommerce registration form
+- Login with your phone number
 
-woocommerce login with phone number
+- Registration with phone number
 
-wordpress otp login
+## Forms
 
-woocommerce registration with phone number
+- Login/register with email
 
-add phone number to wordpress registration
+- wordpress login form
 
-simple use
+- Wordpress otp login
 
-support international sms sending
+- Add phone number to wordpress registration
 
-activate user by phone number
+- Simple use
 
-forgot password form
+- Support international SMS sending
 
-limit pages to login
+- activate user by phone number
 
-login and register with phone number
+- forgot password form
 
-redirect user to specific url after logging in or register
+- limit pages to login
 
-ajax
+- login and register with phone number
 
-modal
+- redirect users to a specific url after logging in or register
 
-[youtube https://www.youtube.com/watch?v=yQev_jNjR0I&t=1s]
+- ajax
 
-== Installation ==
+- modal
 
-1. download plugin from wordpress directory
-1. Upload the ‘login-with-phone-number’ folder to the /wp-content/plugins/ directory
-1. Activate it through the ‘Plugins’ menu in WordPress
-1. use  [idehweb_lwp] shortcode in your posts and pages where you need user to be logged in
-1. use  [idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"] where you want to show logged in users metas. for example you can use this shortcode in user's profile page. you can show phone number, email, username and nicename.
-1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
+[Youtube](https://www.youtube.com/watch?v=yQev_jNjR0I&t=1s)
 
-== Changelog ==
-= 1.3.6= 
+## Installation
+
+1. download plugin from wordpress directory [Link](https://wordpress.org/plugins/login-with-phone-number/)
+
+2. Upload the ‘login-with-phone-number’ folder to the /wp-content/plugins/directory.
+
+3. Activate it through the ‘Plugins’ menu in WordPress.
+
+4. Use  [idehweb_lwp] shortcode in your posts and pages where you need user to be logged in
+
+5. Use  [idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"] where you want to show logged in users metas. for example you can use this shortcode in user's profile page. You can show phone number, email, username, and nickname.
+
+6. For sending otp sms, you need credit. You can buy credit inside the plugin and use our default gateway, or you can use your custom gateways. Some gateways have been added.
+
+## Changelog
+
+### v1.3.6
+
 code sending twice problem solved
 
-= 1.3.5= 
+### v1.3.5
+
 add users registered date sortable
+
 remove bugs
 
-= 1.3.4 = 
-remove bugs for number less than 11 digits
+### v1.3.4
+
+remove bugs for numbers less than 11 digits.
+
 add support for ajax template
 
-= 1.3.3 = 
+### v1.3.3 
+
 fix class name sticky > lw-sticky
 
-= 1.3.2 = 
-add documentations in readme
+### v1.3.2 
 
-= 1.3.1 = 
-fix bugs 
+Include documentation in the readme file.
 
-= 1.3.0 = 
-add timer for sending sms again
-fix bugs of email: code entered wrong
-add text localization, ability to change text of labels, fields, errors and...
+### v1.3.1 
 
-= 1.2.23 = 
-remove default option idehweb_use_custom_gateway 
+fix bugs 
 
-= 1.2.22 = 
+### v1.3.0 
+
+add a timer to send SMS again
+
+Fix bugs in email: Incorrect code entered
+
+Text localization, the ability to change the text of labels, fields, errors, and so on...
+
+### v1.2.23 
+
+remove the default option idehweb_use_custom_gateway 
+
+### v1.2.22 
+
 enable option of only login and not register users for network and multi site
-add turkish language
 
-= 1.2.21 = 
-enable option of only login and not register users
+add Turkish language
 
-= 1.2.20 = 
-fix bugs of saving styles
+### v1.2.21 
 
-= 1.2.19 =
-remove firebase jQuery bug
-remove support option
-add change style settings page
+Enable the option to only allow logins and not registrations.
 
-= 1.2.18 =
+### v1.2.20 
+
+fix bugs in saving styles.
+
+### v1.2.19
+
+fix jQuery firebase bug
+
+Remove the support option
+
+add a page for changing your style settings
+
+### v1.2.18
+
 add Woocommerce form auto change
-set Firebase to default
 
-= 1.2.17 =
-remove bugs 
+Set Firebase as the default
 
-= 1.2.16 =
-remove smsbharti gateway :-( :-x :-|
+### v1.2.17
 
-= 1.2.15 =
-remove raygansms gateway
+remove bugs 
 
-= 1.2.14 =
+### v1.2.16
+
+Remove the SMSBharti gateway:-( :-x :-|
+
+### v1.2.15
+
+Remove the raygansms gateway
+
+### v1.2.14
+
 fix bug of user id in js
 
-= 1.2.13 =
-fix bug of auth for normal method
-remove some comments
+### v1.2.13
 
-= 1.2.12 =
-update mshastra and fix bugs
-add firebase for sending OTP sms (10,000 otp free sms)
+fix bug of auth for normal method
+
+Remove some comments
+
+### v1.2.12
+
+update mshastra and fix bugs.
+
+Add Firebase to send OTP SMS (free 10,000 OTP SMS).
+
 add firebase config docs
 
-= 1.2.11 =
-updating and supporting pt_BR language by Rodriggo Enzo
+### v1.2.11
 
-= 1.2.10 =
-add mshastra sms gateway for Arabian users and specially for my friend Hussam Ismail
-updating and supporting Arabic language by Hussam Ismail
+updating and supporting the pt_BR language by Rodriggo Enzo
 
-= 1.2.09 =
-fix bugs of smsbharti gateway, not reading sender id
-remove default gateway if custom gateway is activated
+### v1.2.10
 
+add mshastra sms gateway for Arabian users, especially for my friend Hussam Ismail
 
-= 1.2.08 =
-fix bugs of smsbharti gateway
+updating and supporting the Arabic language by Hussam Ismail
 
-= 1.2.07 =
-add missed file
+### v1.2.09
 
-= 1.2.06 =
+fix smsbharti gateway bugs, such as not reading sender id
+
+remove the default gateway if a custom gateway is activated.
+
+### v1.2.08
+
+fix smsbharti gateway bugs
+
+### v1.2.07
+
+addthe missing file.
+
+### v1.2.06
+
 fix bug style of admin
+
 added smsbharti gateway for Indian users
-one file missed, this version will crush your site, do not install!
 
+One file was missing. This version will crush your site. Do not install!
 
-= 1.2.05 =
+### v1.2.05
+
 fix bugs
 
-= 1.2.04 =
-add raygansms.com gateway
-fix bugs ;) (require classes)
+### v1.2.04
 
-= 1.2.03 =
+Add the raygansms.com gateway
+
+fix bugs ;)  (require classes)
+
+### v1.2.03
+
 update zenziva gateway configs
+
 update infobip gateway configs
 
+### v1.2.02
 
-= 1.2.02 =
 fix bug "The REST API route definition is missing the required permission_callback argument"
+
 add new shortcode [idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"]
-use phone number as username and nicename
+
+Use phone number as a username and nicename.
+
 remove configuring... loader
-add custom gateways => Twilio , Zenziva , Infobip
-add default country code
 
+Add custom gateways Twilio, Zenziva, Infobip
 
-= 1.2.01 =
-remove www from domain
-remove "domain:" word
+Add the default country code
+
+### v1.2.01
+
+Remove the www from the domain name.
+
+remove "domain:" word.
+
 remove action change
 
-= 1.2.0 =
-add Woocommerce billing_phone phone number update support
-remove admin authentication with phone number
-add admin authentication with domain name
+### v1.2.0
 
-= 1.1.22 =
+Add phone number update support for Woocommerce billing_phone.
+
+Remove phone number-based admin authentication.
+
+add admin authentication with a domain name.
+
+### v1.1.22
+
 update languages
-add German / Deutsch language
 
-= 1.1.21 =
-add default nickname
+Add German / Deutsch language
 
+### v1.1.21
 
-= 1.1.20 =
-optimize style
-optimize admin
+Add default nickname
 
+### v1.1.20
 
-= 1.1.17 =
-you can set default username
+optimise style.
 
-= 1.1.16 =
-remove error  Trying to access array offset on value of type bool on line 78
+optimise admin
 
-= 1.1.15 =
-search input for countries in admin
-update frontend performance
+### v1.1.17
 
-= 1.1.14 =
-optimize style
-add language to header
+You can set a default username.
 
-= 1.1.13 =
-change server
-increase server stability
+### v1.1.16
 
-= 1.1.12 =
-remove 0 from first of phone number
+remove error Trying to access an array offset on a value of type bool on line 78
 
-= 1.1.11 =
+### v1.1.15
+
+admin search input for countries
+
+frontend performance improved
+
+### v1.1.14
+
+optimise style.
+
+Add language to the header
+
+### v1.1.13
+
+change server.
+
+increase server stability.
+
+### v1.1.12
+
+Remove the 0 at the start of the phone number.
+
+### v1.1.11
+
 update readme
 
-= 1.1.10 =
-add en_GB language
-add ar language
+### v1.1.10
 
-= 1.1.09 =
-text domain updated
+add  "en_GB" language
 
-= 1.1.07 =
-update readme installation part2
+Add "ar" language
 
-= 1.1.06 =
-update readme installation part
+### v1.1.09
 
-= 1.1.05 =
+The text domain has been updated.
+
+### v1.1.07
+
+Part 2 of the update readme installation
+
+### v1.1.06
+
+Update the readme installation section.
+
+### v1.1.05
+
 better support
 
-= 1.1.04 =
-country code optimize
+### v1.1.04
 
-= 1.1.03 =
-chat and support updated
+Optimise the country code
 
-= 1.1.01 =
+### v1.1.03
+
+Chat and support updates
+
+### v1.1.01
+
 languages updated
 
-= 1.1.01 =
-add tutorial and guid
+### v1.1.01
 
-= 1.1.0 =
-enable sticky position style
+Add  tutorials and a guide
 
+### v1.1.0
 
-= 1.0.9 =
+Enable sticky position style
+
+### v1.0.9
+
 stable version
 
-= 1.0.8 =
-login with password
-add more countries 
+### v1.0.8
 
-= 1.0.1 =
-login with email
-add persian translation
-add redirect link
+login using your password
 
-= 1.0 =
+Add more countries.
+
+### v1.0.1
+
+Login with email address
+
+add Persian translation
+
+add a redirect link
+
+### v1.0
+
 Initial release
+
 

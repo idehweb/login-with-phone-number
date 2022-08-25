@@ -2119,6 +2119,29 @@ class idehwebLwp
             wp_add_inline_script('idehweb-lwp', '' . htmlspecialchars_decode($options['idehweb_firebase_config']));
         }
 
+        // integrate intl-tel-input
+        // get allowed countries
+        $onlyCountries = [];
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["93"];
+        $country_codes = $this->get_country_code_options();
+        foreach ($country_codes as $country) {
+            $rr = in_array($country["value"], $options['idehweb_country_codes']);
+            if ($rr) $onlyCountries[] = $country["code"]; 
+        }
+        
+        wp_enqueue_style('lwp-intltelinput-style', plugins_url('/styles/intlTelInput.min.css', __FILE__));
+        wp_add_inline_style('lwp-intltelinput-style','.iti { width: 100%; }');
+        wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
+        wp_add_inline_script('lwp-intltelinput-script', '(function(){
+            var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+            utilsScript: "' . plugins_url('/scripts/utils.js', __FILE__) . '",
+            hiddenInput: "lwp_username",
+            onlyCountries: ' . json_encode($onlyCountries). ',
+        });
+    })();');
+
     }
 
     function idehweb_lwp_metas($vals)
@@ -2200,19 +2223,9 @@ class idehwebLwp
                         <?php
                         //                    $country_codes = $this->get_country_code_options();
                         ?>
-                        <div class="lwp_country_codes_wrap">
-                            <select id="lwp_country_codes">
-                                <?php
-                                foreach ($options['idehweb_country_codes'] as $country) {
-//                            $rr=in_array($country["value"],$options['idehweb_country_codes']);
-                                    echo '<option value="' . $country . '">+' . $country . '</option>';
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <input type="number" class="required lwp_username the_lwp_input" name="lwp_username"
+                            <input type="hidden" id="lwp_country_codes">                      
+                            <input type="tel" id="phone" class="required lwp_username the_lwp_input"
                                placeholder="<?php echo ($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? $localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field'] : (__('9*********', $this->textdomain)); ?>">
-
                         <button class="submit_button auth_phoneNumber" type="submit">
                             <?php echo __('Submit', $this->textdomain); ?>
                         </button>

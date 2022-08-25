@@ -12,8 +12,8 @@ jQuery(document).ready(function ($) {
         if (!$(this).valid()) return false;
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login';
-        var username = $('.lwp_username').val();
-        username = username.replace(/^0+/, '');
+        var username = $('[name="lwp_username"]').val();
+        username = username.replace(/^[0\+]+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
         username = lwp_country_codes + username;
         var ctrl = $(this);
@@ -80,10 +80,10 @@ jQuery(document).ready(function ($) {
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
         // $('#lwp_activate').fadeOut(500);
-        var phone_number = $('.lwp_username').val();
+        var phone_number = $('[name="lwp_username"]').val();
         if (phone_number) {
             var lwp_country_codes = $('#lwp_country_codes').val();
-            phone_number = phone_number.replace(/^0+/, '');
+            phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
         }
@@ -142,8 +142,8 @@ jQuery(document).ready(function ($) {
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
-        var username = $('.lwp_username').val();
-        username = username.replace(/^0+/, '');
+        var username = $('[name="lwp_username"]').val();
+        username = username.replace(/^[0\+]+/, '');
 
         var lwp_country_codes = $('#lwp_country_codes').val();
         username = lwp_country_codes + username;
@@ -199,16 +199,16 @@ jQuery(document).ready(function ($) {
                 // phoneForm.onRequestOTP(response);
             }).catch(function (error) {
 
-            // Error; SMS not sent
-            // response.otp_sent 	= 0;
-            // response.notice 	= error.message ? parse_notice( error.message ) : xoo_ml_phone_localize.notices.try_later;
-            // phoneForm.onRequestOTP(response);
+                // Error; SMS not sent
+                // response.otp_sent 	= 0;
+                // response.notice 	= error.message ? parse_notice( error.message ) : xoo_ml_phone_localize.notices.try_later;
+                // phoneForm.onRequestOTP(response);
 
-            window.recaptchaVerifier.render().then(function (widgetId) {
-                grecaptcha.reset(widgetId);
+                window.recaptchaVerifier.render().then(function (widgetId) {
+                    grecaptcha.reset(widgetId);
+                });
+                console.log(error);
+
             });
-            console.log(error);
-
-        });
     }
 })

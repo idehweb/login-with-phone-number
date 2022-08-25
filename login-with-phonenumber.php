@@ -674,11 +674,33 @@ class idehwebLwp
                             related_to_smsbharti.css('display', 'none');
                             related_to_mshastra.css('display', 'none');
                             related_to_taqnyat.css('display', 'none');
-                            related_to_custom.css('display', 'table-row');
 
 
-                        }
-                        else if (this.value == "firebase" && edf3.is(':checked')) {
+                        } else if (this.value == "twilio" && edf3.is(':checked')) {
+                            related_to_customgateway.css('display', 'none');
+                            related_to_twilio.css('display', 'table-row');
+                            related_to_zenziva.css('display', 'none');
+                            related_to_firebase.css('display', 'none');
+                            related_to_infobip.css('display', 'none');
+                            related_to_raygansms.css('display', 'none');
+                            related_to_smsbharti.css('display', 'none');
+                            related_to_mshastra.css('display', 'none');
+                            related_to_taqnyat.css('display', 'none');
+
+
+                        } else if (this.value == "zenziva" && edf3.is(':checked')) {
+                            related_to_customgateway.css('display', 'none');
+                            related_to_twilio.css('display', 'none');
+                            related_to_zenziva.css('display', 'table-row');
+                            related_to_firebase.css('display', 'none');
+                            related_to_infobip.css('display', 'none');
+                            related_to_raygansms.css('display', 'none');
+                            related_to_smsbharti.css('display', 'none');
+                            related_to_mshastra.css('display', 'none');
+                            related_to_taqnyat.css('display', 'none');
+
+
+                        } else if (this.value == "firebase" && edf3.is(':checked')) {
                             related_to_customgateway.css('display', 'none');
                             related_to_twilio.css('display', 'none');
                             related_to_zenziva.css('display', 'none');
@@ -688,11 +710,69 @@ class idehwebLwp
                             related_to_smsbharti.css('display', 'none');
                             related_to_mshastra.css('display', 'none');
                             related_to_taqnyat.css('display', 'none');
-                            related_to_custom.css('display', 'none');
 
 
-                        }
-                        else {
+                        } else if (this.value == "infobip" && edf3.is(':checked')) {
+                            related_to_customgateway.css('display', 'none');
+                            related_to_twilio.css('display', 'none');
+                            related_to_zenziva.css('display', 'none');
+                            related_to_firebase.css('display', 'none');
+                            related_to_infobip.css('display', 'table-row');
+                            related_to_raygansms.css('display', 'none');
+                            related_to_smsbharti.css('display', 'none');
+                            related_to_mshastra.css('display', 'none');
+                            related_to_taqnyat.css('display', 'none');
+
+
+                        } else if (this.value == "raygansms" && edf3.is(':checked')) {
+                            related_to_customgateway.css('display', 'none');
+                            related_to_twilio.css('display', 'none');
+                            related_to_zenziva.css('display', 'none');
+                            related_to_firebase.css('display', 'none');
+                            related_to_infobip.css('display', 'none');
+                            related_to_raygansms.css('display', 'table-row');
+                            related_to_smsbharti.css('display', 'none');
+                            related_to_mshastra.css('display', 'none');
+                            related_to_taqnyat.css('display', 'none');
+
+
+                        } else if (this.value == "smsbharti" && edf3.is(':checked')) {
+                            related_to_customgateway.css('display', 'none');
+                            related_to_twilio.css('display', 'none');
+                            related_to_zenziva.css('display', 'none');
+                            related_to_firebase.css('display', 'none');
+                            related_to_infobip.css('display', 'none');
+                            related_to_raygansms.css('display', 'none');
+                            related_to_smsbharti.css('display', 'table-row');
+                            related_to_mshastra.css('display', 'none');
+                            related_to_taqnyat.css('display', 'none');
+
+
+                        } else if (this.value == "mshastra" && edf3.is(':checked')) {
+                            related_to_customgateway.css('display', 'none');
+                            related_to_twilio.css('display', 'none');
+                            related_to_zenziva.css('display', 'none');
+                            related_to_firebase.css('display', 'none');
+                            related_to_infobip.css('display', 'none');
+                            related_to_raygansms.css('display', 'none');
+                            related_to_smsbharti.css('display', 'none');
+                            related_to_mshastra.css('display', 'table-row');
+                            related_to_taqnyat.css('display', 'none');
+
+
+                        } else if (this.value == "taqnyat" && edf3.is(':checked')) {
+                            related_to_customgateway.css('display', 'none');
+                            related_to_twilio.css('display', 'none');
+                            related_to_zenziva.css('display', 'none');
+                            related_to_firebase.css('display', 'none');
+                            related_to_infobip.css('display', 'none');
+                            related_to_raygansms.css('display', 'none');
+                            related_to_smsbharti.css('display', 'none');
+                            related_to_mshastra.css('display', 'none');
+                            related_to_taqnyat.css('display', 'table-row');
+
+
+                        } else {
 
                             related_to_customgateway.css('display', 'none');
                             related_to_twilio.css('display', 'none');
@@ -2208,6 +2288,29 @@ class idehwebLwp
             wp_add_inline_script('idehweb-lwp', '' . htmlspecialchars_decode($options['idehweb_firebase_config']));
         }
 
+        // integrate intl-tel-input
+        // get allowed countries
+        $onlyCountries = [];
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["93"];
+        $country_codes = $this->get_country_code_options();
+        foreach ($country_codes as $country) {
+            $rr = in_array($country["value"], $options['idehweb_country_codes']);
+            if ($rr) $onlyCountries[] = $country["code"]; 
+        }
+        
+        wp_enqueue_style('lwp-intltelinput-style', plugins_url('/styles/intlTelInput.min.css', __FILE__));
+        wp_add_inline_style('lwp-intltelinput-style','.iti { width: 100%; }');
+        wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
+        wp_add_inline_script('lwp-intltelinput-script', '(function(){
+            var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+            utilsScript: "' . plugins_url('/scripts/utils.js', __FILE__) . '",
+            hiddenInput: "lwp_username",
+            onlyCountries: ' . json_encode($onlyCountries). ',
+        });
+    })();');
+
     }
 
     function idehweb_lwp_metas($vals)
@@ -2290,23 +2393,14 @@ class idehwebLwp
                         <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
                         <div class="lwp-form-box">
                             <label class="lwp_labels"
-                                   for="lwp_username"><?php echo __('Phone number', $this->textdomain); ?></label>
+                                for="lwp_username"><?php echo __('Phone number', $this->textdomain); ?></label>
                             <?php
                             //                    $country_codes = $this->get_country_code_options();
                             ?>
                             <div class="lwp-form-box-bottom">
-                                <div class="lwp_country_codes_wrap">
-                                    <select id="lwp_country_codes">
-                                        <?php
-                                        foreach ($options['idehweb_country_codes'] as $country) {
-//                            $rr=in_array($country["value"],$options['idehweb_country_codes']);
-                                            echo '<option value="' . $country . '">+' . $country . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <input type="number" class="required lwp_username the_lwp_input" name="lwp_username"
-                                       placeholder="<?php echo ($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? sanitize_text_field($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field']) : (__('9*********', $this->textdomain)); ?>">
+                                <input type="hidden" id="lwp_country_codes">                      
+                                <input type="tel" id="phone" class="required lwp_username the_lwp_input"
+                                placeholder="<?php echo ($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? $localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field'] : (__('9*********', $this->textdomain)); ?>">
                             </div>
                         </div>
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>

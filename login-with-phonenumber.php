@@ -2224,11 +2224,13 @@ class idehwebLwp
         wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
         wp_add_inline_script('lwp-intltelinput-script', '(function(){
             var input = document.querySelector("#phone");
-        window.intlTelInput(input, {
-            utilsScript: "' . plugins_url('/scripts/utils.js', __FILE__) . '",
-            hiddenInput: "lwp_username",
-            onlyCountries: ' . json_encode($onlyCountries). ',
-        });
+            if(input){
+                window.intlTelInput(input, {
+                    utilsScript: "' . plugins_url('/scripts/utils.js', __FILE__) . '",
+                    hiddenInput: "lwp_username",
+                    onlyCountries: ' . json_encode($onlyCountries). ',
+                });
+            }
     })();');
 
     }

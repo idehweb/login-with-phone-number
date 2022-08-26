@@ -46,8 +46,8 @@ jQuery(document).ready(function ($) {
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
-        var username = $('.lwp_username').val();
-        username = username.replace(/^0+/, '');
+        var username = $('[name="lwp_username"]').val();
+        username = username.replace(/^[0\+]+/, '');
 
         var lwp_country_codes = $('#lwp_country_codes').val();
         username = lwp_country_codes + username;
@@ -92,8 +92,8 @@ jQuery(document).ready(function ($) {
         if (typeof firebaseConfig !== 'undefined') return false;
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login';
-        var username = $('.lwp_username').val();
-        username = username.replace(/^0+/, '');
+        var username = $('[name="lwp_username"]').val();
+        username = username.replace(/^[0\+]+/, '');
 
         var lwp_country_codes = $('#lwp_country_codes').val();
         username = lwp_country_codes + username;
@@ -209,10 +209,10 @@ jQuery(document).ready(function ($) {
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
         // $('#lwp_activate').fadeOut(500);
-        var phone_number = $('.lwp_username').val();
+        var phone_number = $('[name="lwp_username"]').val();
         if (phone_number) {
             var lwp_country_codes = $('#lwp_country_codes').val();
-            phone_number = phone_number.replace(/^0+/, '');
+            phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
         }
@@ -314,8 +314,8 @@ jQuery(document).ready(function ($) {
         var action = 'lwp_enter_password_action';
         var lwp_up_password = $('.lwp_auth_password').val();
         var lwp_email = $('.lwp_email').val();
-        var lwp_username = $('.lwp_username').val();
-        lwp_username = lwp_username.replace(/^0+/, '');
+        var lwp_username = $('[name="lwp_username"]').val();
+        lwp_username = lwp_username.replace(/^[0\+]+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
         lwp_username = lwp_country_codes + lwp_username;
         var obj = {
@@ -352,7 +352,7 @@ jQuery(document).ready(function ($) {
         $('#lwp_enter_password').fadeOut(10);
         $('.ajax-auth .status').hide().empty();
         $('.lwp_didnt_r_c').addClass('lwp_none');
-        $('.lwp_username').val('');
+        $('[name="lwp_username"]').val('');
         $('#lwp_login_email').fadeOut(0);
 
         $('#lwp_login').fadeIn(500);

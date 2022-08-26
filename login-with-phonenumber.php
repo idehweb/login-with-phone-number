@@ -1911,7 +1911,7 @@ class idehwebLwp
                 $country_codes = $this->get_country_code_options();
 
                 foreach ($country_codes as $country) {
-                    echo '<option value="' . $country["value"] . '" ' . (($options['idehweb_phone_number_ccode'] == $country["value"]) ? ' selected="selected"' : '') . ' >+' . $country['value'] . ' - ' . $country["code"] . '</option>';
+                    echo '<option value="' . $country["code"] . '" ' . (($options['idehweb_phone_number_ccode'] == $country["code"]) ? ' selected="selected"' : '') . ' >+' . $country['value'] . ' - ' . $country["code"] . '</option>';
                 }
                 ?>
             </select>
@@ -2027,7 +2027,7 @@ class idehwebLwp
     function setting_country_code()
     {
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["93"];
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["us"];
         $country_codes = $this->get_country_code_options();
 //        print_r($options['idehweb_country_codes']);
 
@@ -2035,8 +2035,8 @@ class idehwebLwp
         <select name="idehweb_lwp_settings[idehweb_country_codes][]" id="idehweb_country_codes" multiple>
             <?php
             foreach ($country_codes as $country) {
-                $rr = in_array($country["value"], $options['idehweb_country_codes']);
-                echo '<option value="' . $country["value"] . '" ' . ($rr ? ' selected="selected"' : '') . '>' . $country['label'] . '</option>';
+                $rr = in_array($country["code"], $options['idehweb_country_codes']);
+                echo '<option value="' . $country["code"] . '" ' . ($rr ? ' selected="selected"' : '') . '>' . $country['label'] . '</option>';
             }
             ?>
         </select>
@@ -2215,7 +2215,7 @@ class idehwebLwp
         if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["93"];
         $country_codes = $this->get_country_code_options();
         foreach ($country_codes as $country) {
-            $rr = in_array($country["value"], $options['idehweb_country_codes']);
+            $rr = in_array($country["code"], $options['idehweb_country_codes']);
             if ($rr) $onlyCountries[] = $country["code"]; 
         }
         

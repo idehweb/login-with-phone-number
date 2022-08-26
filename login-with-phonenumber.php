@@ -674,33 +674,11 @@ class idehwebLwp
                             related_to_smsbharti.css('display', 'none');
                             related_to_mshastra.css('display', 'none');
                             related_to_taqnyat.css('display', 'none');
+                            related_to_custom.css('display', 'table-row');
 
 
-                        } else if (this.value == "twilio" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'table-row');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "zenziva" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'table-row');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "firebase" && edf3.is(':checked')) {
+                        }
+                        else if (this.value == "firebase" && edf3.is(':checked')) {
                             related_to_customgateway.css('display', 'none');
                             related_to_twilio.css('display', 'none');
                             related_to_zenziva.css('display', 'none');
@@ -710,69 +688,11 @@ class idehwebLwp
                             related_to_smsbharti.css('display', 'none');
                             related_to_mshastra.css('display', 'none');
                             related_to_taqnyat.css('display', 'none');
+                            related_to_custom.css('display', 'none');
 
 
-                        } else if (this.value == "infobip" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'table-row');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "raygansms" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'table-row');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "smsbharti" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'table-row');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "mshastra" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'table-row');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "taqnyat" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'table-row');
-
-
-                        } else {
+                        }
+                        else {
 
                             related_to_customgateway.css('display', 'none');
                             related_to_twilio.css('display', 'none');

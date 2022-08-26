@@ -11,14 +11,14 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Login/register with phone number
 
-NEW FEATURE:
+NEW FEATURE: 
 Wow, You can add almost every sms gateways (if you have) your self for free
-you can change style and appearance of forms
+you can change style and appearance of forms 
 
 
 you can use firebase for sending sms (10,000 free otp sms from firebase)
 
-For docs and more help please go to:
+For docs and more help please go to: 
 [Login with phone number documentations](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login & register with phone number")
 
 Login/register with email
@@ -67,51 +67,51 @@ modal
 == Changelog ==
 
 = 1.3.9=
-add your custom gateways yourself
-
-= 1.3.7=
+you can add your custom sms gateway yourself
+ 
+= 1.3.7= 
 security bug: delete.php file deleted
 add sanitize to inputs
 change user experience of admin part
 change form bugs
 better and faster support added!
 
-= 1.3.6=
+= 1.3.6= 
 code sending twice problem solved
 
-= 1.3.5=
+= 1.3.5= 
 add users registered date sortable
 remove bugs
 
-= 1.3.4 =
+= 1.3.4 = 
 remove bugs for number less than 11 digits
 add support for ajax template
 
-= 1.3.3 =
+= 1.3.3 = 
 fix class name sticky > lw-sticky
 
-= 1.3.2 =
+= 1.3.2 = 
 add documentations in readme
 
-= 1.3.1 =
-fix bugs
+= 1.3.1 = 
+fix bugs 
 
-= 1.3.0 =
+= 1.3.0 = 
 add timer for sending sms again
 fix bugs of email: code entered wrong
 add text localization, ability to change text of labels, fields, errors and...
 
-= 1.2.23 =
-remove default option idehweb_use_custom_gateway
+= 1.2.23 = 
+remove default option idehweb_use_custom_gateway 
 
-= 1.2.22 =
+= 1.2.22 = 
 enable option of only login and not register users for network and multi site
 add turkish language
 
-= 1.2.21 =
+= 1.2.21 = 
 enable option of only login and not register users
 
-= 1.2.20 =
+= 1.2.20 = 
 fix bugs of saving styles
 
 = 1.2.19 =
@@ -124,7 +124,7 @@ add Woocommerce form auto change
 set Firebase to default
 
 = 1.2.17 =
-remove bugs
+remove bugs 
 
 = 1.2.16 =
 remove smsbharti gateway :-( :-x :-|

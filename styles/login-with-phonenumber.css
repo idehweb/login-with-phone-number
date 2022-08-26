@@ -172,6 +172,7 @@ input.lwp_username{
     border-color: #757575;
     margin-left: 0;
     margin-right: 0;
+    padding: 5px;
 
 }
 #lwp_country_codes:focus,
@@ -237,9 +238,14 @@ input.lwp_username{
     display: block;
     color: #fff;
     margin-top: 10px;
+    cursor: pointer;
 }
 .lwp_bottom_activation{
     text-align: right;
+    margin-top: 10px;
+}
+.rtl .lwp_bottom_activation{
+    text-align: left;
 }
 a.login_button{
     font-family: inherit;
@@ -262,7 +268,23 @@ a.login_button{
     max-width: 100%;
     border: 1px solid;
 }
+.accept_terms_and_conditions_text{
 
+}
+.ajax-auth .lwp_check_box{
+    width: auto;
+    display: inline-block;
+}
+.lwp-form-box-bottom{
+    clear: both;
+    display: inline-block;
+    width: 100%;
+}
+.accept_terms_and_conditions{
+    clear: both;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
 
 .lwp_login_overlay{
     height: 100%;

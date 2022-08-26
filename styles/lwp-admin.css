@@ -208,6 +208,13 @@
     margin-top: 50px;
     float: right;
 }
+.idehweb_lwp_mgt100{
+    margin-top: 50px;
+    clear: both;
+    display: block;
+    width: 100%;
+    background-color: #f0f0f1;
+}
 @-webkit-keyframes load4 {
     0%,
     100% {

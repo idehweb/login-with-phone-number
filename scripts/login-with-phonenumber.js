@@ -46,8 +46,8 @@ jQuery(document).ready(function ($) {
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
-        var username = $('[name="lwp_username"]').val();
-        username = username.replace(/^[0\+]+/, '');
+        var username = $('.lwp_username').val();
+        username = username.replace(/^0+/, '');
 
         var lwp_country_codes = $('#lwp_country_codes').val();
         username = lwp_country_codes + username;
@@ -92,8 +92,8 @@ jQuery(document).ready(function ($) {
         if (typeof firebaseConfig !== 'undefined') return false;
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login';
-        var username = $('[name="lwp_username"]').val();
-        username = username.replace(/^[0\+]+/, '');
+        var username = $('.lwp_username').val();
+        username = username.replace(/^0+/, '');
 
         var lwp_country_codes = $('#lwp_country_codes').val();
         username = lwp_country_codes + username;
@@ -118,6 +118,9 @@ jQuery(document).ready(function ($) {
                     idehweb_lwp.UserId = data.ID;
                     $('.lwp_line').css('display', 'block');
                     $('.lwp_bottom_activation').css('display', 'block');
+                    $('.lwp_bottom_activation .lwp_change_el').css('display', 'none');
+                    $('.lwp_bottom_activation .lwp_change_pn').css('display', 'block');
+
                     if (data.authWithPass) {
                         if (data.showPass) {
                             $('#lwp_enter_password').fadeIn(500);
@@ -166,7 +169,9 @@ jQuery(document).ready(function ($) {
                     $('#lwp_login').fadeOut(10);
                     idehweb_lwp.UserId = data.ID;
                     $('.lwp_line').css('display', 'none');
-                    $('.lwp_bottom_activation').css('display', 'none');
+                    $('.lwp_bottom_activation').css('display', 'block');
+                    $('.lwp_bottom_activation .lwp_change_pn').css('display', 'none');
+                    $('.lwp_bottom_activation .lwp_change_el').css('display', 'block');
                     if (data.authWithPass) {
 
                         if (data.showPass) {
@@ -204,10 +209,10 @@ jQuery(document).ready(function ($) {
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
         // $('#lwp_activate').fadeOut(500);
-        var phone_number = $('[name="lwp_username"]').val();
+        var phone_number = $('.lwp_username').val();
         if (phone_number) {
             var lwp_country_codes = $('#lwp_country_codes').val();
-            phone_number = phone_number.replace(/^[0\+]+/, '');
+            phone_number = phone_number.replace(/^0+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
         }
@@ -309,8 +314,8 @@ jQuery(document).ready(function ($) {
         var action = 'lwp_enter_password_action';
         var lwp_up_password = $('.lwp_auth_password').val();
         var lwp_email = $('.lwp_email').val();
-        var lwp_username = $('[name="lwp_username"]').val();
-        lwp_username = lwp_username.replace(/^[0\+]+/, '');
+        var lwp_username = $('.lwp_username').val();
+        lwp_username = lwp_username.replace(/^0+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
         lwp_username = lwp_country_codes + lwp_username;
         var obj = {
@@ -347,9 +352,25 @@ jQuery(document).ready(function ($) {
         $('#lwp_enter_password').fadeOut(10);
         $('.ajax-auth .status').hide().empty();
         $('.lwp_didnt_r_c').addClass('lwp_none');
-        $('[name="lwp_username"]').val('');
+        $('.lwp_username').val('');
+        $('#lwp_login_email').fadeOut(0);
 
         $('#lwp_login').fadeIn(500);
+
+    });
+    $('body').on('click', '.lwp_change_el', function (e) {
+        e.preventDefault();
+        clearInterval(lwp_refreshIntervalId);
+        $('.lwp_didnt_r_c').removeClass('lwp_disable');
+        $('.lwp_timer').empty();
+        $('#lwp_activate').fadeOut(10);
+        $('#lwp_enter_password').fadeOut(10);
+        $('.ajax-auth .status').hide().empty();
+        $('.lwp_didnt_r_c').addClass('lwp_none');
+        $('.lwp_username').val('');
+        $('#lwp_login').fadeOut(0);
+
+        $('#lwp_login_email').fadeIn(500);
 
     });
 

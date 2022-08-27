@@ -196,6 +196,7 @@ class idehwebLwp
 //        if (!isset($options['idehweb_phone_number'])) $options['idehweb_phone_number'] = '';
         add_settings_field('idehweb_token', __('Enter api key', $this->textdomain), array(&$this, 'setting_idehweb_token'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel alwaysDisplayNone']);
         add_settings_field('idehweb_country_codes', __('Country code accepted in front', $this->textdomain), array(&$this, 'setting_country_code'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
+        add_settings_field('idehweb_country_codes_default', __('Default Country', $this->textdomain), array(&$this, 'setting_country_code_default'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
 
         if ($options['idehweb_token']) {
 
@@ -2056,6 +2057,27 @@ class idehwebLwp
 
     }
 
+    function setting_country_code_default()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_country_codes_default'])) $options['idehweb_country_codes_default'] = "";
+        $country_codes = $this->get_country_code_options();
+        ?>
+        <select name="idehweb_lwp_settings[idehweb_country_codes_default]" id="idehweb_country_codes_default">
+            <option selected="selected" value="">select default country</option>
+            <?php
+            foreach ($country_codes as $country) {
+                if (!in_array($country["code"], $options['idehweb_country_codes'])) continue;
+                $rr = ($country["code"] == $options['idehweb_country_codes_default']);
+                echo '<option value="' . $country["code"] . '" ' . ($rr ? ' selected="selected"' : '') . '>' . $country['label'] . '</option>';
+            }
+            ?>
+        </select>
+        <p class="description">note: if you change accepted countries, you update this after save.</p>
+        <?php
+
+    }
+
     function setting_default_username()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -2230,7 +2252,10 @@ class idehwebLwp
             $rr = in_array($country["code"], $options['idehweb_country_codes']);
             if ($rr) $onlyCountries[] = $country["code"]; 
         }
-        
+        // get initial/default country, and make sure it exists in allowed counties
+        $initialCountry = $options['idehweb_country_codes_default'];
+        $initialCountry = in_array($initialCountry, $onlyCountries) ? $initialCountry : '';
+
         wp_enqueue_style('lwp-intltelinput-style', plugins_url('/styles/intlTelInput.min.css', __FILE__));
         wp_add_inline_style('lwp-intltelinput-style','.iti { width: 100%; }');
         wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
@@ -2241,6 +2266,7 @@ class idehwebLwp
                     utilsScript: "' . plugins_url('/scripts/utils.js', __FILE__) . '",
                     hiddenInput: "lwp_username",
                     onlyCountries: ' . json_encode($onlyCountries). ',
+                    initialCountry: "' . $initialCountry . '",
                 });
             }
     })();');

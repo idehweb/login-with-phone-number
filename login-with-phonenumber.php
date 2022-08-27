@@ -1376,11 +1376,11 @@ class idehwebLwp
     function setting_idehweb_localization_placeholder_of_phonenumber_field()
     {
         $options = get_option('idehweb_lwp_settings_localization');
-        if (!isset($options['idehweb_localization_placeholder_of_phonenumber_field'])) $options['idehweb_localization_placeholder_of_phonenumber_field'] = '9*********';
+        if (!isset($options['idehweb_localization_placeholder_of_phonenumber_field'])) $options['idehweb_localization_placeholder_of_phonenumber_field'] = '';
         else $options['idehweb_localization_placeholder_of_phonenumber_field'] = sanitize_text_field($options['idehweb_localization_placeholder_of_phonenumber_field']);
 
         echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_placeholder_of_phonenumber_field]" class="regular-text" value="' . esc_attr($options['idehweb_localization_placeholder_of_phonenumber_field']) . '" />
-		<p class="description">' . __('9*********', $this->textdomain) . '</p>';
+		<p class="description">' . __('if empty, a valid example number for the selected country will be shown', $this->textdomain) . '</p>';
     }
 
     function setting_idehweb_sms_login()
@@ -2361,7 +2361,7 @@ class idehwebLwp
                             <div class="lwp-form-box-bottom">
                                 <input type="hidden" id="lwp_country_codes">                      
                                 <input type="tel" id="phone" class="required lwp_username the_lwp_input"
-                                placeholder="<?php echo ($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? $localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field'] : (__('9*********', $this->textdomain)); ?>">
+                                placeholder="<?php echo ($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? $localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field'] : (__('', $this->textdomain)); ?>">
                             </div>
                         </div>
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>

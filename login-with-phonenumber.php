@@ -270,6 +270,7 @@ class idehwebLwp
         add_settings_field('idehweb_timer_count', __('Timer count', $this->textdomain), array(&$this, 'setting_timer_count'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_entimer']);
         add_settings_field('idehweb_enable_accept_terms_and_condition', __('Enable accept term & conditions', $this->textdomain), array(&$this, 'idehweb_enable_accept_term_and_conditions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
         add_settings_field('idehweb_term_and_conditions_text', __('Text of term & conditions part', $this->textdomain), array(&$this, 'setting_term_and_conditions_text'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
+        add_settings_field('idehweb_term_and_conditions_default_checked', __('Check term & conditions by default?', $this->textdomain), array(&$this, 'setting_term_and_conditions_default_checked'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
 
 
         add_settings_field('idehweb_lwp_space3', __('', $this->textdomain), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
@@ -1857,6 +1858,17 @@ class idehwebLwp
 		<p class="description">' . __('enter term and condition accepting text', $this->textdomain) . '</p>';
     }
 
+
+    function setting_term_and_conditions_default_checked()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_term_and_conditions_default_checked'])) $options['idehweb_term_and_conditions_default_checked'] = '1';
+
+        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_term_and_conditions_default_checked]" value="0" />
+		<label><input type="checkbox" id="idehweb_term_and_conditions_default_checked" name="idehweb_lwp_settings[idehweb_term_and_conditions_default_checked]" value="1"' . (($options['idehweb_term_and_conditions_default_checked']) ? ' checked="checked"' : '') . ' />' . __('Accept/Check by default. ', $this->textdomain) . '</label>';
+
+    }
+
     function credit_adminbar()
     {
         global $wp_admin_bar, $melipayamak;
@@ -2280,6 +2292,7 @@ class idehwebLwp
         if (!isset($options['idehweb_sms_login'])) $options['idehweb_sms_login'] = '1';
         if (!isset($options['idehweb_enable_accept_terms_and_condition'])) $options['idehweb_enable_accept_terms_and_condition'] = '1';
         if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = '';
+        if (!isset($options['idehweb_term_and_conditions_default_checked'])) $options['idehweb_term_and_conditions_default_checked'] = '0';
         if (!isset($options['idehweb_email_login'])) $options['idehweb_email_login'] = '1';
         if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
         if (!isset($options['idehweb_redirect_url'])) $options['idehweb_redirect_url'] = '';
@@ -2328,7 +2341,7 @@ class idehwebLwp
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
                             <div class="accept_terms_and_conditions">
                                 <input class="required lwp_check_box" type="checkbox" name="lwp_accept_terms"
-                                       checked="checked">
+                                       <?php echo (($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >
                                 <span class="accept_terms_and_conditions_text"><?php echo($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>
@@ -2364,7 +2377,7 @@ class idehwebLwp
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
                             <div class="accept_terms_and_conditions">
                                 <input class="required lwp_check_box lwp_accept_terms_email" type="checkbox"
-                                       name="lwp_accept_terms_email" checked="checked">
+                                       name="lwp_accept_terms_email" <?php echo (($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >>
                                 <span class="accept_terms_and_conditions_text"><?php echo($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>

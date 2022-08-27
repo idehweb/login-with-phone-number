@@ -2246,7 +2246,7 @@ class idehwebLwp
         // get allowed countries
         $onlyCountries = [];
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["93"];
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["us"];
         $country_codes = $this->get_country_code_options();
         foreach ($country_codes as $country) {
             $rr = in_array($country["code"], $options['idehweb_country_codes']);

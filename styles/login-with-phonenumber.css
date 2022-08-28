@@ -1,4 +1,4 @@
-form.ajax-auth{
+form.ajax-auth {
     display: none;
     z-index: 999;
 
@@ -15,7 +15,8 @@ form.ajax-auth{
     position: relative;
     font-size: 11px;
 }
-.lw-sticky form.ajax-auth{
+
+.lw-sticky form.ajax-auth {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -24,17 +25,20 @@ form.ajax-auth{
 
 
 }
-#lwp_country_codes{
+
+#lwp_country_codes {
     float: left;
 }
-.ajax-auth h1, .ajax-auth h3{
+
+.ajax-auth h1,
+.ajax-auth h3 {
 
     font-weight: 100;
     color: #333333;
     line-height: 1;
 }
 
-.ajax-auth .lh1{
+.ajax-auth .lh1 {
     font-size: 27px;
     text-align: center;
     margin: 30px 0 20px 0;
@@ -42,13 +46,13 @@ form.ajax-auth{
 
 }
 
-.ajax-auth h3{
+.ajax-auth h3 {
     font-size: 18px;
     text-align: left;
     margin: 0;
 }
 
-.ajax-auth h3 a{
+.ajax-auth h3 a {
     color: #e25c4c;
 }
 
@@ -64,7 +68,7 @@ form.ajax-auth{
 .ajax-auth input#signonname,
 .ajax-auth input#email,
 .ajax-auth input#signonpassword,
-.ajax-auth input#password2{
+.ajax-auth input#password2 {
     border: 1px solid #EDEDED;
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1) inset;
@@ -82,19 +86,19 @@ form.ajax-auth{
 .ajax-auth input#signonname:focus,
 .ajax-auth input#email:focus,
 .ajax-auth input#signonpassword:focus,
-.ajax-auth input#password2:focus{
+.ajax-auth input#password2:focus {
     background-color: #FFF;
 }
 
-.ajax-auth label.error{
+.ajax-auth label.error {
     display: none !important;
 }
 
-.ajax-auth input.error{
+.ajax-auth input.error {
     border: 1px solid #FF0000 !important;
 }
 
-.ajax-auth input.submit_button{
+.ajax-auth input.submit_button {
     font-size: 13px;
     color: #FFF;
     border: 1px solid #b34336;
@@ -109,11 +113,11 @@ form.ajax-auth{
     box-shadow: 0 1px 0 #E87A6E inset;
 }
 
-.ajax-auth a{
+.ajax-auth a {
     text-decoration: none;
 }
 
-.ajax-auth a.close{
+.ajax-auth a.close {
     display: none;
     color: #e96262;
     font-size: 23px;
@@ -121,40 +125,52 @@ form.ajax-auth{
     right: 25px;
     top: 15px;
 }
-.lw-sticky .ajax-auth a.close{
+
+.lw-sticky .ajax-auth a.close {
     display: block;
 }
-.ajax-auth a.text-link{
+
+.ajax-auth a.text-link {
     color: #B4B2B2;
     float: left;
     margin: 10px 0 0 0;
 }
-.ajax-auth input{
+
+.ajax-auth input {
     color: #000;
 }
-.ajax-auth input,.ajax-auth label,.ajax-auth button{
+
+.ajax-auth input,
+.ajax-auth label,
+.ajax-auth button {
     font-size: 15px;
     width: 100%;
     font-family: inherit;
     display: block;
     box-sizing: border-box;
 }
-.lwp_email{
+
+.lwp_email {
     direction: ltr;
 }
+
 input.lwp_username::-webkit-outer-spin-button,
 input.lwp_username::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
 }
-input.lwp_username{
-    -moz-appearance:textfield;
+
+input.lwp_username {
+    -moz-appearance: textfield;
 }
-.rtl .lwp_email::placeholder{
+
+.rtl .lwp_email::placeholder {
     direction: rtl;
 }
-#lwp_country_codes{
+
+#lwp_country_codes {
     display: block;
     float: left;
     margin-right: 10px;
@@ -166,8 +182,9 @@ input.lwp_username{
     min-width: 70px;
     box-sizing: border-box;
 }
-.required.lwp_email{
-    border-width: 1px ;
+
+.required.lwp_email {
+    border-width: 1px;
     border-style: solid;
     border-color: #757575;
     margin-left: 0;
@@ -175,36 +192,40 @@ input.lwp_username{
     padding: 5px;
 
 }
+
 #lwp_country_codes:focus,
-.required.lwp_email:focus{
+.required.lwp_email:focus {
     outline: none;
 }
+
 /*.lwp_country_codes_span{*/
-    /*line-height: 23px;*/
-    /*float: left;*/
-    /*display: block;*/
-    /*background-color: #f6f6f6;*/
-    /*height: 30px;*/
-    /*padding: 2px 10px;*/
-    /*width: 45px;*/
-    /*font-size: 15px;*/
-    /*border: 1px solid #757575;*/
-    /*margin-right: 4px;*/
-    /*font-weight: bold;*/
-    /*border-radius: 3px;*/
-    /*color: #000;*/
-    /*box-sizing: border-box;*/
+/*line-height: 23px;*/
+/*float: left;*/
+/*display: block;*/
+/*background-color: #f6f6f6;*/
+/*height: 30px;*/
+/*padding: 2px 10px;*/
+/*width: 45px;*/
+/*font-size: 15px;*/
+/*border: 1px solid #757575;*/
+/*margin-right: 4px;*/
+/*font-weight: bold;*/
+/*border-radius: 3px;*/
+/*color: #000;*/
+/*box-sizing: border-box;*/
 /*}*/
-.lwp_country_codes_wrap{
+.lwp_country_codes_wrap {
     width: 80px;
     float: left;
     box-sizing: border-box;
     direction: ltr;
 }
-.rtl #lwp_login.ajax-auth input.lwp_username::placeholder{
+
+.rtl #lwp_login.ajax-auth input.lwp_username::placeholder {
     text-align: left;
 }
-#lwp_login.ajax-auth input.lwp_username{
+
+#lwp_login.ajax-auth input.lwp_username {
     width: calc(100% - 80px);
     max-width: 100%;
     height: 30px;
@@ -217,19 +238,23 @@ input.lwp_username{
     margin-right: 0;
     text-align: left;
 }
-.lwp_top_activation{
+
+.lwp_top_activation {
     text-align: center;
 }
-#lwp_login.ajax-auth input.lwp_username:focus{
+
+#lwp_login.ajax-auth input.lwp_username:focus {
     outline: 0;
 }
-.ajax-auth p.status{
+
+.ajax-auth p.status {
     text-align: center;
     margin: -15px 0 20px 0;
     font-weight: 600;
     display: none;
 }
-.submit_button{
+
+.submit_button {
     width: 100%;
     background-color: #009b9a;
     border: 1px solid #009b9a;
@@ -240,14 +265,17 @@ input.lwp_username{
     margin-top: 10px;
     cursor: pointer;
 }
-.lwp_bottom_activation{
+
+.lwp_bottom_activation {
     text-align: right;
     margin-top: 10px;
 }
-.rtl .lwp_bottom_activation{
+
+.rtl .lwp_bottom_activation {
     text-align: left;
 }
-a.login_button{
+
+a.login_button {
     font-family: inherit;
     padding: 5px 7px 5px 7px;
     background-color: #FFF;
@@ -257,36 +285,39 @@ a.login_button{
     text-decoration: none;
     font-size: 11px;
 }
-.ajax-auth .lwp_line{
+
+.ajax-auth .lwp_line {
     width: 90%;
     display: block;
     margin-top: 20px !important;
     margin-bottom: 10px !important;
-    margin:auto;
+    margin: auto;
     background-color: #e6e6e6;
     height: 1px;
     max-width: 100%;
     border: 1px solid;
 }
-.accept_terms_and_conditions_text{
 
-}
-.ajax-auth .lwp_check_box{
+.accept_terms_and_conditions_text {}
+
+.ajax-auth .lwp_check_box {
     width: auto;
     display: inline-block;
 }
-.lwp-form-box-bottom{
+
+.lwp-form-box-bottom {
     clear: both;
     display: inline-block;
     width: 100%;
 }
-.accept_terms_and_conditions{
+
+.accept_terms_and_conditions {
     clear: both;
     margin-top: 10px;
     margin-bottom: 5px;
 }
 
-.lwp_login_overlay{
+.lwp_login_overlay {
     height: 100%;
     width: 100%;
     background-color: #F6F6F6;
@@ -297,13 +328,15 @@ a.login_button{
     top: 0;
     left: 0;
 }
-.lwp_none{
+
+.lwp_none {
     display: none !important;
 }
-.submit_button.lwp_disable{
+
+.submit_button.lwp_disable {
     border: 1px solid #999999 !important;
     background-color: #cccccc !important;
     color: #666666 !important;
     cursor: not-allowed;
-    pointer-events:none;
+    pointer-events: none;
 }

@@ -179,7 +179,7 @@ class idehwebLwp
             add_settings_field('idehweb_styles_title_color', __('title color', $this->textdomain), array(&$this, 'setting_idehweb_style_title_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_title_font_size', __('title font size', $this->textdomain), array(&$this, 'setting_idehweb_style_title_font_size'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
-
+            add_settings_field('idehweb_styles_custom_css', __('custom css', $this->textdomain), array(&$this, 'setting_idehweb_style_custom_css'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
         }
 
         add_settings_section('idehweb-lwp', '', array(&$this, 'section_intro'), 'idehweb-lwp');
@@ -992,6 +992,9 @@ class idehwebLwp
         if (!isset($options['idehweb_styles_title_color'])) $options['idehweb_styles_title_color'] = '#000000';
         if (!isset($options['idehweb_styles_title_font_size'])) $options['idehweb_styles_title_font_size'] = 'inherit';
 
+        //custom css
+        if (!isset($options['idehweb_styles_custom_css'])) $options['idehweb_styles_custom_css'] = '';
+
         $lwp_custom_css = ' .submit_button { background-color: ' . $options['idehweb_styles_button_background'] . ' !important; border-color: ' . $options['idehweb_styles_button_border_color'] . ' !important; color: ' . $options['idehweb_styles_button_text_color'] . ' !important;border-radius: ' . $options['idehweb_styles_button_border_radius'] . ' !important;border-width: ' . $options['idehweb_styles_button_border_width'] . ' !important; }
         .secondaryccolor { background-color: ' . $options['idehweb_styles_button_background2'] . ' !important; border-color: ' . $options['idehweb_styles_button_border_color2'] . ' !important; color: ' . $options['idehweb_styles_button_text_color2'] . ' !important;border-radius: ' . $options['idehweb_styles_button_border_radius2'] . ' !important;border-width: ' . $options['idehweb_styles_button_border_width2'] . ' !important; }
         .the_lwp_input { background-color: ' . $options['idehweb_styles_input_background'] . ' !important; border-color: ' . $options['idehweb_styles_input_border_color'] . ' !important; color: ' . $options['idehweb_styles_input_text_color'] . ' !important;border-radius: ' . $options['idehweb_styles_input_border_radius'] . ' !important;border-width: ' . $options['idehweb_styles_input_border_width'] . ' !important; }
@@ -999,7 +1002,7 @@ class idehwebLwp
         .lwp_forms_login form.ajax-auth{ background-color: ' . $options['idehweb_styles_box_background_color'] . ' !important; }
         .lwp_labels{ color: ' . $options['idehweb_styles_labels_text_color'] . ' !important;font-size: ' . $options['idehweb_styles_labels_font_size'] . ' !important; }
         .lh1{ color: ' . $options['idehweb_styles_title_color'] . ' !important;font-size: ' . $options['idehweb_styles_title_font_size'] . ' !important; }
-        ';
+        ' . $options['idehweb_styles_custom_css'];
         ?>
 
         <?php
@@ -1340,6 +1343,14 @@ class idehwebLwp
         else $options['idehweb_styles_title_font_size'] = sanitize_text_field($options['idehweb_styles_title_font_size']);
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_title_font_size]" class="regular-text" value="' . esc_attr($options['idehweb_styles_title_font_size']) . '" />
 		<p class="description">' . __('20px', $this->textdomain) . '</p>';
+    }
+
+    function setting_idehweb_style_custom_css()
+    {
+        $options = get_option('idehweb_lwp_settings_styles');
+        if (!isset($options['idehweb_styles_custom_css'])) $options['idehweb_styles_custom_css'] = '';
+        else $options['idehweb_styles_custom_css'] = sanitize_text_field($options['idehweb_styles_custom_css']);
+        echo '<textarea name="idehweb_lwp_settings_styles[idehweb_styles_custom_css]" class="regular-text">' . esc_attr($options['idehweb_styles_custom_css']) . '</textarea>';
     }
 
     function setting_idehweb_localization_enable_custom_localization()

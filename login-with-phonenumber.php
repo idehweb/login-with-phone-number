@@ -2414,7 +2414,7 @@ class idehwebLwp
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
                             <div class="accept_terms_and_conditions">
                                 <input class="required lwp_check_box lwp_accept_terms_email" type="checkbox"
-                                       name="lwp_accept_terms_email" <?php echo (($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >>
+                                       name="lwp_accept_terms_email" <?php echo (($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >
                                 <span class="accept_terms_and_conditions_text"><?php echo($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>

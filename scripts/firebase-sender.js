@@ -9,7 +9,16 @@ jQuery(document).ready(function ($) {
 
     $('form#lwp_login').on('submit', function (e) {
         console.log('act 1');
-        if (!$(this).valid()) return false;
+        if (!$(this).valid()) {
+            var reason = '';
+            if ($('[name="lwp_accept_terms"]').length && !$('[name="lwp_accept_terms"]').valid()) {
+                reason = 'You must agree to the terms of service!'
+            } else {
+                reason = 'Phone number is required';
+            }
+            $('p.status', this).show().text(reason);
+            return false;
+        }
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login';
         var username = $('[name="lwp_username"]').val();

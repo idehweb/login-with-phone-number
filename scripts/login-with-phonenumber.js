@@ -87,7 +87,16 @@ jQuery(document).ready(function ($) {
     $('body').on('submit', 'form#lwp_login', function (e) {
         e.preventDefault();
 
-        if (!$(this).valid()) return false;
+        if (!$(this).valid()) {
+            var reason = '';
+            if ($('[name="lwp_accept_terms"]').length && !$('[name="lwp_accept_terms"]').valid()) {
+                reason = 'You must agree to the terms of service!'
+            } else {
+                reason = 'Phone number is required';
+            }
+            $('p.status', this).show().text(reason);
+            return false;
+        }
 
         if (typeof firebaseConfig !== 'undefined') return false;
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
@@ -145,7 +154,16 @@ jQuery(document).ready(function ($) {
         });
     });
     $('body').on('submit', 'form#lwp_login_email', function (e) {
-        if (!$(this).valid()) return false;
+        if (!$(this).valid()) {
+            var reason = '';
+            if ($('[name="lwp_accept_terms_email"]').length && !$('[name="lwp_accept_terms_email"]').valid()) {
+                reason = 'You must agree to the terms of service!'
+            } else {
+                reason = 'Email is required';
+            }
+            $('p.status', this).show().text(reason);
+            return false;
+        }
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login_with_email';

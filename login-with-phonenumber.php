@@ -2268,7 +2268,7 @@ class idehwebLwp
         $initialCountry = in_array($initialCountry, $onlyCountries) ? $initialCountry : '';
 
         wp_enqueue_style('lwp-intltelinput-style', plugins_url('/styles/intlTelInput.min.css', __FILE__));
-        wp_add_inline_style('lwp-intltelinput-style','.iti { width: 100%; }');
+        wp_add_inline_style('lwp-intltelinput-style','.iti { width: 100%; } #phone{font-size: 20px; height: auto !important;}');
         wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
         wp_add_inline_script('lwp-intltelinput-script', '(function(){
             var input = document.querySelector("#phone");

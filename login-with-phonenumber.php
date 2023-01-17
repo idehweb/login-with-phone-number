@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.4.652
+Version: 1.4.653
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -68,7 +68,7 @@ class idehwebLwp
     {
         $phn = get_the_author_meta('phone_number', $user->ID);
         ?>
-        <h3><?php esc_html_e('Personal Information', 'crf'); ?></h3>
+        <h3><?php esc_html_e('Personal Information', 'login-with-phone-number'); ?></h3>
 
         <table class="form-table">
             <tr>
@@ -1377,19 +1377,9 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = 'firebase';
         $gateways = [
-//            ["value" => "twilio", "label" => "Twilio (International)"],
-//            ["value" => "zenziva", "label" => "Zenziva (Indonesia)"],
-//            ["value" => "infobip", "label" => "Infobip (Portugal , Brazil ...)"],
-            ["value" => "firebase", "label" => "Firebase (Google)"],
-            ["value" => "custom", "label" => "Custom (Config Your Gateway)"],
-//            ["value" => "raygansms", "label" => "Raygansms.com (Iran)"],
-//            ["value" => "smsbharti", "label" => "smsbharti.com (India)"],
-//            ["value" => "mshastra", "label" => "mshastra.com (Saudi Arabia)"],
-//            ["value" => "taqnyat", "label" => "taqnyat.sa (Saudi Arabia)"]
+            ["value" => "firebase", "label" => __("Firebase (Google)",'login-with-phone-number')],
+            ["value" => "custom", "label" => __("Custom (Config Your Gateway)",'login-with-phone-number')],
         ];
-//        ["value"=>"custom","label"=>"custom gateway setting"]
-//        ["value"=>"saudibulksms","label"=>"Saudi Bulk SMS (STC) (saudi arabia)"],
-//        print_r($options['idehweb_country_codes']);
 
         ?>
         <select name="idehweb_lwp_settings[idehweb_default_gateways]" id="idehweb_default_gateways">
@@ -1776,7 +1766,7 @@ class idehwebLwp
     {
 
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = 'By submitting, you agree to the <a href="#">Terms and Privacy Policy</a>';
+        if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = __('By submitting, you agree to the <a href="#">Terms and Privacy Policy</a>','login-with-phone-number');
         else $options['idehweb_term_and_conditions_text'] = ($options['idehweb_term_and_conditions_text']);
         echo '<textarea name="idehweb_lwp_settings[idehweb_term_and_conditions_text]" class="regular-text">' . esc_attr($options['idehweb_term_and_conditions_text']) . '</textarea>
 		<p class="description">' . __('enter term and condition accepting text', 'login-with-phone-number') . '</p>';
@@ -2252,7 +2242,7 @@ class idehwebLwp
                         if ($options['idehweb_sms_login']) {
                             ?>
                             <button class="submit_button auth_with_phoneNumber secondaryccolor" type="button">
-                                <?php echo __('Login with phone number', 'login-with-phone-number'); ?>
+                                <?php echo esc_attr_x('Login with phone number','Button Label', 'login-with-phone-number'); ?>
                             </button>
                         <?php } ?>
                         <a class="close" href="">(x)</a>

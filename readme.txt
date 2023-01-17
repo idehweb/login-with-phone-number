@@ -1,8 +1,8 @@
 === Plugin Name ===
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
-Tested up to: 5.8.1
-Stable tag: 1.3.6
+Tested up to: 6.1
+Stable tag: 1.4.65
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,47 +12,48 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Login/register with phone number
 
 NEW FEATURE:
+Wow, You can add almost every SMS gateways (if you have) yourself for free
 you can change style and appearance of forms
 
 
-you can use firebase for sending sms (10,000 free otp sms from firebase)
+You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
 
-For docs and more help please go to:
+For checking docs and getting more help please visit:
 [Login with phone number documentations](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login & register with phone number")
 
-Login/register with email
+* Login/Register with E-mail
 
-wordpress login form
+* Wordpress Login Form
 
-woocommerce registration form
+* Woocommerce Registration Form
 
-woocommerce login with phone number
+* Woocommerce Login With Phone Number
 
-wordpress otp login
+* Wordpress OTP Login
 
-woocommerce registration with phone number
+* Woocommerce Registration With Phone Number
 
-add phone number to wordpress registration
+* Add Phone Number to Wordpress Registration
 
-simple use
+* Simple Use
 
-support international sms sending
+* Support of International SMS Delivery
 
-activate user by phone number
+* Activating Users by Phone Number
 
-forgot password form
+* Password Recovery Form
 
-limit pages to login
+* Page Authentication in Order to Visit Pages
 
-login and register with phone number
+* Login and Registration with Phone Number
 
-redirect user to specific url after logging in or register
+* Redirect Users to Specific URLs After Logging in or Registering
 
-ajax
+AJAX
 
-modal
+MODAL
 
-[youtube https://www.youtube.com/watch?v=yQev_jNjR0I&t=1s]
+[youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
 == Installation ==
 
@@ -64,6 +65,41 @@ modal
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 == Changelog ==
+
+= 1.4.63=
+check all echos for security issues
+
+= 1.4.62=
+esc ajax outputs
+
+= 1.4.61=
+esc outputs
+
+= 1.4.6=
+esc and sanitize inputs, set text domain in string
+
+= 1.4.3=
+remove security bugs
+
+= 1.4.2=
+tested with wordpress 6.1.2
+
+= 1.4.1=
+add login message for logged-in users
+
+= 1.4.0=
+remove bugs of registered users
+
+= 1.3.9=
+you can add your custom sms gateway yourself
+
+= 1.3.7=
+security bug: delete.php file deleted
+add sanitize to inputs
+change user experience of admin part
+change form bugs
+better and faster support added!
+
 = 1.3.6=
 code sending twice problem solved
 

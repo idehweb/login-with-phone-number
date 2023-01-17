@@ -84,7 +84,7 @@ jQuery(document).ready(function ($) {
     });
     $('#show_login').click();
     // Perform AJAX login/register on form submit
-    $('body').on('submit','form#lwp_login', function (e) {
+    $('body').on('submit', 'form#lwp_login', function (e) {
         e.preventDefault();
 
         if (!$(this).valid()) return false;
@@ -116,8 +116,11 @@ jQuery(document).ready(function ($) {
                     $('#lwp_login_email').fadeOut(10);
                     $('#lwp_login').fadeOut(10);
                     idehweb_lwp.UserId = data.ID;
-                    $('.lwp_line').css('display','block');
-                    $('.lwp_bottom_activation').css('display','block');
+                    $('.lwp_line').css('display', 'block');
+                    $('.lwp_bottom_activation').css('display', 'block');
+                    $('.lwp_bottom_activation .lwp_change_el').css('display', 'none');
+                    $('.lwp_bottom_activation .lwp_change_pn').css('display', 'block');
+
                     if (data.authWithPass) {
                         if (data.showPass) {
                             $('#lwp_enter_password').fadeIn(500);
@@ -141,7 +144,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-    $('body').on('submit','form#lwp_login_email', function (e) {
+    $('body').on('submit', 'form#lwp_login_email', function (e) {
         if (!$(this).valid()) return false;
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
@@ -165,8 +168,10 @@ jQuery(document).ready(function ($) {
                     $('#lwp_login_email').fadeOut(10);
                     $('#lwp_login').fadeOut(10);
                     idehweb_lwp.UserId = data.ID;
-                    $('.lwp_line').css('display','none');
-                    $('.lwp_bottom_activation').css('display','none');
+                    $('.lwp_line').css('display', 'none');
+                    $('.lwp_bottom_activation').css('display', 'block');
+                    $('.lwp_bottom_activation .lwp_change_pn').css('display', 'none');
+                    $('.lwp_bottom_activation .lwp_change_el').css('display', 'block');
                     if (data.authWithPass) {
 
                         if (data.showPass) {
@@ -188,7 +193,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('body').on('submit','form#lwp_activate', function (e) {
+    $('body').on('submit', 'form#lwp_activate', function (e) {
         e.preventDefault();
         if (!$(this).valid()) return false;
         if (typeof firebaseConfig !== 'undefined') return false;
@@ -251,7 +256,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('body').on('submit','form#lwp_update_password', function (e) {
+    $('body').on('submit', 'form#lwp_update_password', function (e) {
         e.preventDefault();
 
         if (!$(this).valid()) return false;
@@ -301,7 +306,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-    $('body').on('submit','form#lwp_enter_password', function (e) {
+    $('body').on('submit', 'form#lwp_enter_password', function (e) {
         console.log('act 2', idehweb_lwp.UserId);
         if (!$(this).valid()) return false;
 
@@ -348,8 +353,24 @@ jQuery(document).ready(function ($) {
         $('.ajax-auth .status').hide().empty();
         $('.lwp_didnt_r_c').addClass('lwp_none');
         $('.lwp_username').val('');
+        $('#lwp_login_email').fadeOut(0);
 
         $('#lwp_login').fadeIn(500);
+
+    });
+    $('body').on('click', '.lwp_change_el', function (e) {
+        e.preventDefault();
+        clearInterval(lwp_refreshIntervalId);
+        $('.lwp_didnt_r_c').removeClass('lwp_disable');
+        $('.lwp_timer').empty();
+        $('#lwp_activate').fadeOut(10);
+        $('#lwp_enter_password').fadeOut(10);
+        $('.ajax-auth .status').hide().empty();
+        $('.lwp_didnt_r_c').addClass('lwp_none');
+        $('.lwp_username').val('');
+        $('#lwp_login').fadeOut(0);
+
+        $('#lwp_login_email').fadeIn(500);
 
     });
 
@@ -358,7 +379,7 @@ jQuery(document).ready(function ($) {
         jQuery("#lwp_login").validate();
 
     window.lwp_runTimer = function () {
-        if(idehweb_lwp.timer && (idehweb_lwp.timer=='1' || idehweb_lwp.timer==1)) {
+        if (idehweb_lwp.timer && (idehweb_lwp.timer == '1' || idehweb_lwp.timer == 1)) {
             var lwp_start = idehweb_lwp.timer_count || 60;
             lwp_refreshIntervalId = setInterval(function () {
                 if (lwp_start >= 0)

@@ -3,24 +3,16 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.3.6
+Version: 1.4.65
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
 Domain Path: /languages
 */
-require 'gateways/class-lwp-twilio-api.php';
-require 'gateways/class-lwp-infobip-api.php';
-require 'gateways/class-lwp-zenziva-api.php';
-require 'gateways/class-lwp-raygansms-api.php';
-require 'gateways/class-lwp-smsbharti-api.php';
-require 'gateways/class-lwp-mshastra-api.php';
-require 'gateways/class-lwp-taqnyat-api.php';
+require 'gateways/class-lwp-custom-api.php';
 
 class idehwebLwp
 {
-    public $textdomain = 'login-with-phone-number';
-
     function __construct()
     {
         add_action('init', array(&$this, 'idehweb_lwp_textdomain'));
@@ -63,7 +55,7 @@ class idehwebLwp
         add_action('rest_api_init', array(&$this, 'lwp_register_rest_route'));
         add_filter('manage_users_columns', array(&$this, 'lwp_modify_user_table'));
         add_filter('manage_users_custom_column', array(&$this, 'lwp_modify_user_table_row'), 10, 3);
-        add_filter('manage_users_sortable_columns', array(&$this,'lwp_make_registered_column_sortable'));
+        add_filter('manage_users_sortable_columns', array(&$this, 'lwp_make_registered_column_sortable'));
         add_filter('woocommerce_locate_template', array(&$this, 'lwp_addon_woocommerce_login'), 1, 3);
 
 
@@ -80,7 +72,8 @@ class idehwebLwp
 
         <table class="form-table">
             <tr>
-                <th><label for="phone_number"><?php esc_html_e('phone_number', $this->textdomain); ?></label></th>
+                <th><label for="phone_number"><?php esc_html_e('phone_number', 'login-with-phone-number'); ?></label>
+                </th>
                 <td>
                     <input type="text"
 
@@ -102,10 +95,8 @@ class idehwebLwp
         if (!current_user_can('edit_user', $user_id)) {
             return false;
         }
-
-//        if ( ! empty( $_POST['year_of_birth'] ) && intval( $_POST['year_of_birth'] ) >= 1900 ) {
-        update_user_meta($user_id, 'phone_number', $_POST['phone_number']);
-//        }
+        $phone_number = sanitize_text_field($_POST['phone_number']);
+        update_user_meta($user_id, 'phone_number', $phone_number);
     }
 
     function lwp_activation_redirect($plugin)
@@ -120,7 +111,7 @@ class idehwebLwp
         $idehweb_lwp_lang_dir = dirname(plugin_basename(__FILE__)) . '/languages/';
         $idehweb_lwp_lang_dir = apply_filters('idehweb_lwp_languages_directory', $idehweb_lwp_lang_dir);
 
-        load_plugin_textdomain($this->textdomain, false, $idehweb_lwp_lang_dir);
+        load_plugin_textdomain('login-with-phone-number', false, $idehweb_lwp_lang_dir);
 
 
     }
@@ -133,7 +124,7 @@ class idehwebLwp
 //        print_r($style_options);
 
         if (!isset($options['idehweb_token'])) $options['idehweb_token'] = '';
-        if (!isset($style_options['idehweb_styles_status'])) $style_options['idehweb_styles_status'] = '0';
+        if (!isset($style_options['idehweb_styles_status'])) $style_options['idehweb_styles_status'] = '1';
 
         register_setting('idehweb-lwp', 'idehweb_lwp_settings', array(&$this, 'settings_validate'));
         register_setting('idehweb-lwp-styles', 'idehweb_lwp_settings_styles', array(&$this, 'settings_validate'));
@@ -141,139 +132,110 @@ class idehwebLwp
 
         add_settings_section('idehweb-lwp-styles', '', array(&$this, 'section_intro'), 'idehweb-lwp-styles');
         add_settings_section('idehweb-lwp-localization', '', array(&$this, 'section_intro'), 'idehweb-lwp-localization');
-        add_settings_field('idehweb_styles_status', __('Enable custom styles', $this->textdomain), array(&$this, 'setting_idehweb_style_enable_custom_style'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_styles_status', __('Enable custom styles', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_enable_custom_style'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
         if ($style_options['idehweb_styles_status']) {
 //            add_settings_field('idehweb_styles_title1', 'tyuiuy', array(&$this, 'section_title'), 'idehweb-lwp-styles');
-            add_settings_field('idehweb_styles_title', __('Primary button', $this->textdomain), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_background', __('button background color', $this->textdomain), array(&$this, 'setting_idehweb_style_button_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_border_color', __('button border color', $this->textdomain), array(&$this, 'setting_idehweb_style_button_border_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_border_radius', __('button border radius', $this->textdomain), array(&$this, 'setting_idehweb_style_button_border_radius'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_border_width', __('button border width', $this->textdomain), array(&$this, 'setting_idehweb_style_button_border_width'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_text_color', __('button text color', $this->textdomain), array(&$this, 'setting_idehweb_style_button_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_title', __('Primary button', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_background', __('button background color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_border_color', __('button border color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_border_radius', __('button border radius', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_radius'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_border_width', __('button border width', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_width'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_text_color', __('button text color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
 //            add_settings_section('idehweb_styles_title2', '', array(&$this, 'section_title'), 'idehweb-lwp-styles');
-            add_settings_field('idehweb_styles_title2', __('Secondary button', $this->textdomain), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_title2', __('Secondary button', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
-            add_settings_field('idehweb_styles_button_background2', __('secondary button background color', $this->textdomain), array(&$this, 'setting_idehweb_style_button_background_color2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_border_color2', __('secondary button border color', $this->textdomain), array(&$this, 'setting_idehweb_style_button_border_color2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_border_radius2', __('secondary button border radius', $this->textdomain), array(&$this, 'setting_idehweb_style_button_border_radius2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_border_width2', __('secondary button border width', $this->textdomain), array(&$this, 'setting_idehweb_style_button_border_width2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_button_text_color2', __('secondary button text color', $this->textdomain), array(&$this, 'setting_idehweb_style_button_text_color2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-
-
-            add_settings_field('idehweb_styles_title3', __('Inputs', $this->textdomain), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-
-            add_settings_field('idehweb_styles_input_background', __('input background color', $this->textdomain), array(&$this, 'setting_idehweb_style_input_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_input_border_color', __('input border color', $this->textdomain), array(&$this, 'setting_idehweb_style_input_border_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_input_border_radius', __('input border radius', $this->textdomain), array(&$this, 'setting_idehweb_style_input_border_radius'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_input_border_width', __('input border width', $this->textdomain), array(&$this, 'setting_idehweb_style_input_border_width'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_input_text_color', __('input text color', $this->textdomain), array(&$this, 'setting_idehweb_style_input_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_input_placeholder_color', __('input placeholder color', $this->textdomain), array(&$this, 'setting_idehweb_style_input_placeholder_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-
-            add_settings_field('idehweb_styles_title4', __('Box', $this->textdomain), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_box_background_color', __('box background color', $this->textdomain), array(&$this, 'setting_idehweb_style_box_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_background2', __('secondary button background color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_background_color2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_border_color2', __('secondary button border color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_color2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_border_radius2', __('secondary button border radius', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_radius2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_border_width2', __('secondary button border width', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_width2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_text_color2', __('secondary button text color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_text_color2'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
 
-            add_settings_field('idehweb_styles_title5', __('Labels', $this->textdomain), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_labels_text_color', __('label text color', $this->textdomain), array(&$this, 'setting_idehweb_style_labels_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_labels_font_size', __('label font size', $this->textdomain), array(&$this, 'setting_idehweb_style_labels_font_size'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_title3', __('Inputs', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+
+            add_settings_field('idehweb_styles_input_background', __('input background color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_input_border_color', __('input border color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_border_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_input_border_radius', __('input border radius', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_border_radius'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_input_border_width', __('input border width', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_border_width'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_input_text_color', __('input text color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_input_placeholder_color', __('input placeholder color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_placeholder_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+
+            add_settings_field('idehweb_styles_title4', __('Box', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_box_background_color', __('box background color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_box_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_position_form', __('Enable fix position', 'login-with-phone-number'), array(&$this, 'idehweb_position_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
 
-            add_settings_field('idehweb_styles_title6', __('Titles', $this->textdomain), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_title_color', __('title color', $this->textdomain), array(&$this, 'setting_idehweb_style_title_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_styles_title_font_size', __('title font size', $this->textdomain), array(&$this, 'setting_idehweb_style_title_font_size'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_title5', __('Labels', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_labels_text_color', __('label text color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_labels_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_labels_font_size', __('label font size', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_labels_font_size'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+
+
+            add_settings_field('idehweb_styles_title6', __('Titles', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_title_color', __('title color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_title_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_title_font_size', __('title font size', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_title_font_size'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
 
         }
 
         add_settings_section('idehweb-lwp', '', array(&$this, 'section_intro'), 'idehweb-lwp');
 
-        add_settings_field('idehweb_sms_login', __('Enable phone number login', $this->textdomain), array(&$this, 'setting_idehweb_sms_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_sms_login', __('Enable phone number login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_sms_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
         $ghgfd = '';
         if ($options['idehweb_token']) {
             $ghgfd = ' none';
         }
-//        add_settings_field('idehweb_phone_number_ccode', __('Enter your Country Code', $this->textdomain), array(&$this, 'setting_idehweb_phone_number'), 'idehweb-lwp', 'idehweb-lwp', ['class' => 'ilwplabel lwp_phone_number_label related_to_login' . $ghgfd]);
-//        add_settings_field('idehweb_phone_number', __('Enter your phone number', $this->textdomain), array(&$this, 'setting_idehweb_phone_number'), 'idehweb-lwp', 'idehweb-lwp', ['class' => 'ilwplabel lwp_phone_number_label related_to_login' . $ghgfd]);
-        add_settings_field('idehweb_website_url', __('Enter your website url', $this->textdomain), array(&$this, 'setting_idehweb_website_url'), 'idehweb-lwp', 'idehweb-lwp', ['class' => 'ilwplabel lwp_website_label related_to_login' . $ghgfd]);
+//        add_settings_field('idehweb_phone_number_ccode', __('Enter your Country Code', 'login-with-phone-number'), array(&$this, 'setting_idehweb_phone_number'), 'idehweb-lwp', 'idehweb-lwp', ['class' => 'ilwplabel lwp_phone_number_label related_to_login' . $ghgfd]);
+//        add_settings_field('idehweb_phone_number', __('Enter your phone number', 'login-with-phone-number'), array(&$this, 'setting_idehweb_phone_number'), 'idehweb-lwp', 'idehweb-lwp', ['class' => 'ilwplabel lwp_phone_number_label related_to_login' . $ghgfd]);
+        add_settings_field('idehweb_website_url', __('Enter your website url', 'login-with-phone-number'), array(&$this, 'setting_idehweb_website_url'), 'idehweb-lwp', 'idehweb-lwp', ['class' => 'ilwplabel lwp_website_label related_to_login' . $ghgfd]);
 //        if (!isset($options['idehweb_phone_number'])) $options['idehweb_phone_number'] = '';
-        add_settings_field('idehweb_token', __('Enter api key', $this->textdomain), array(&$this, 'setting_idehweb_token'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel alwaysDisplayNone']);
-        add_settings_field('idehweb_country_codes', __('Country code accepted in front', $this->textdomain), array(&$this, 'setting_country_code'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
+        add_settings_field('idehweb_token', __('Enter api key', 'login-with-phone-number'), array(&$this, 'setting_idehweb_token'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel alwaysDisplayNone']);
+        add_settings_field('idehweb_country_codes', __('Country code accepted in front', 'login-with-phone-number'), array(&$this, 'setting_country_code'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
 
         if ($options['idehweb_token']) {
 
-            add_settings_field('idehweb_sms_shop', __('Buy credit here', $this->textdomain), array(&$this, 'setting_buy_credit'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login rltll']);
+            add_settings_field('idehweb_sms_shop', __('Buy credit here', 'login-with-phone-number'), array(&$this, 'setting_buy_credit'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login rltll']);
         }
-        add_settings_field('idehweb_use_custom_gateway', __('use custom sms gateway', $this->textdomain), array(&$this, 'setting_use_custom_gateway'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
-        add_settings_field('idehweb_default_gateways', __('sms default gateway', $this->textdomain), array(&$this, 'setting_default_gateways'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_defaultgateway']);
+        add_settings_field('idehweb_use_custom_gateway', __('use custom sms gateway', 'login-with-phone-number'), array(&$this, 'setting_use_custom_gateway'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
+        add_settings_field('idehweb_default_gateways', __('sms default gateway', 'login-with-phone-number'), array(&$this, 'setting_default_gateways'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_defaultgateway']);
+
+        add_settings_field('idehweb_firebase_api', __('Firebase api', 'login-with-phone-number'), array(&$this, 'setting_firebase_api'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_firebase']);
+        add_settings_field('idehweb_firebase_config', __('Firebase config', 'login-with-phone-number'), array(&$this, 'setting_firebase_config'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_firebase']);
+
+        add_settings_field('idehweb_custom_api_url', __('Custom api url', 'login-with-phone-number'), array(&$this, 'setting_custom_api_url'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
+        add_settings_field('idehweb_custom_api_method', __('Custom api method', 'login-with-phone-number'), array(&$this, 'setting_custom_api_method'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
+        add_settings_field('idehweb_custom_api_header', __('Custom api header', 'login-with-phone-number'), array(&$this, 'setting_custom_api_header'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
+        add_settings_field('idehweb_custom_api_body', __('Custom api body', 'login-with-phone-number'), array(&$this, 'setting_custom_api_body'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
+        add_settings_field('idehweb_custom_api_smstext', __('Custom api sms text', 'login-with-phone-number'), array(&$this, 'setting_custom_api_smstext'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
+
+        add_settings_field('idehweb_lwp_space', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+        add_settings_field('idehweb_email_login', __('Enable email login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_email_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_lwp_space2', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+
+        add_settings_field('idehweb_user_registration', __('Enable user registration', 'login-with-phone-number'), array(&$this, 'setting_idehweb_user_registration'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_password_login', __('Enable password login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_password_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_redirect_url', __('Enter redirect url', 'login-with-phone-number'), array(&$this, 'setting_idehweb_url_redirect'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_login_message', __('Enter login message', 'login-with-phone-number'), array(&$this, 'setting_idehweb_login_message'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_use_phone_number_for_username', __('use phone number for username', 'login-with-phone-number'), array(&$this, 'idehweb_use_phone_number_for_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_default_username', __('Default username', 'login-with-phone-number'), array(&$this, 'setting_default_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_upnfu']);
+        add_settings_field('idehweb_default_nickname', __('Default nickname', 'login-with-phone-number'), array(&$this, 'setting_default_nickname'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_upnfu']);
+        add_settings_field('idehweb_enable_timer_on_sending_sms', __('Enable timer', 'login-with-phone-number'), array(&$this, 'idehweb_enable_timer_on_sending_sms'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
+        add_settings_field('idehweb_timer_count', __('Timer count', 'login-with-phone-number'), array(&$this, 'setting_timer_count'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_entimer']);
+        add_settings_field('idehweb_enable_accept_terms_and_condition', __('Enable accept term & conditions', 'login-with-phone-number'), array(&$this, 'idehweb_enable_accept_term_and_conditions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
+        add_settings_field('idehweb_term_and_conditions_text', __('Text of term & conditions part', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_text'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
 
 
-        add_settings_field('idehweb_twilio_account_sid', __('Twilio account SID', $this->textdomain), array(&$this, 'setting_twilio_account_sid'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_twilio']);
-        add_settings_field('idehweb_twilio_auth_token', __('Twilio auth token', $this->textdomain), array(&$this, 'setting_twilio_auth_token'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_twilio']);
-        add_settings_field('idehweb_twilio_phone_number', __('Twilio phone number', $this->textdomain), array(&$this, 'setting_twilio_phone_number'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_twilio']);
+        add_settings_field('idehweb_lwp_space3', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+        add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
 
-        add_settings_field('idehweb_zenziva_userkey', __('Zenziva user key', $this->textdomain), array(&$this, 'setting_zenziva_user_key'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_zenziva']);
-        add_settings_field('idehweb_zenziva_passkey', __('Zenziva pass key', $this->textdomain), array(&$this, 'setting_zenziva_pass_key'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_zenziva']);
-
-        add_settings_field('idehweb_infobip_user', __('Infobip user', $this->textdomain), array(&$this, 'setting_infobip_user'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_infobip']);
-        add_settings_field('idehweb_infobip_password', __('Infobip password', $this->textdomain), array(&$this, 'setting_infobip_password'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_infobip']);
-        add_settings_field('idehweb_infobip_sender', __('Infobip sender', $this->textdomain), array(&$this, 'setting_infobip_sender'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_infobip']);
-
-
-        add_settings_field('idehweb_firebase_api', __('Firebase api', $this->textdomain), array(&$this, 'setting_firebase_api'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_firebase']);
-        add_settings_field('idehweb_firebase_config', __('Firebase config', $this->textdomain), array(&$this, 'setting_firebase_config'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_firebase']);
-
-
-//        add_settings_field('idehweb_raygansms_username', __('Raygansms username', $this->textdomain), array(&$this, 'setting_raygansms_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_raygansms']);
-//        add_settings_field('idehweb_raygansms_password', __('Raygansms password', $this->textdomain), array(&$this, 'setting_raygansms_password'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_raygansms']);
-//        add_settings_field('idehweb_raygansms_phonenumber', __('Raygansms phone number', $this->textdomain), array(&$this, 'setting_raygansms_phonenumber'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_raygansms']);
-
-        add_settings_field('idehweb_smsbharti_api_key', __('Smsbharti api key', $this->textdomain), array(&$this, 'setting_smsbharti_api_key'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_smsbharti']);
-        add_settings_field('idehweb_smsbharti_from', __('smsbharti from', $this->textdomain), array(&$this, 'setting_smsbharti_from'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_smsbharti']);
-        add_settings_field('idehweb_smsbharti_template_id', __('smsbharti template id', $this->textdomain), array(&$this, 'setting_smsbharti_template_id'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_smsbharti']);
-        add_settings_field('idehweb_smsbharti_routeid', __('smsbharti route id', $this->textdomain), array(&$this, 'setting_smsbharti_routeid'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_smsbharti']);
-
-
-        add_settings_field('idehweb_mshastra_user', __('mshastra user', $this->textdomain), array(&$this, 'setting_mshastra_user'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_mshastra']);
-        add_settings_field('idehweb_mshastra_pwd', __('mshastra pwd', $this->textdomain), array(&$this, 'setting_mshastra_pwd'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_mshastra']);
-        add_settings_field('idehweb_mshastra_senderid', __('mshastra senderid', $this->textdomain), array(&$this, 'setting_mshastra_senderid'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_mshastra']);
-
-
-        add_settings_field('idehweb_taqnyat_sendernumber', __('taqnyat sender number', $this->textdomain), array(&$this, 'setting_taqnyat_sender_number'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_taqnyat']);
-        add_settings_field('idehweb_taqnyat_api_key', __('taqnyat api key', $this->textdomain), array(&$this, 'setting_taqnyat_api_key'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_taqnyat']);
-
-
-//        add_settings_field('idehweb_custom_gateway_url', __('sms gateway url', $this->textdomain), array(&$this, 'setting_custom_gateway_url'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_customgateway']);
-//        add_settings_field('idehweb_custom_gateway_username', __('sms gateway username', $this->textdomain), array(&$this, 'setting_custom_gateway_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_customgateway']);
-//        add_settings_field('idehweb_custom_gateway_password', __('sms gateway password', $this->textdomain), array(&$this, 'setting_custom_gateway_password'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_customgateway']);
-//        add_settings_field('idehweb_custom_gateway_password', __('sms gateway url', $this->textdomain), array(&$this, 'setting_custom_gateway_url'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_customgateway']);
-
-        //        $display = 'inherit';
-
-//            $display = 'none';
-
-        add_settings_field('idehweb_email_login', __('Enable email login', $this->textdomain), array(&$this, 'setting_idehweb_email_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_password_login', __('Enable password login', $this->textdomain), array(&$this, 'setting_idehweb_password_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_redirect_url', __('Enter redirect url', $this->textdomain), array(&$this, 'setting_idehweb_url_redirect'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_position_form', __('Enable fix position', $this->textdomain), array(&$this, 'idehweb_position_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_use_phone_number_for_username', __('use phone number for username', $this->textdomain), array(&$this, 'idehweb_use_phone_number_for_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_default_username', __('Default username', $this->textdomain), array(&$this, 'setting_default_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_upnfu']);
-        add_settings_field('idehweb_default_nickname', __('Default nickname', $this->textdomain), array(&$this, 'setting_default_nickname'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_upnfu']);
-        add_settings_field('idehweb_enable_timer_on_sending_sms', __('Enable timer', $this->textdomain), array(&$this, 'idehweb_enable_timer_on_sending_sms'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
-        add_settings_field('idehweb_timer_count', __('Timer count', $this->textdomain), array(&$this, 'setting_timer_count'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_entimer']);
-        add_settings_field('instructions', __('Shortcode and Template Tag', $this->textdomain), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_online_support', __('Enable online support', $this->textdomain), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-
-
-        add_settings_field('idehweb_localization_status', __('Enable localization', $this->textdomain), array(&$this, 'setting_idehweb_localization_enable_custom_localization'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_localization_title_of_login_form', __('Title of login form', $this->textdomain), array(&$this, 'setting_idehweb_localization_of_login_form'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_localization_placeholder_of_phonenumber_field', __('Placeholder of phone number field', $this->textdomain), array(&$this, 'setting_idehweb_localization_placeholder_of_phonenumber_field'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
-
-        //        }
-//        add_settings_section('idehweb-lwp', '', array(&$this, 'section_intro'), 'idehweb-lwp');
+        add_settings_field('idehweb_localization_status', __('Enable localization', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_enable_custom_localization'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_localization_title_of_login_form', __('Title of login form (with phone number)', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_of_login_form'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_localization_title_of_login_form1', __('Title of login form (with email)', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_of_login_form_email'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_localization_placeholder_of_phonenumber_field', __('Placeholder of phone number field', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_placeholder_of_phonenumber_field'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
 
     }
 
@@ -282,18 +244,19 @@ class idehwebLwp
 
         $icon_url = 'dashicons-smartphone';
         $page_hook = add_menu_page(
-            __('login setting', $this->textdomain),
-            __('login setting', $this->textdomain),
+            __('login setting', 'login-with-phone-number'),
+            __('login setting', 'login-with-phone-number'),
             'manage_options',
             'idehweb-lwp',
             array(&$this, 'settings_page'),
             $icon_url
         );
-        add_submenu_page('idehweb-lwp', __('Style settings', $this->textdomain), __('Style Settings', $this->textdomain), 'manage_options', 'idehweb-lwp-styles', array(&$this, 'style_settings_page'));
-        add_submenu_page('idehweb-lwp', __('Text & localization', $this->textdomain), __('Text & localization', $this->textdomain), 'manage_options', 'idehweb-lwp-localization', array(&$this, 'localization_settings_page'));
+        add_submenu_page('idehweb-lwp', __('Style settings', 'login-with-phone-number'), __('Style Settings', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-styles', array(&$this, 'style_settings_page'));
+        add_submenu_page('idehweb-lwp', __('Text & localization', 'login-with-phone-number'), __('Text & localization', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-localization', array(&$this, 'localization_settings_page'));
 
         add_action('admin_print_styles-' . $page_hook, array(&$this, 'admin_custom_css'));
         wp_enqueue_script('idehweb-lwp-admin-select2-js', plugins_url('/scripts/select2.full.min.js', __FILE__), array('jquery'), true, true);
+        wp_enqueue_script('idehweb-lwp-admin-chat-js', plugins_url('/scripts/chat.js', __FILE__), array('jquery'), true, true);
 
     }
 
@@ -319,12 +282,12 @@ class idehwebLwp
 
 
                 <div id="icon-themes" class="icon32"></div>
-                <h2><?php _e('idehwebLwp Settings', $this->textdomain); ?></h2>
+                <h2><?php _e('idehwebLwp Settings', 'login-with-phone-number'); ?></h2>
                 <?php if (isset($_GET['settings-updated']) && $_GET['settings-updated']) {
 
                     ?>
                     <div id="setting-error-settings_updated" class="updated settings-error">
-                        <p><strong><?php _e('Settings saved.', $this->textdomain); ?></strong></p>
+                        <p><strong><?php _e('Settings saved.', 'login-with-phone-number'); ?></strong></p>
                     </div>
                 <?php } ?>
                 <form action="options.php" method="post" id="iuytfrdghj">
@@ -338,28 +301,14 @@ class idehwebLwp
                         <span id="oihdfvygehv"></span>
                     </p>
                     <p class="submit">
-                        <?php
-
-                        //                    if (!$options['idehweb_phone_number']){
-                        //
-                        ?>
-
-                        <?php
-
-                        //                    }else{
-                        ?>
+                     
                         <input type="submit" class="button-primary"
-                               value="<?php _e('Save Changes', $this->textdomain); ?>"/></p>
-                    <!--            --><?php //}
+                               value="<?php _e('Save Changes', 'login-with-phone-number'); ?>"/></p>
                     ?>
                     <?php
                     if (empty($options['idehweb_token'])) {
                         ?>
-                        <!--                    <div class="lwploadr">-->
-                        <!--                        <div class="lwpmainloader">Loading...</div>-->
-                        <!--                        <div class="lwpmaintextloader">configuring...</div>-->
-                        <!--                    </div>-->
-
+                      
                     <?php } ?>
                 </form>
             </div>
@@ -367,20 +316,16 @@ class idehwebLwp
                 <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank">
                     <img src="<?php echo plugins_url('/images/login-with-phone-number-wordpress-buy-pro-version.png', __FILE__) ?>"/>
                 </a>
+
+                <a style="margin-top: 10px;display:block" href="<?php echo esc_url(admin_url('/theme-install.php?theme=nodeeweb')) ?>" target="_blank">
+                    <img src="<?php echo plugins_url('/images/nodeeweb-wordpress-theme.png', __FILE__) ?>"/>
+                </a>
             </div>
 
             <?php
             if ($options['idehweb_online_support'] == '1') {
                 ?>
-                <script type="text/javascript">window.$crisp = [];
-                    window.CRISP_WEBSITE_ID = "99fd6613-af76-4745-80b6-8931ec5e0daa";
-                    (function () {
-                        d = document;
-                        s = d.createElement("script");
-                        s.src = "https://client.crisp.chat/l.js";
-                        s.async = 1;
-                        d.getElementsByTagName("head")[0].appendChild(s);
-                    })();</script>
+                <script type="text/javascript">window.makecrispactivate = 1;</script>
             <?php } ?>
 
             <script>
@@ -402,9 +347,6 @@ class idehwebLwp
                         ?>
                         $('.authwithwebsite').click();
                         <?php } ?>
-                        // $("#idehweb_country_codes").chosen();
-                        // if ($('#idehweb_phone_number_ccode').is(':visible'))
-                        //     $("#idehweb_phone_number_ccode").chosen();
 
                     });
 
@@ -413,8 +355,6 @@ class idehwebLwp
                     var edf3 = $('#idehweb_lwp_settings_use_custom_gateway');
                     var edf4 = $('#idehweb_default_gateways');
                     var edf5 = $('#idehweb_lwp_settings_enable_timer_on_sending_sms');
-                    console.clear();
-                    console.log(edf4);
                     var idehweb_body = $('body');
                     var related_to_login = $('.related_to_login');
                     var related_to_upnfu = $('.related_to_upnfu');
@@ -429,174 +369,185 @@ class idehwebLwp
                     var related_to_mshastra = $('.related_to_mshastra');
                     var related_to_taqnyat = $('.related_to_taqnyat');
                     var related_to_firebase = $('.related_to_firebase');
+                    var related_to_custom = $('.related_to_custom');
 
                     if (edf.is(':checked')) {
-                        console.log('is checked!');
                         related_to_login.css('display', 'table-row');
                         // $("#idehweb_phone_number_ccode").chosen();
 
 
                     } else {
-                        console.log('is not checked!');
 
                         related_to_login.css('display', 'none');
                     }
 
 
                     if (edf2.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_upnfu.css('display', 'none');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_upnfu.css('display', 'table-row');
 
                     }
                     if (edf5.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
 
                         related_to_entimer.css('display', 'table-row');
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_entimer.css('display', 'none');
 
                     }
 
                     if (edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_defaultgateway.css('display', 'table-row');
                         $('.rltll').css('display', 'none');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_defaultgateway.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'twilio' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_twilio.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_twilio.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'custom' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_customgateway.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_customgateway.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'zenziva' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_zenziva.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_zenziva.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'firebase' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_firebase.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_firebase.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'infobip' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_infobip.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_infobip.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'raygansms' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_raygansms.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_raygansms.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'smsbharti' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_smsbharti.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_smsbharti.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'mshastra' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_mshastra.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_mshastra.css('display', 'none');
 
 
                     }
                     if (edf4.val() == 'taqnyat' && edf3.is(':checked')) {
-                        console.log('is checked!');
+                        // console.log('is checked!');
                         // $("#idehweb_phone_number_ccode").chosen();
                         related_to_taqnyat.css('display', 'table-row');
 
 
                     } else {
-                        console.log('is not checked!');
+                        // console.log('is not checked!');
                         related_to_taqnyat.css('display', 'none');
+
+
+                    }
+                    if (edf4.val() == 'custom' && edf3.is(':checked')) {
+                        // console.log('is checked!');
+                        // $("#idehweb_phone_number_ccode").chosen();
+                        related_to_custom.css('display', 'table-row');
+
+
+                    } else {
+                        // console.log('is not checked!');
+                        related_to_custom.css('display', 'none');
 
 
                     }
                     $('#idehweb_lwp_settings_idehweb_sms_login').change(
                         function () {
                             if (this.checked && this.value == '1') {
-                                console.log('change is checked!');
+                                // console.log('change is checked!');
 
                                 related_to_login.css('display', 'table-row');
                                 // $("#idehweb_phone_number_ccode").chosen();
 
                             } else {
-                                console.log('change is not checked!');
+                                // console.log('change is not checked!');
 
                                 related_to_login.css('display', 'none');
                             }
@@ -604,13 +555,13 @@ class idehwebLwp
                     $('#idehweb_lwp_settings_use_phone_number_for_username').change(
                         function () {
                             if (this.checked && this.value == '1') {
-                                console.log('change is checked!');
+                                // console.log('change is checked!');
 
                                 // $("#idehweb_phone_number_ccode").chosen();
                                 related_to_upnfu.css('display', 'none');
 
                             } else {
-                                console.log('change is not checked!');
+                                // console.log('change is not checked!');
                                 related_to_upnfu.css('display', 'table-row');
 
                             }
@@ -619,14 +570,14 @@ class idehwebLwp
                         function () {
                             $('#idehweb_default_gateways').trigger('change');
                             if (this.checked && this.value == '1') {
-                                console.log('change is checked!');
+                                // console.log('change is checked!');
 
                                 // $("#idehweb_phone_number_ccode").chosen();
                                 related_to_defaultgateway.css('display', 'table-row');
                                 $('.rltll').css('display', 'none');
 
                             } else {
-                                console.log('change is not checked!');
+                                // console.log('change is not checked!');
                                 $('.rltll').css('display', 'table-row');
 
                                 related_to_defaultgateway.css('display', 'none');
@@ -637,20 +588,20 @@ class idehwebLwp
                     $('#idehweb_lwp_settings_enable_timer_on_sending_sms').change(
                         function () {
                             if (this.checked && this.value == '1') {
-                                console.log('change is checked!');
+                                // console.log('change is checked!');
 
                                 // $("#idehweb_phone_number_ccode").chosen();
                                 related_to_entimer.css('display', 'table-row');
 
                             } else {
-                                console.log('change is not checked!');
+                                // console.log('change is not checked!');
                                 related_to_entimer.css('display', 'none');
 
                             }
                         });
                     //
                     $('#idehweb_default_gateways').on('change', function (e) {
-                        console.log('event fired');
+                        // console.log('event fired');
                         if (this.value == "custom" && edf3.is(':checked')) {
 
                             related_to_customgateway.css('display', 'table-row');
@@ -662,33 +613,11 @@ class idehwebLwp
                             related_to_smsbharti.css('display', 'none');
                             related_to_mshastra.css('display', 'none');
                             related_to_taqnyat.css('display', 'none');
+                            related_to_custom.css('display', 'table-row');
 
 
-                        } else if (this.value == "twilio" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'table-row');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "zenziva" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'table-row');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "firebase" && edf3.is(':checked')) {
+                        }
+                        else if (this.value == "firebase" && edf3.is(':checked')) {
                             related_to_customgateway.css('display', 'none');
                             related_to_twilio.css('display', 'none');
                             related_to_zenziva.css('display', 'none');
@@ -698,69 +627,11 @@ class idehwebLwp
                             related_to_smsbharti.css('display', 'none');
                             related_to_mshastra.css('display', 'none');
                             related_to_taqnyat.css('display', 'none');
+                            related_to_custom.css('display', 'none');
 
 
-                        } else if (this.value == "infobip" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'table-row');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "raygansms" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'table-row');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "smsbharti" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'table-row');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "mshastra" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'table-row');
-                            related_to_taqnyat.css('display', 'none');
-
-
-                        } else if (this.value == "taqnyat" && edf3.is(':checked')) {
-                            related_to_customgateway.css('display', 'none');
-                            related_to_twilio.css('display', 'none');
-                            related_to_zenziva.css('display', 'none');
-                            related_to_firebase.css('display', 'none');
-                            related_to_infobip.css('display', 'none');
-                            related_to_raygansms.css('display', 'none');
-                            related_to_smsbharti.css('display', 'none');
-                            related_to_mshastra.css('display', 'none');
-                            related_to_taqnyat.css('display', 'table-row');
-
-
-                        } else {
+                        }
+                        else {
 
                             related_to_customgateway.css('display', 'none');
                             related_to_twilio.css('display', 'none');
@@ -771,6 +642,7 @@ class idehwebLwp
                             related_to_smsbharti.css('display', 'none');
                             related_to_mshastra.css('display', 'none');
                             related_to_taqnyat.css('display', 'none');
+                            related_to_custom.css('display', 'none');
 
 
                         }
@@ -784,8 +656,8 @@ class idehwebLwp
                                 data: {action: 'idehweb_lwp_check_credit'}
                             }).done(function (msg) {
                                 var arr = JSON.parse(msg);
-                                console.log(arr);
-                                $('.creditor .cp').html('<?php _e('Your Credit:', $this->textdomain) ?>' + ' ' + arr['credit'])
+                                // console.log(arr);
+                                $('.creditor .cp').html('<?php _e('Your Credit:', 'login-with-phone-number') ?>' + ' ' + arr['credit'])
 
 
                             });
@@ -814,7 +686,7 @@ class idehwebLwp
                                                     arr.products[j].price +
                                                     '</div>' +
                                                     '<div class="lwp-shop-buy">' +
-                                                    '<a target="_blank" href="' + arr.products[j].buy + lwp_token + '/' + arr.products[j].ID + '">' + '<?php _e("Buy", $this->textdomain); ?>' + '</a>' +
+                                                    '<a target="_blank" href="' + arr.products[j].buy + lwp_token + '/' + arr.products[j].ID + '">' + '<?php _e("Buy", 'login-with-phone-number'); ?>' + '</a>' +
                                                     '</div>' +
                                                     '</div>' +
                                                     '</div>'
@@ -856,7 +728,7 @@ class idehwebLwp
                                 }).done(function (msg) {
                                     if (msg) {
                                         var arr = JSON.parse(msg);
-                                        console.log(arr);
+                                        // console.log(arr);
                                     }
                                     // $('form#iuytfrdghj').submit();
 
@@ -896,7 +768,7 @@ class idehwebLwp
                                 }).done(function (msg) {
                                     if (msg) {
                                         var arr = JSON.parse(msg);
-                                        console.log(arr);
+                                        // console.log(arr);
                                         if (arr && arr['success']) {
                                             if (arr['token']) {
                                                 $('#lwp_token').val(arr['token']);
@@ -906,7 +778,7 @@ class idehwebLwp
                                                 }, 500)
                                             }
                                         } else {
-                                            if (arr['err'] && arr['err']['response']['request']['uri']['host'] === 'localhost') {
+                                            if (arr['err'] && arr['err']['response'] && arr['err']['response']['request'] && arr['err']['response']['request']['uri'] && arr['err']['response']['request']['uri']['host'] === 'localhost') {
                                                 $('.lwpmaintextloader').html('authentication on localhost not accepted. please use with your domain!');
 
                                             }
@@ -961,7 +833,7 @@ class idehwebLwp
                                 }).done(function (msg) {
                                     if (msg) {
                                         var arr = JSON.parse(msg);
-                                        console.log(arr);
+                                        // console.log(arr);
                                         if (arr['token']) {
                                             $('#lwp_token').val(arr['token']);
                                             //
@@ -984,7 +856,7 @@ class idehwebLwp
                         // localStorage.setItem('ldwtutshow', 1);
                         // Show popup here
                         // $('#myModal').modal('show');
-                        console.log('set here');
+                        // console.log('set here');
                         createTutorial();
                     }
 
@@ -998,17 +870,17 @@ class idehwebLwp
                                 '</div>' +
                                 '<div class="lwp_modal_body">' +
                                 '<ul>' +
-                                '<li>' + '<?php _e("1. create a page and name it login or register or what ever", $this->textdomain) ?>' + '</li>' +
-                                '<li>' + '<?php _e("2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step 1", $this->textdomain) ?>' + '</li>' +
-                                '<li>' + '<?php _e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", $this->textdomain) ?>' +
+                                '<li>' + '<?php _e("1. create a page and name it login or register or what ever", 'login-with-phone-number') ?>' + '</li>' +
+                                '<li>' + '<?php _e("2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step 1", 'login-with-phone-number') ?>' + '</li>' +
+                                '<li>' + '<?php _e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", 'login-with-phone-number') ?>' +
                                 '</li>' +
                                 '<li>' +
-                                '<?php _e("for more information visit: ", $this->textdomain) ?>' + '<a target="_blank" href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?lang=en">Idehweb</a>' +
+                                '<?php _e("for more information visit: ", 'login-with-phone-number') ?>' + '<a target="_blank" href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?lang=en">Idehweb</a>' +
                                 '</li>' +
                                 '</ul>' +
                                 '</div>' +
                                 '<div class="lwp_modal_footer">' +
-                                '<button class="lwp_button"><?php _e("got it ", $this->textdomain) ?></button>' +
+                                '<button class="lwp_button"><?php _e("got it ", 'login-with-phone-number') ?></button>' +
                                 '</div>' +
                                 '</div>');
 
@@ -1022,7 +894,7 @@ class idehwebLwp
     function lwp_custom_css()
     {
         $options = get_option('idehweb_lwp_settings_styles');
-        if (!isset($options['idehweb_styles_status'])) $options['idehweb_styles_status'] = '0';
+        if (!isset($options['idehweb_styles_status'])) $options['idehweb_styles_status'] = '1';
 
         //first button
         if (!isset($options['idehweb_styles_button_background'])) $options['idehweb_styles_button_background'] = '#009b9a';
@@ -1044,7 +916,7 @@ class idehwebLwp
         if (!isset($options['idehweb_styles_input_text_color'])) $options['idehweb_styles_input_text_color'] = '#000000';
         if (!isset($options['idehweb_styles_input_placeholder_color'])) $options['idehweb_styles_input_placeholder_color'] = '#000000';
         if (!isset($options['idehweb_styles_input_border_radius'])) $options['idehweb_styles_input_border_radius'] = 'inherit';
-        if (!isset($options['idehweb_styles_input_border_width'])) $options['idehweb_styles_input_border_width'] = 'inherit';
+        if (!isset($options['idehweb_styles_input_border_width'])) $options['idehweb_styles_input_border_width'] = '1px';
 
         //box
         if (!isset($options['idehweb_styles_box_background_color'])) $options['idehweb_styles_box_background_color'] = '#ffffff';
@@ -1057,22 +929,6 @@ class idehwebLwp
         if (!isset($options['idehweb_styles_title_color'])) $options['idehweb_styles_title_color'] = '#000000';
         if (!isset($options['idehweb_styles_title_font_size'])) $options['idehweb_styles_title_font_size'] = 'inherit';
 
-        $lwp_custom_css = ' .submit_button { background-color: ' . $options['idehweb_styles_button_background'] . ' !important; border-color: ' . $options['idehweb_styles_button_border_color'] . ' !important; color: ' . $options['idehweb_styles_button_text_color'] . ' !important;border-radius: ' . $options['idehweb_styles_button_border_radius'] . ' !important;border-width: ' . $options['idehweb_styles_button_border_width'] . ' !important; }
-        .secondaryccolor { background-color: ' . $options['idehweb_styles_button_background2'] . ' !important; border-color: ' . $options['idehweb_styles_button_border_color2'] . ' !important; color: ' . $options['idehweb_styles_button_text_color2'] . ' !important;border-radius: ' . $options['idehweb_styles_button_border_radius2'] . ' !important;border-width: ' . $options['idehweb_styles_button_border_width2'] . ' !important; }
-        .the_lwp_input { background-color: ' . $options['idehweb_styles_input_background'] . ' !important; border-color: ' . $options['idehweb_styles_input_border_color'] . ' !important; color: ' . $options['idehweb_styles_input_text_color'] . ' !important;border-radius: ' . $options['idehweb_styles_input_border_radius'] . ' !important;border-width: ' . $options['idehweb_styles_input_border_width'] . ' !important; }
-        .the_lwp_input::placeholder{ color: ' . $options['idehweb_styles_input_placeholder_color'] . ' !important; }
-        .lwp_forms_login form.ajax-auth{ background-color: ' . $options['idehweb_styles_box_background_color'] . ' !important; }
-        .lwp_labels{ color: ' . $options['idehweb_styles_labels_text_color'] . ' !important;font-size: ' . $options['idehweb_styles_labels_font_size'] . ' !important; }
-        .lh1{ color: ' . $options['idehweb_styles_title_color'] . ' !important;font-size: ' . $options['idehweb_styles_title_font_size'] . ' !important; }
-        ';
-        ?>
-
-        <?php
-        if ($options['idehweb_styles_status']) {
-            ?>
-            <style type="text/css"><?php echo $lwp_custom_css; ?></style>
-            <?php
-        }
     }
 
     function style_settings_page()
@@ -1086,12 +942,12 @@ class idehwebLwp
         ?>
         <div class="wrap">
             <div id="icon-themes" class="icon32"></div>
-            <h2><?php _e('Style settings', $this->textdomain); ?></h2>
+            <h2><?php _e('Style settings', 'login-with-phone-number'); ?></h2>
             <?php if (isset($_GET['settings-updated']) && $_GET['settings-updated']) {
 
                 ?>
                 <div id="setting-error-settings_updated" class="updated settings-error">
-                    <p><strong><?php _e('Settings saved.', $this->textdomain); ?></strong></p>
+                    <p><strong><?php _e('Settings saved.', 'login-with-phone-number'); ?></strong></p>
                 </div>
             <?php } ?>
             <form action="options.php" method="post" id="iuytfrdghj">
@@ -1107,7 +963,7 @@ class idehwebLwp
                 <p class="submit">
 
                     <input type="submit" class="button-primary"
-                           value="<?php _e('Save Changes', $this->textdomain); ?>"/></p>
+                           value="<?php _e('Save Changes', 'login-with-phone-number'); ?>"/></p>
 
             </form>
 
@@ -1127,12 +983,12 @@ class idehwebLwp
         ?>
         <div class="wrap">
             <div id="icon-themes" class="icon32"></div>
-            <h2><?php _e('Localization settings', $this->textdomain); ?></h2>
+            <h2><?php _e('Localization settings', 'login-with-phone-number'); ?></h2>
             <?php if (isset($_GET['settings-updated']) && $_GET['settings-updated']) {
 
                 ?>
                 <div id="setting-error-settings_updated" class="updated settings-error">
-                    <p><strong><?php _e('Settings saved.', $this->textdomain); ?></strong></p>
+                    <p><strong><?php _e('Settings saved.', 'login-with-phone-number'); ?></strong></p>
                 </div>
             <?php } ?>
             <form action="options.php" method="post" id="iuytfrdghj">
@@ -1148,7 +1004,7 @@ class idehwebLwp
                 <p class="submit">
 
                     <input type="submit" class="button-primary"
-                           value="<?php _e('Save Changes', $this->textdomain); ?>"/></p>
+                           value="<?php _e('Save Changes', 'login-with-phone-number'); ?>"/></p>
 
             </form>
 
@@ -1174,6 +1030,11 @@ class idehwebLwp
 
     }
 
+    function setting_idehweb_lwp_space()
+    {
+        echo '<div class="idehweb_lwp_mgt50"></div>';
+    }
+
     function setting_idehweb_email_login()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -1184,16 +1045,18 @@ class idehwebLwp
             $display = 'none';
         }
         echo '<input  type="hidden" name="idehweb_lwp_settings[idehweb_email_login]" value="0" />
-		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_email_login]" value="1"' . (($options['idehweb_email_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with email', $this->textdomain) . '</label>';
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_email_login]" value="1"' . (($options['idehweb_email_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with email', 'login-with-phone-number') . '</label>';
 
     }
 
     function setting_idehweb_style_enable_custom_style()
     {
         $options = get_option('idehweb_lwp_settings_styles');
-        if (!isset($options['idehweb_styles_status'])) $options['idehweb_styles_status'] = '0';
+        if (!isset($options['idehweb_styles_status'])) $options['idehweb_styles_status'] = '1';
+        else $options['idehweb_styles_status'] = sanitize_text_field($options['idehweb_styles_status']);
+
         echo '<input  type="hidden" name="idehweb_lwp_settings_styles[idehweb_styles_status]" value="0" />
-		<label><input type="checkbox" id="idehweb_lwp_settings_idehweb_styles_status" name="idehweb_lwp_settings_styles[idehweb_styles_status]" value="1"' . (($options['idehweb_styles_status']) ? ' checked="checked"' : '') . ' />' . __('enable custom styles', $this->textdomain) . '</label>';
+		<label><input type="checkbox" id="idehweb_lwp_settings_idehweb_styles_status" name="idehweb_lwp_settings_styles[idehweb_styles_status]" value="1"' . (($options['idehweb_styles_status']) ? ' checked="checked"' : '') . ' />' . __('enable custom styles', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -1202,40 +1065,51 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_background'])) $options['idehweb_styles_button_background'] = '#009b9a';
+        else $options['idehweb_styles_button_background'] = sanitize_text_field($options['idehweb_styles_button_background']);
+
+
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_background]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_background']) . '" />
-		<p class="description">' . __('button background color', $this->textdomain) . '</p>';
+		<p class="description">' . __('button background color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_border_color()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_border_color'])) $options['idehweb_styles_button_border_color'] = '#009b9a';
+        else $options['idehweb_styles_button_border_color'] = sanitize_text_field($options['idehweb_styles_button_border_color']);
+
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_color']) . '" />
-		<p class="description">' . __('button border color', $this->textdomain) . '</p>';
+		<p class="description">' . __('button border color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_border_radius()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_border_radius'])) $options['idehweb_styles_button_border_radius'] = 'inherit';
+        else $options['idehweb_styles_button_border_radius'] = sanitize_text_field($options['idehweb_styles_button_border_radius']);
+
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_radius]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_radius']) . '" />
-		<p class="description">' . __('0px 0px 0px 0px', $this->textdomain) . '</p>';
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_border_width()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_border_width'])) $options['idehweb_styles_button_border_width'] = 'inherit';
+        else $options['idehweb_styles_button_border_width'] = sanitize_text_field($options['idehweb_styles_button_border_width']);
+
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_width]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_width']) . '" />
-		<p class="description">' . __('0px 0px 0px 0px', $this->textdomain) . '</p>';
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_text_color()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_text_color'])) $options['idehweb_styles_button_text_color'] = '#ffffff';
+        else $options['idehweb_styles_button_text_color'] = sanitize_text_field($options['idehweb_styles_button_text_color']);
+
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_text_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_text_color']) . '" />
-		<p class="description">' . __('button text color', $this->textdomain) . '</p>';
+		<p class="description">' . __('button text color', 'login-with-phone-number') . '</p>';
     }
 
 
@@ -1243,40 +1117,48 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_background2'])) $options['idehweb_styles_button_background2'] = '#009b9a';
+        else $options['idehweb_styles_button_background2'] = sanitize_text_field($options['idehweb_styles_button_background2']);
+
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_background2]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_background2']) . '" />
-		<p class="description">' . __('secondary button background color', $this->textdomain) . '</p>';
+		<p class="description">' . __('secondary button background color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_border_color2()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_border_color2'])) $options['idehweb_styles_button_border_color2'] = '#009b9a';
+        else $options['idehweb_styles_button_border_color2'] = sanitize_text_field($options['idehweb_styles_button_border_color2']);
+
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_color2]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_color2']) . '" />
-		<p class="description">' . __('secondary button border color', $this->textdomain) . '</p>';
+		<p class="description">' . __('secondary button border color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_border_radius2()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_border_radius2'])) $options['idehweb_styles_button_border_radius2'] = 'inherit';
+        else $options['idehweb_styles_button_border_radius2'] = sanitize_text_field($options['idehweb_styles_button_border_radius2']);
+
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_radius2]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_radius2']) . '" />
-		<p class="description">' . __('0px 0px 0px 0px', $this->textdomain) . '</p>';
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_border_width2()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_border_width2'])) $options['idehweb_styles_button_border_width2'] = 'inherit';
+        else $options['idehweb_styles_button_border_width2'] = sanitize_text_field($options['idehweb_styles_button_border_width2']);
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_width2]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_width2']) . '" />
-		<p class="description">' . __('0px 0px 0px 0px', $this->textdomain) . '</p>';
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_button_text_color2()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_button_text_color2'])) $options['idehweb_styles_button_text_color2'] = '#ffffff';
+        else $options['idehweb_styles_button_text_color2'] = sanitize_text_field($options['idehweb_styles_button_text_color2']);
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_text_color2]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_text_color2']) . '" />
-		<p class="description">' . __('secondary button text color', $this->textdomain) . '</p>';
+		<p class="description">' . __('secondary button text color', 'login-with-phone-number') . '</p>';
     }
 
 
@@ -1284,32 +1166,38 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_input_background'])) $options['idehweb_styles_input_background'] = '#009b9a';
+        else $options['idehweb_styles_input_background'] = sanitize_text_field($options['idehweb_styles_input_background']);
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_input_background]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_background']) . '" />
-		<p class="description">' . __('input background color', $this->textdomain) . '</p>';
+		<p class="description">' . __('input background color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_input_border_color()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_input_border_color'])) $options['idehweb_styles_input_border_color'] = '#009b9a';
+        else $options['idehweb_styles_input_border_color'] = sanitize_text_field($options['idehweb_styles_input_border_color']);
+
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_input_border_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_border_color']) . '" />
-		<p class="description">' . __('input border color', $this->textdomain) . '</p>';
+		<p class="description">' . __('input border color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_input_border_radius()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_input_border_radius'])) $options['idehweb_styles_input_border_radius'] = 'inherit';
+        else $options['idehweb_styles_input_border_radius'] = sanitize_text_field($options['idehweb_styles_input_border_radius']);
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_input_border_radius]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_border_radius']) . '" />
-		<p class="description">' . __('0px 0px 0px 0px', $this->textdomain) . '</p>';
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_input_border_width()
     {
         $options = get_option('idehweb_lwp_settings_styles');
-        if (!isset($options['idehweb_styles_input_border_width'])) $options['idehweb_styles_input_border_width'] = 'inherit';
+        if (!isset($options['idehweb_styles_input_border_width'])) $options['idehweb_styles_input_border_width'] = '1px';
+        else $options['idehweb_styles_input_border_width'] = sanitize_text_field($options['idehweb_styles_input_border_width']);
+
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_input_border_width]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_border_width']) . '" />
-		<p class="description">' . __('0px 0px 0px 0px', $this->textdomain) . '</p>';
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_input_text_color()
@@ -1317,7 +1205,7 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_input_text_color'])) $options['idehweb_styles_input_text_color'] = '#000000';
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_input_text_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_text_color']) . '" />
-		<p class="description">' . __('input text color', $this->textdomain) . '</p>';
+		<p class="description">' . __('input text color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_input_placeholder_color()
@@ -1325,47 +1213,54 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_input_placeholder_color'])) $options['idehweb_styles_input_placeholder_color'] = '#000000';
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_input_placeholder_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_placeholder_color']) . '" />
-		<p class="description">' . __('input placeholder color', $this->textdomain) . '</p>';
+		<p class="description">' . __('input placeholder color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_box_background_color()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_box_background_color'])) $options['idehweb_styles_box_background_color'] = '#ffffff';
+        else $options['idehweb_styles_box_background_color'] = sanitize_text_field($options['idehweb_styles_box_background_color']);
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_box_background_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_box_background_color']) . '" />
-		<p class="description">' . __('box background color', $this->textdomain) . '</p>';
+		<p class="description">' . __('box background color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_labels_font_size()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_labels_font_size'])) $options['idehweb_styles_labels_font_size'] = 'inherit';
+        else $options['idehweb_styles_labels_font_size'] = sanitize_text_field($options['idehweb_styles_labels_font_size']);
+
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_labels_font_size]" class="regular-text" value="' . esc_attr($options['idehweb_styles_labels_font_size']) . '" />
-		<p class="description">' . __('13px', $this->textdomain) . '</p>';
+		<p class="description">' . __('13px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_labels_text_color()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_labels_text_color'])) $options['idehweb_styles_labels_text_color'] = '#000000';
+        else $options['idehweb_styles_labels_text_color'] = sanitize_text_field($options['idehweb_styles_labels_text_color']);
+
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_labels_text_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_labels_text_color']) . '" />
-		<p class="description">' . __('label text color', $this->textdomain) . '</p>';
+		<p class="description">' . __('label text color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_title_color()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_title_color'])) $options['idehweb_styles_title_color'] = '#000000';
+        else $options['idehweb_styles_title_color'] = sanitize_text_field($options['idehweb_styles_title_color']);
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_title_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_title_color']) . '" />
-		<p class="description">' . __('label text color', $this->textdomain) . '</p>';
+		<p class="description">' . __('label text color', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_title_font_size()
     {
         $options = get_option('idehweb_lwp_settings_styles');
         if (!isset($options['idehweb_styles_title_font_size'])) $options['idehweb_styles_title_font_size'] = 'inherit';
+        else $options['idehweb_styles_title_font_size'] = sanitize_text_field($options['idehweb_styles_title_font_size']);
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_title_font_size]" class="regular-text" value="' . esc_attr($options['idehweb_styles_title_font_size']) . '" />
-		<p class="description">' . __('20px', $this->textdomain) . '</p>';
+		<p class="description">' . __('20px', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_localization_enable_custom_localization()
@@ -1373,7 +1268,7 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings_localization');
         if (!isset($options['idehweb_localization_status'])) $options['idehweb_localization_status'] = '0';
         echo '<input  type="hidden" name="idehweb_lwp_settings_localization[idehweb_localization_status]" value="0" />
-		<label><input type="checkbox" id="idehweb_lwp_settings_localization_status" name="idehweb_lwp_settings_localization[idehweb_localization_status]" value="1"' . (($options['idehweb_localization_status']) ? ' checked="checked"' : '') . ' />' . __('enable localization', $this->textdomain) . '</label>';
+		<label><input type="checkbox" id="idehweb_lwp_settings_localization_status" name="idehweb_lwp_settings_localization[idehweb_localization_status]" value="1"' . (($options['idehweb_localization_status']) ? ' checked="checked"' : '') . ' />' . __('enable localization', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -1381,16 +1276,32 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings_localization');
         if (!isset($options['idehweb_localization_title_of_login_form'])) $options['idehweb_localization_title_of_login_form'] = 'Login / register';
+        else $options['idehweb_localization_title_of_login_form'] = sanitize_text_field($options['idehweb_localization_title_of_login_form']);
+
+
         echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_title_of_login_form]" class="regular-text" value="' . esc_attr($options['idehweb_localization_title_of_login_form']) . '" />
-		<p class="description">' . __('Login / register', $this->textdomain) . '</p>';
+		<p class="description">' . __('Login / register', 'login-with-phone-number') . '</p>';
+    }
+
+    function setting_idehweb_localization_of_login_form_email()
+    {
+        $options = get_option('idehweb_lwp_settings_localization');
+        if (!isset($options['idehweb_localization_title_of_login_form_email'])) $options['idehweb_localization_title_of_login_form_email'] = 'Login / register';
+        else $options['idehweb_localization_title_of_login_form_email'] = sanitize_text_field($options['idehweb_localization_title_of_login_form_email']);
+
+
+        echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_title_of_login_form_email]" class="regular-text" value="' . esc_attr($options['idehweb_localization_title_of_login_form_email']) . '" />
+		<p class="description">' . __('Login / register', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_localization_placeholder_of_phonenumber_field()
     {
         $options = get_option('idehweb_lwp_settings_localization');
         if (!isset($options['idehweb_localization_placeholder_of_phonenumber_field'])) $options['idehweb_localization_placeholder_of_phonenumber_field'] = '9*********';
+        else $options['idehweb_localization_placeholder_of_phonenumber_field'] = sanitize_text_field($options['idehweb_localization_placeholder_of_phonenumber_field']);
+
         echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_placeholder_of_phonenumber_field]" class="regular-text" value="' . esc_attr($options['idehweb_localization_placeholder_of_phonenumber_field']) . '" />
-		<p class="description">' . __('9*********', $this->textdomain) . '</p>';
+		<p class="description">' . __('9*********', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_sms_login()
@@ -1403,7 +1314,17 @@ class idehwebLwp
             $display = 'none';
         }
         echo '<input  type="hidden" name="idehweb_lwp_settings[idehweb_sms_login]" value="0" />
-		<label><input type="checkbox" id="idehweb_lwp_settings_idehweb_sms_login" name="idehweb_lwp_settings[idehweb_sms_login]" value="1"' . (($options['idehweb_sms_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with phone number', $this->textdomain) . '</label>';
+		<label><input type="checkbox" id="idehweb_lwp_settings_idehweb_sms_login" name="idehweb_lwp_settings[idehweb_sms_login]" value="1"' . (($options['idehweb_sms_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with phone number', 'login-with-phone-number') . '</label>';
+
+    }
+
+    function setting_idehweb_user_registration()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_user_registration'])) $options['idehweb_user_registration'] = '1';
+
+        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_user_registration]" value="0" />
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_user_registration]" value="1"' . (($options['idehweb_user_registration']) ? ' checked="checked"' : '') . ' />' . __('I want to enable registration', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -1417,7 +1338,7 @@ class idehwebLwp
             $display = 'none';
         }
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_password_login]" value="0" />
-		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_password_login]" value="1"' . (($options['idehweb_password_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with password too', $this->textdomain) . '</label>';
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_password_login]" value="1"' . (($options['idehweb_password_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with password too', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -1427,7 +1348,7 @@ class idehwebLwp
         if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
 
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_position_form]" value="0" />
-		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_position_form]" value="1"' . (($options['idehweb_position_form']) ? ' checked="checked"' : '') . ' />' . __('I want form shows on page in fix position', $this->textdomain) . '</label>';
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_position_form]" value="1"' . (($options['idehweb_position_form']) ? ' checked="checked"' : '') . ' />' . __('I want form shows on page in fix position', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -1437,17 +1358,17 @@ class idehwebLwp
         if (!isset($options['idehweb_online_support'])) $options['idehweb_online_support'] = '1';
 
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_online_support]" value="0" />
-		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_online_support]" value="1"' . (($options['idehweb_online_support']) ? ' checked="checked"' : '') . ' />' . __('I want online support be active', $this->textdomain) . '</label>';
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_online_support]" value="1"' . (($options['idehweb_online_support']) ? ' checked="checked"' : '') . ' />' . __('I want online support be active', 'login-with-phone-number') . '</label>';
 
     }
 
     function setting_use_custom_gateway()
     {
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '0';
+        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
 
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_use_custom_gateway]" value="0" />
-		<label><input type="checkbox" id="idehweb_lwp_settings_use_custom_gateway" name="idehweb_lwp_settings[idehweb_use_custom_gateway]" value="1"' . (($options['idehweb_use_custom_gateway']) ? ' checked="checked"' : '') . ' />' . __('I want to use custom gateways', $this->textdomain) . '</label>';
+		<label><input type="checkbox" id="idehweb_lwp_settings_use_custom_gateway" name="idehweb_lwp_settings[idehweb_use_custom_gateway]" value="1"' . (($options['idehweb_use_custom_gateway']) ? ' checked="checked"' : '') . ' />' . __('I want to use custom gateways', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -1456,14 +1377,15 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = 'firebase';
         $gateways = [
-            ["value" => "twilio", "label" => "Twilio (International)"],
-            ["value" => "zenziva", "label" => "Zenziva (Indonesia)"],
-            ["value" => "infobip", "label" => "Infobip (Portugal , Brazil ...)"],
+//            ["value" => "twilio", "label" => "Twilio (International)"],
+//            ["value" => "zenziva", "label" => "Zenziva (Indonesia)"],
+//            ["value" => "infobip", "label" => "Infobip (Portugal , Brazil ...)"],
             ["value" => "firebase", "label" => "Firebase (Google)"],
+            ["value" => "custom", "label" => "Custom (Config Your Gateway)"],
 //            ["value" => "raygansms", "label" => "Raygansms.com (Iran)"],
 //            ["value" => "smsbharti", "label" => "smsbharti.com (India)"],
-            ["value" => "mshastra", "label" => "mshastra.com (Saudi Arabia)"],
-            ["value" => "taqnyat", "label" => "taqnyat.sa (Saudi Arabia)"]
+//            ["value" => "mshastra", "label" => "mshastra.com (Saudi Arabia)"],
+//            ["value" => "taqnyat", "label" => "taqnyat.sa (Saudi Arabia)"]
         ];
 //        ["value"=>"custom","label"=>"custom gateway setting"]
 //        ["value"=>"saudibulksms","label"=>"Saudi Bulk SMS (STC) (saudi arabia)"],
@@ -1493,7 +1415,7 @@ class idehwebLwp
         if (!isset($options['idehweb_twilio_account_sid'])) $options['idehweb_twilio_account_sid'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_twilio_account_sid]" class="regular-text" value="' . esc_attr($options['idehweb_twilio_account_sid']) . '" />
-		<p class="description">' . __('enter your Twilio account SID', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Twilio account SID', 'login-with-phone-number') . '</p>';
     }
 
     function setting_twilio_auth_token()
@@ -1503,7 +1425,7 @@ class idehwebLwp
         if (!isset($options['idehweb_twilio_auth_token'])) $options['idehweb_twilio_auth_token'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_twilio_auth_token]" class="regular-text" value="' . esc_attr($options['idehweb_twilio_auth_token']) . '" />
-		<p class="description">' . __('enter your Twilio auth token', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Twilio auth token', 'login-with-phone-number') . '</p>';
     }
 
     function setting_twilio_phone_number()
@@ -1513,7 +1435,7 @@ class idehwebLwp
         if (!isset($options['idehweb_twilio_phone_number'])) $options['idehweb_twilio_phone_number'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_twilio_phone_number]" class="regular-text" value="' . esc_attr($options['idehweb_twilio_phone_number']) . '" />
-		<p class="description">' . __('enter your Twilio phone number', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Twilio phone number', 'login-with-phone-number') . '</p>';
     }
 
     function setting_zenziva_user_key()
@@ -1523,7 +1445,7 @@ class idehwebLwp
         if (!isset($options['idehweb_zenziva_user_key'])) $options['idehweb_zenziva_user_key'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_zenziva_user_key]" class="regular-text" value="' . esc_attr($options['idehweb_zenziva_user_key']) . '" />
-		<p class="description">' . __('enter your Zenziva user key', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Zenziva user key', 'login-with-phone-number') . '</p>';
     }
 
     function setting_zenziva_pass_key()
@@ -1533,7 +1455,7 @@ class idehwebLwp
         if (!isset($options['idehweb_zenziva_pass_key'])) $options['idehweb_zenziva_pass_key'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_zenziva_pass_key]" class="regular-text" value="' . esc_attr($options['idehweb_zenziva_pass_key']) . '" />
-		<p class="description">' . __('enter your Zenziva pass key', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Zenziva pass key', 'login-with-phone-number') . '</p>';
     }
 
     function setting_infobip_user()
@@ -1543,7 +1465,7 @@ class idehwebLwp
         if (!isset($options['idehweb_infobip_user'])) $options['idehweb_infobip_user'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_infobip_user]" class="regular-text" value="' . esc_attr($options['idehweb_infobip_user']) . '" />
-		<p class="description">' . __('enter your Infobip pass key', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Infobip pass key', 'login-with-phone-number') . '</p>';
     }
 
 
@@ -1554,7 +1476,7 @@ class idehwebLwp
         if (!isset($options['idehweb_infobip_password'])) $options['idehweb_infobip_password'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_infobip_password]" class="regular-text" value="' . esc_attr($options['idehweb_infobip_password']) . '" />
-		<p class="description">' . __('enter your Infobip pass key', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Infobip pass key', 'login-with-phone-number') . '</p>';
     }
 
     function setting_infobip_sender()
@@ -1564,7 +1486,7 @@ class idehwebLwp
         if (!isset($options['idehweb_infobip_sender'])) $options['idehweb_infobip_sender'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_infobip_sender]" class="regular-text" value="' . esc_attr($options['idehweb_infobip_sender']) . '" />
-		<p class="description">' . __('enter your Infobip sender', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Infobip sender', 'login-with-phone-number') . '</p>';
     }
 
 
@@ -1575,7 +1497,7 @@ class idehwebLwp
         if (!isset($options['idehweb_firebase_api'])) $options['idehweb_firebase_api'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_firebase_api]" class="regular-text" value="' . esc_attr($options['idehweb_firebase_api']) . '" />
-		<p class="description">' . __('enter Firebase api', $this->textdomain) . ' - <a  href="https://idehweb.com/support/login-with-phone-number-wordpress/send-10000-sms-free-with-firebase-in-plugin-login-with-phone-number-wordpress/" target="_blank">' . __('Firebase config help - documentation', $this->textdomain) . '</a></p>';
+		<p class="description">' . __('enter Firebase api', 'login-with-phone-number') . ' - <a  href="https://idehweb.com/support/login-with-phone-number-wordpress/send-10000-sms-free-with-firebase-in-plugin-login-with-phone-number-wordpress/" target="_blank">' . __('Firebase config help - documentation', 'login-with-phone-number') . '</a></p>';
     }
 
     function setting_firebase_config()
@@ -1583,9 +1505,78 @@ class idehwebLwp
 
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_firebase_config'])) $options['idehweb_firebase_config'] = '';
+        else $options['idehweb_firebase_config'] = sanitize_textarea_field($options['idehweb_firebase_config']);
 
         echo '<textarea name="idehweb_lwp_settings[idehweb_firebase_config]" class="regular-text">' . esc_attr($options['idehweb_firebase_config']) . '</textarea>
-		<p class="description">' . __('enter Firebase config', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter Firebase config', 'login-with-phone-number') . '</p>';
+    }
+
+    function setting_custom_api_url()
+    {
+
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_custom_api_url'])) $options['idehweb_custom_api_url'] = '';
+
+        echo '<input type="text" name="idehweb_lwp_settings[idehweb_custom_api_url]" class="regular-text" value="' . esc_attr($options['idehweb_custom_api_url']) . '" />
+		<p class="description">' . __('enter custom url', 'login-with-phone-number') . ' - <a  href="https://idehweb.com/support/login-with-phone-number-wordpress/send-10000-sms-free-with-firebase-in-plugin-login-with-phone-number-wordpress/" target="_blank">' . __('Custom config help - documentation', 'login-with-phone-number') . '</a></p>';
+    }
+
+    function setting_custom_api_method()
+    {
+
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_custom_api_method'])) $options['idehweb_custom_api_method'] = '';
+        else $options['idehweb_custom_api_method'] = sanitize_textarea_field($options['idehweb_custom_api_method']);
+//        print_r($options['idehweb_custom_api_method']);
+        ?>
+        <select name="idehweb_lwp_settings[idehweb_custom_api_method]" id="idehweb_custom_api_method">
+            <?php
+            foreach (['GET', 'POST'] as $gateway) {
+                $rr = false;
+//                if(is_array($options['idehweb_default_gateways']))
+                if (($gateway == $options['idehweb_custom_api_method'])) {
+                    $rr = true;
+                }
+                echo '<option value="' . esc_attr($gateway) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($gateway) . '</option>';
+            }
+            ?>
+        </select>
+        <?php
+        echo '<p class="description">' . __('enter request method', 'login-with-phone-number') . '</p>';
+    }
+
+    function setting_custom_api_header()
+    {
+
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_custom_api_header'])) $options['idehweb_custom_api_header'] = '';
+        else $options['idehweb_custom_api_header'] = sanitize_textarea_field($options['idehweb_custom_api_header']);
+
+        echo '<textarea name="idehweb_lwp_settings[idehweb_custom_api_header]" class="regular-text">' . esc_attr($options['idehweb_custom_api_header']) . '</textarea>
+		<p class="description">' . __('enter header of request in json', 'login-with-phone-number') . '</p>';
+    }
+
+
+    function setting_custom_api_body()
+    {
+
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_custom_api_body'])) $options['idehweb_custom_api_body'] = '';
+        else $options['idehweb_custom_api_body'] = sanitize_textarea_field($options['idehweb_custom_api_body']);
+
+        echo '<textarea name="idehweb_lwp_settings[idehweb_custom_api_body]" class="regular-text">' . esc_attr($options['idehweb_custom_api_body']) . '</textarea>
+		<p class="description">' . __('enter body of request in json', 'login-with-phone-number') . '</p>';
+    }
+
+    function setting_custom_api_smstext()
+    {
+
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_custom_api_smstext'])) $options['idehweb_custom_api_smstext'] = '';
+        else $options['idehweb_custom_api_smstext'] = sanitize_textarea_field($options['idehweb_custom_api_smstext']);
+
+        echo '<textarea name="idehweb_lwp_settings[idehweb_custom_api_smstext]" class="regular-text">' . esc_attr($options['idehweb_custom_api_smstext']) . '</textarea>
+		<p class="description">' . __('enter smstext , you can use ${code}', 'login-with-phone-number') . '</p>';
     }
 
     function setting_raygansms_username()
@@ -1595,7 +1586,7 @@ class idehwebLwp
         if (!isset($options['idehweb_raygansms_username'])) $options['idehweb_raygansms_username'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_raygansms_username]" class="regular-text" value="' . esc_attr($options['idehweb_raygansms_username']) . '" />
-		<p class="description">' . __('enter your Raygansms username', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Raygansms username', 'login-with-phone-number') . '</p>';
     }
 
     function setting_raygansms_password()
@@ -1605,7 +1596,7 @@ class idehwebLwp
         if (!isset($options['idehweb_raygansms_password'])) $options['idehweb_raygansms_password'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_raygansms_password]" class="regular-text" value="' . esc_attr($options['idehweb_raygansms_password']) . '" />
-		<p class="description">' . __('enter your Raygansms password', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Raygansms password', 'login-with-phone-number') . '</p>';
     }
 
     function setting_raygansms_phonenumber()
@@ -1615,7 +1606,7 @@ class idehwebLwp
         if (!isset($options['idehweb_raygansms_phonenumber'])) $options['idehweb_raygansms_phonenumber'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_raygansms_phonenumber]" class="regular-text" value="' . esc_attr($options['idehweb_raygansms_phonenumber']) . '" />
-		<p class="description">' . __('enter your Raygansms phone number', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your Raygansms phone number', 'login-with-phone-number') . '</p>';
     }
 
 
@@ -1626,7 +1617,7 @@ class idehwebLwp
         if (!isset($options['idehweb_smsbharti_api_key'])) $options['idehweb_smsbharti_api_key'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_smsbharti_api_key]" class="regular-text" value="' . esc_attr($options['idehweb_smsbharti_api_key']) . '" />
-		<p class="description">' . __('enter your smsbharti api key', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your smsbharti api key', 'login-with-phone-number') . '</p>';
     }
 
     function setting_smsbharti_from()
@@ -1636,7 +1627,7 @@ class idehwebLwp
         if (!isset($options['idehweb_smsbharti_from'])) $options['idehweb_smsbharti_from'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_smsbharti_from]" class="regular-text" value="' . esc_attr($options['idehweb_smsbharti_from']) . '" />
-		<p class="description">' . __('enter your smsbharti from', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your smsbharti from', 'login-with-phone-number') . '</p>';
     }
 
     function setting_smsbharti_template_id()
@@ -1646,7 +1637,7 @@ class idehwebLwp
         if (!isset($options['idehweb_smsbharti_template_id'])) $options['idehweb_smsbharti_template_id'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_smsbharti_template_id]" class="regular-text" value="' . esc_attr($options['idehweb_smsbharti_template_id']) . '" />
-		<p class="description">' . __('enter your smsbharti template id', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your smsbharti template id', 'login-with-phone-number') . '</p>';
     }
 
     function setting_smsbharti_routeid()
@@ -1656,7 +1647,7 @@ class idehwebLwp
         if (!isset($options['idehweb_smsbharti_routeid'])) $options['idehweb_smsbharti_routeid'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_smsbharti_routeid]" class="regular-text" value="' . esc_attr($options['idehweb_smsbharti_routeid']) . '" />
-		<p class="description">' . __('enter your smsbharti route id', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your smsbharti route id', 'login-with-phone-number') . '</p>';
     }
 
 
@@ -1667,7 +1658,7 @@ class idehwebLwp
         if (!isset($options['idehweb_mshastra_user'])) $options['idehweb_mshastra_user'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_mshastra_user]" class="regular-text" value="' . esc_attr($options['idehweb_mshastra_user']) . '" />
-		<p class="description">' . __('enter your mshastra username', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your mshastra username', 'login-with-phone-number') . '</p>';
     }
 
     function setting_mshastra_pwd()
@@ -1677,7 +1668,7 @@ class idehwebLwp
         if (!isset($options['idehweb_mshastra_pwd'])) $options['idehweb_mshastra_pwd'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_mshastra_pwd]" class="regular-text" value="' . esc_attr($options['idehweb_mshastra_pwd']) . '" />
-		<p class="description">' . __('enter your mshastra password', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your mshastra password', 'login-with-phone-number') . '</p>';
     }
 
     function setting_mshastra_senderid()
@@ -1687,7 +1678,7 @@ class idehwebLwp
         if (!isset($options['idehweb_mshastra_senderid'])) $options['idehweb_mshastra_senderid'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_mshastra_senderid]" class="regular-text" value="' . esc_attr($options['idehweb_mshastra_senderid']) . '" />
-		<p class="description">' . __('enter your mshastra sender ID', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your mshastra sender ID', 'login-with-phone-number') . '</p>';
     }
 //    function setting_custom_gateway_url()
 //    {
@@ -1696,7 +1687,7 @@ class idehwebLwp
 //        if (!isset($options['idehweb_custom_gateway_url'])) $options['idehweb_custom_gateway_url'] = '';
 //
 //        echo '<input type="text" name="idehweb_lwp_settings[idehweb_custom_gateway_url]" class="regular-text" value="' . esc_attr($options['idehweb_custom_gateway_url']) . '" />
-//		<p class="description">' . __('enter your sms gateway url', $this->textdomain) . '</p>';
+//		<p class="description">' . __('enter your sms gateway url', 'login-with-phone-number') . '</p>';
 //    }
 //    function setting_custom_gateway_username()
 //    {
@@ -1705,7 +1696,7 @@ class idehwebLwp
 //        if (!isset($options['idehweb_custom_gateway_username'])) $options['idehweb_custom_gateway_username'] = '';
 //
 //        echo '<input type="text" name="idehweb_lwp_settings[idehweb_custom_gateway_username]" class="regular-text" value="' . esc_attr($options['idehweb_custom_gateway_username']) . '" />
-//		<p class="description">' . __('enter your sms gateway username', $this->textdomain) . '</p>';
+//		<p class="description">' . __('enter your sms gateway username', 'login-with-phone-number') . '</p>';
 //    }
 //
 //    function setting_custom_gateway_password()
@@ -1715,7 +1706,7 @@ class idehwebLwp
 //        if (!isset($options['idehweb_custom_gateway_password'])) $options['idehweb_custom_gateway_password'] = '';
 //
 //        echo '<input type="text" name="idehweb_lwp_settings[idehweb_custom_gateway_password]" class="regular-text" value="' . esc_attr($options['idehweb_custom_gateway_password']) . '" />
-//		<p class="description">' . __('enter your sms gateway password', $this->textdomain) . '</p>';
+//		<p class="description">' . __('enter your sms gateway password', 'login-with-phone-number') . '</p>';
 //    }
 
 
@@ -1726,7 +1717,7 @@ class idehwebLwp
         if (!isset($options['idehweb_taqnyat_sendernumber'])) $options['idehweb_taqnyat_sendernumber'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_taqnyat_sendernumber]" class="regular-text" value="' . esc_attr($options['idehweb_taqnyat_sendernumber']) . '" />
-		<p class="description">' . __('enter your taqnyat sender number', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your taqnyat sender number', 'login-with-phone-number') . '</p>';
     }
 
     function setting_taqnyat_api_key()
@@ -1736,15 +1727,16 @@ class idehwebLwp
         if (!isset($options['idehweb_taqnyat_api_key'])) $options['idehweb_taqnyat_api_key'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_taqnyat_api_key]" class="regular-text" value="' . esc_attr($options['idehweb_taqnyat_api_key']) . '" />
-		<p class="description">' . __('enter your taqnyat api key', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter your taqnyat api key', 'login-with-phone-number') . '</p>';
     }
+
     function idehweb_use_phone_number_for_username()
     {
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_use_phone_number_for_username'])) $options['idehweb_use_phone_number_for_username'] = '0';
 
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_use_phone_number_for_username]" value="0" />
-		<label><input type="checkbox" id="idehweb_lwp_settings_use_phone_number_for_username" name="idehweb_lwp_settings[idehweb_use_phone_number_for_username]" value="1"' . (($options['idehweb_use_phone_number_for_username']) ? ' checked="checked"' : '') . ' />' . __('I want to set phone number as username and nickname', $this->textdomain) . '</label>';
+		<label><input type="checkbox" id="idehweb_lwp_settings_use_phone_number_for_username" name="idehweb_lwp_settings[idehweb_use_phone_number_for_username]" value="1"' . (($options['idehweb_use_phone_number_for_username']) ? ' checked="checked"' : '') . ' />' . __('I want to set phone number as username and nickname', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -1754,9 +1746,10 @@ class idehwebLwp
         if (!isset($options['idehweb_enable_timer_on_sending_sms'])) $options['idehweb_enable_timer_on_sending_sms'] = '1';
 
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_enable_timer_on_sending_sms]" value="0" />
-		<label><input type="checkbox" id="idehweb_lwp_settings_enable_timer_on_sending_sms" name="idehweb_lwp_settings[idehweb_enable_timer_on_sending_sms]" value="1"' . (($options['idehweb_enable_timer_on_sending_sms']) ? ' checked="checked"' : '') . ' />' . __('I want to enable timer after user entered phone number and clicked on submit', $this->textdomain) . '</label>';
+		<label><input type="checkbox" id="idehweb_lwp_settings_enable_timer_on_sending_sms" name="idehweb_lwp_settings[idehweb_enable_timer_on_sending_sms]" value="1"' . (($options['idehweb_enable_timer_on_sending_sms']) ? ' checked="checked"' : '') . ' />' . __('I want to enable timer after user entered phone number and clicked on submit', 'login-with-phone-number') . '</label>';
 
     }
+
 
     function setting_timer_count()
     {
@@ -1765,8 +1758,28 @@ class idehwebLwp
 
 
         echo '<input id="lwp_timer_count" type="text" name="idehweb_lwp_settings[idehweb_timer_count]" class="regular-text" value="' . esc_attr($options['idehweb_timer_count']) . '" />
-		<p class="description">' . __('Timer count', $this->textdomain) . '</p>';
+		<p class="description">' . __('Timer count', 'login-with-phone-number') . '</p>';
 
+    }
+
+    function idehweb_enable_accept_term_and_conditions()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_enable_accept_terms_and_condition'])) $options['idehweb_enable_accept_terms_and_condition'] = '1';
+
+        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_enable_accept_terms_and_condition]" value="0" />
+		<label><input type="checkbox" id="idehweb_enable_accept_terms_and_condition" name="idehweb_lwp_settings[idehweb_enable_accept_terms_and_condition]" value="1"' . (($options['idehweb_enable_accept_terms_and_condition']) ? ' checked="checked"' : '') . ' />' . __('I want to show some terms & conditions for user to accept it, when he/she wants to register ', 'login-with-phone-number') . '</label>';
+
+    }
+
+    function setting_term_and_conditions_text()
+    {
+
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = 'By submitting, you agree to the <a href="#">Terms and Privacy Policy</a>';
+        else $options['idehweb_term_and_conditions_text'] = ($options['idehweb_term_and_conditions_text']);
+        echo '<textarea name="idehweb_lwp_settings[idehweb_term_and_conditions_text]" class="regular-text">' . esc_attr($options['idehweb_term_and_conditions_text']) . '</textarea>
+		<p class="description">' . __('enter term and condition accepting text', 'login-with-phone-number') . '</p>';
     }
 
     function credit_adminbar()
@@ -1776,38 +1789,9 @@ class idehwebLwp
             return;
 
         $credit = '0';
-//        $wp_admin_bar -> add_menu(array('id' => 'melipayamak', 'title' => __('sms credit: ',$this->textdomain).'<span class="lwpcreditupdate">'.$credit.'</span>', 'href' => get_bloginfo('url') . '/wp-admin/admin.php?page=melipayamak'));
-
-//        $wp_admin_bar->add_menu(array('id' => 'lwpcreditbar', 'title' => '<span class="ab-icon dashicons dashicons-smartphone"></span><span class="lwpcreditupdate">' . $credit . '</span>', 'href' => get_bloginfo('url') . '/wp-admin/admin.php?page=idehweb-lwp'));
         ?>
-        <!--        <script>-->
-        <!---->
-        <!--            jQuery(function ($) {-->
-        <!--                $(window).load(function () {-->
-        <!--                    $.ajax({-->
-        <!--                        type: "GET",-->
-        <!--                        url: ajaxurl,-->
-        <!--                        data: {action: 'idehweb_lwp_check_credit'}-->
-        <!--                    }).done(function (msg) {-->
-        <!--                        var arr = JSON.parse(msg);-->
-        <!--                        console.log(arr);-->
-        <!--                        $('.lwpcreditupdate').html(arr['credit'])-->
-        <!---->
-        <!---->
-        <!--                    });-->
-        <!--                });-->
-        <!--            });-->
-        <!--        </script>-->
-        <?php
-        //        $balance = $melipayamak -> credit;
-//        if ($balance && $melipayamak -> is_ready) {
-//            $balance = number_format($balance);
-//            $wp_admin_bar -> add_menu(array('parent' => 'melipayamak', 'title' => 'موجودی حساب: ' . $balance . ' پیامک', 'href' => get_bloginfo('url') . '/wp-admin/admin.php?page=melipayamak_setting'));
-//        }
-//        $t = 'اعضای خبرنامه: ' . number_format(intval($melipayamak -> count)) . ' نفر';
-//        $wp_admin_bar -> add_menu(array('parent' => 'melipayamak', 'title' => $t, 'href' => get_bloginfo('url') . '/wp-admin/admin.php?page=melipayamak_phonebook'));
-//        $wp_admin_bar -> add_menu(array('parent' => 'melipayamak', 'title' => 'مشاهده پیام ها', 'href' => get_bloginfo('url') . '/wp-admin/admin.php?page=melipayamak_smessages'));
-//        $wp_admin_bar -> add_menu(array('parent' => 'melipayamak', 'title' => 'ملی پیامک', 'href' => 'http://melipayamak.com'));
+
+ <?php
     }
 
     function setting_idehweb_phone_number()
@@ -1818,12 +1802,12 @@ class idehwebLwp
         ?>
         <div class="idehweb_phone_number_ccode_wrap">
             <select name="idehweb_lwp_settings[idehweb_phone_number_ccode]" id="idehweb_phone_number_ccode"
-                    data-placeholder="<?php _e('Choose a country...', $this->textdomain); ?>">
+                    data-placeholder="<?php _e('Choose a country...', 'login-with-phone-number'); ?>">
                 <?php
                 $country_codes = $this->get_country_code_options();
 
                 foreach ($country_codes as $country) {
-                    echo '<option value="' . $country["value"] . '" ' . (($options['idehweb_phone_number_ccode'] == $country["value"]) ? ' selected="selected"' : '') . ' >+' . $country['value'] . ' - ' . $country["code"] . '</option>';
+                    echo '<option value="' . esc_attr($country["value"]) . '" ' . (($options['idehweb_phone_number_ccode'] == $country["value"]) ? ' selected="selected"' : '') . ' >+' . esc_html($country['value']) . ' - ' . esc_html($country["code"]) . '</option>';
                 }
                 ?>
             </select>
@@ -1835,9 +1819,9 @@ class idehwebLwp
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_secod]" id="lwp_secod" class="regular-text" style="display:none" value="" placeholder="_ _ _ _ _ _" />';
         ?>
         <button type="button" class="button-primary auth i35"
-                value="<?php _e('Authenticate', $this->textdomain); ?>"><?php _e('activate sms login', $this->textdomain); ?></button>
+                value="<?php _e('Authenticate', 'login-with-phone-number'); ?>"><?php _e('activate sms login', 'login-with-phone-number'); ?></button>
         <button type="button" class="button-primary activate i34" style="display: none"
-                value="<?php _e('Activate', $this->textdomain); ?>"><?php _e('activate account', $this->textdomain); ?></button>
+                value="<?php _e('Activate', 'login-with-phone-number'); ?>"><?php _e('activate account', 'login-with-phone-number'); ?></button>
 
         <?php
     }
@@ -1854,7 +1838,7 @@ class idehwebLwp
         </div>
 
         <button type="button" class="button-primary authwithwebsite i35"
-                value="<?php _e('Authenticate', $this->textdomain); ?>"><?php _e('activate sms login', $this->textdomain); ?></button>
+                value="<?php _e('Authenticate', 'login-with-phone-number'); ?>"><?php _e('activate sms login', 'login-with-phone-number'); ?></button>
 
         <?php
     }
@@ -1869,7 +1853,7 @@ class idehwebLwp
             $display = 'none';
         }
         echo '<input id="lwp_token" type="text" name="idehweb_lwp_settings[idehweb_token]" class="regular-text" value="' . esc_attr($options['idehweb_token']) . '" />
-		<p class="description">' . __('enter api key', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter api key', 'login-with-phone-number') . '</p>';
 
     }
 
@@ -1896,7 +1880,16 @@ class idehwebLwp
             $display = 'none';
         }
         echo '<input id="lwp_token" type="text" name="idehweb_lwp_settings[idehweb_redirect_url]" class="regular-text" value="' . esc_attr($options['idehweb_redirect_url']) . '" />
-		<p class="description">' . __('enter redirect url', $this->textdomain) . '</p>';
+		<p class="description">' . __('enter redirect url', 'login-with-phone-number') . '</p>';
+
+    }
+
+    function setting_idehweb_login_message()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_login_message'])) $options['idehweb_login_message'] = 'Welcome, You are logged in...';
+        echo '<input id="lwp_token" type="text" name="idehweb_lwp_settings[idehweb_login_message]" class="regular-text" value="' . esc_attr($options['idehweb_login_message']) . '" />
+		<p class="description">' . __('enter login message', 'login-with-phone-number') . '</p>';
 
     }
 
@@ -1928,10 +1921,11 @@ class idehwebLwp
         if (!$options['idehweb_phone_number']) {
             $display = 'none';
         }
-        echo '<div> <p>' . __('make a page and name it login, put the shortcode inside it, now you have a login page!', $this->textdomain) . '</p>
-		<p><code>[idehweb_lwp]</code></p>
+        echo '<div> <p>' . __('make a page and name it login, put the shortcode inside it, now you have a login page!', 'login-with-phone-number') . '</p>
+		<p><code>[idehweb_lwp]</code></p>';
+        echo '<div> <p>' . __('For showing metas of user for example in profile page, like: showing phone number, username, email, nicename', 'login-with-phone-number') . '</p>
 		<p><code>[idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"]</code></p>
-		<p><a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank" class="lwp_more_help">' . __('Need more help?', $this->textdomain) . '</a></p>
+		<p><a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>
 		</div>';
     }
 
@@ -1940,14 +1934,12 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["93"];
         $country_codes = $this->get_country_code_options();
-//        print_r($options['idehweb_country_codes']);
-
         ?>
         <select name="idehweb_lwp_settings[idehweb_country_codes][]" id="idehweb_country_codes" multiple>
             <?php
             foreach ($country_codes as $country) {
                 $rr = in_array($country["value"], $options['idehweb_country_codes']);
-                echo '<option value="' . $country["value"] . '" ' . ($rr ? ' selected="selected"' : '') . '>' . $country['label'] . '</option>';
+                echo '<option value="' . esc_attr($country["value"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($country['label']) . '</option>';
             }
             ?>
         </select>
@@ -1960,10 +1952,8 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_username'])) $options['idehweb_default_username'] = 'user';
 
-//        print_r($options['idehweb_country_codes']);
-
         echo '<input id="lwp_default_username" type="text" name="idehweb_lwp_settings[idehweb_default_username]" class="regular-text" value="' . esc_attr($options['idehweb_default_username']) . '" />
-		<p class="description">' . __('Default username', $this->textdomain) . '</p>';
+		<p class="description">' . __('Default username', 'login-with-phone-number') . '</p>';
 
     }
 
@@ -1972,10 +1962,9 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_nickname'])) $options['idehweb_default_nickname'] = 'user';
 
-//        print_r($options['idehweb_country_codes']);
 
         echo '<input id="lwp_default_nickname" type="text" name="idehweb_lwp_settings[idehweb_default_nickname]" class="regular-text" value="' . esc_attr($options['idehweb_default_nickname']) . '" />
-		<p class="description">' . __('Default nickname', $this->textdomain) . '</p>';
+		<p class="description">' . __('Default nickname', 'login-with-phone-number') . '</p>';
 
     }
 
@@ -1994,18 +1983,14 @@ class idehwebLwp
 
         <div class="creditor">
             <button type="button" class="button-primary loiuyt"
-                    value="<?php _e('Check credit', $this->textdomain); ?>"><?php _e('Check credit', $this->textdomain); ?></button>
+                    value="<?php _e('Check credit', 'login-with-phone-number'); ?>"><?php _e('Check credit', 'login-with-phone-number'); ?></button>
             <span class="cp"></span>
 
             <button type="button" class="button-primary refreshShop"
-                    value="<?php _e('Refresh', $this->textdomain); ?>"><?php _e('Refresh', $this->textdomain); ?></button>
+                    value="<?php _e('Refresh', 'login-with-phone-number'); ?>"><?php _e('Refresh', 'login-with-phone-number'); ?></button>
             <span class="df">
-                <?php echo $options['idehweb_website_url']; ?>
-                <!--                <a href="#" class="lwpchangePhoneNumber">-->
-                <?php //_e('change', $this->textdomain);
-                //
-                ?>
-                <!--            </a>-->
+                <?php echo esc_url($options['idehweb_website_url']); ?>
+
             </span>
         </div>
 
@@ -2079,7 +2064,7 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_redirect_url'])) $options['idehweb_redirect_url'] = home_url();
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = 'firebase';
-        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '0';
+        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
         if (!isset($options['idehweb_firebase_api'])) $options['idehweb_firebase_api'] = '';
         if (!isset($options['idehweb_firebase_config'])) $options['idehweb_firebase_config'] = '';
         if (!isset($options['idehweb_enable_timer_on_sending_sms'])) $options['idehweb_enable_timer_on_sending_sms'] = '1';
@@ -2089,7 +2074,7 @@ class idehwebLwp
             'ajaxurl' => admin_url('admin-ajax.php'),
             'redirecturl' => $options['idehweb_redirect_url'],
             'UserId' => 0,
-            'loadingmessage' => __('please wait...', $this->textdomain),
+            'loadingmessage' => __('please wait...', 'login-with-phone-number'),
             'timer' => $options['idehweb_enable_timer_on_sending_sms'],
             'timer_count' => $options['idehweb_timer_count'],
         );
@@ -2106,10 +2091,6 @@ class idehwebLwp
             wp_enqueue_script('lwp-firebase', 'https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js', array(), false, true);
             wp_enqueue_script('lwp-firebase-auth', 'https://www.gstatic.com/firebasejs/7.21.0/firebase-auth.js', array(), false, true);
             wp_enqueue_script('lwp-firebase-sender', plugins_url('/scripts/firebase-sender.js', __FILE__), array('jquery'));
-//            wp_add_inline_script('idehweb-lwp', '' . htmlspecialchars_decode($options['idehweb_firebase_config']));
-//            wp_add_inline_script('idehweb-lwp', 'lwp_localize.firebase.config = ' . htmlspecialchars_decode($options['idehweb_firebase_config']));
-//            $localize['firebase_config'] = $this->removePhpComments($options['idehweb_firebase_config']);
-
 
             $localize['firebase_api'] = $options['idehweb_firebase_api'];
         }
@@ -2138,18 +2119,18 @@ class idehwebLwp
         if (!isset($atts['email'])) $atts['email'] = false;
         if (!isset($atts['phone_number'])) $atts['phone_number'] = true;
         if ($atts['username'] == 'true') {
-            echo '<div class="lwp user_login">' . $user->user_login . '</div>';
+            echo '<div class="lwp user_login">' . esc_html($user->user_login) . '</div>';
         }
         if ($atts['nicename'] == 'true') {
-            echo '<div class="lwp user_nicename">' . $user->user_nicename . '</div>';
+            echo '<div class="lwp user_nicename">' . esc_html($user->user_nicename) . '</div>';
 
         }
         if ($atts['email'] == 'true') {
-            echo '<div class="lwp user_email">' . $user->user_email . '</div>';
+            echo '<div class="lwp user_email">' . esc_html($user->user_email) . '</div>';
 
         }
         if ($atts['phone_number'] == 'true') {
-            echo '<div class="lwp user_email">' . get_user_meta($user->ID, 'phone_number', true) . '</div>';
+            echo '<div class="lwp user_email">' . esc_html(get_user_meta($user->ID, 'phone_number', true)) . '</div>';
         }
         return ob_get_clean();
     }
@@ -2162,14 +2143,19 @@ class idehwebLwp
         ), $atts));
         ob_start();
         $options = get_option('idehweb_lwp_settings');
-        $localizationـoptions = get_option('idehweb_lwp_settings_localization');
+        $localizationoptions = get_option('idehweb_lwp_settings_localization');
         if (!isset($options['idehweb_sms_login'])) $options['idehweb_sms_login'] = '1';
+        if (!isset($options['idehweb_enable_accept_terms_and_condition'])) $options['idehweb_enable_accept_terms_and_condition'] = '1';
+        if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = '';
         if (!isset($options['idehweb_email_login'])) $options['idehweb_email_login'] = '1';
         if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
         if (!isset($options['idehweb_redirect_url'])) $options['idehweb_redirect_url'] = '';
+        if (!isset($options['idehweb_login_message'])) $options['idehweb_login_message'] = 'Welcome, You are logged in...';
         if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = [];
         if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
-        if (!isset($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field'])) $localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field'] = '';
+        if (!isset($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'])) $localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'] = '';
+        if (!isset($localizationoptions['idehweb_localization_title_of_login_form'])) $localizationoptions['idehweb_localization_title_of_login_form'] = '';
+        if (!isset($localizationoptions['idehweb_localization_title_of_login_form_email'])) $localizationoptions['idehweb_localization_title_of_login_form_email'] = '';
 
         $class = '';
         if ($options['idehweb_position_form'] == '1') {
@@ -2180,47 +2166,57 @@ class idehwebLwp
             ?>
             <a id="show_login" class="show_login"
                style="display: none"
-               data-sticky="<?php echo esc_attr($options['idehweb_position_form']); ?>"><?php echo __('login', $this->textdomain); ?></a>
+               data-sticky="<?php echo esc_attr($options['idehweb_position_form']); ?>"><?php echo __('login', 'login-with-phone-number'); ?></a>
             <div class="lwp_forms_login <?php echo esc_attr($class); ?>">
                 <?php
                 if ($options['idehweb_sms_login']) {
-                    if($options['idehweb_email_login'] && $options['idehweb_sms_login']){
-                        $cclass='display:none';
-                    }else if(!$options['idehweb_email_login'] && $options['idehweb_sms_login']){
-                        $cclass='display:block';
+                    if ($options['idehweb_email_login'] && $options['idehweb_sms_login']) {
+                        $cclass = 'display:none';
+                    } else if (!$options['idehweb_email_login'] && $options['idehweb_sms_login']) {
+                        $cclass = 'display:block';
                     }
                     ?>
                     <form id="lwp_login" class="ajax-auth" action="login" style="<?php echo $cclass; ?>" method="post">
 
-                        <div class="lh1"><?php echo isset($localizationـoptions['idehweb_localization_status']) ? $localizationـoptions['idehweb_localization_title_of_login_form'] : (__('Login / register', $this->textdomain)); ?></div>
+                        <div class="lh1"><?php echo isset($localizationoptions['idehweb_localization_status']) ? esc_html($localizationoptions['idehweb_localization_title_of_login_form']) : (__('Login / register', 'login-with-phone-number')); ?></div>
                         <p class="status"></p>
                         <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
-                        <label class="lwp_labels"
-                               for="lwp_username"><?php echo __('Phone number', $this->textdomain); ?></label>
-                        <?php
-                        //                    $country_codes = $this->get_country_code_options();
-                        ?>
-                        <div class="lwp_country_codes_wrap">
-                            <select id="lwp_country_codes">
-                                <?php
-                                foreach ($options['idehweb_country_codes'] as $country) {
+                        <div class="lwp-form-box">
+                            <label class="lwp_labels"
+                                   for="lwp_username"><?php echo __('Phone number', 'login-with-phone-number'); ?></label>
+                            <?php
+                            //                    $country_codes = $this->get_country_code_options();
+                            ?>
+                            <div class="lwp-form-box-bottom">
+                                <div class="lwp_country_codes_wrap">
+                                    <select id="lwp_country_codes">
+                                        <?php
+                                        foreach ($options['idehweb_country_codes'] as $country) {
 //                            $rr=in_array($country["value"],$options['idehweb_country_codes']);
-                                    echo '<option value="' . $country . '">+' . $country . '</option>';
-                                }
-                                ?>
-                            </select>
+                                            echo '<option value="' . esc_attr($country) . '">+' . esc_html($country) . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <input type="number" class="required lwp_username the_lwp_input" name="lwp_username"
+                                       placeholder="<?php echo ($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? sanitize_text_field($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) : (__('9*********', 'login-with-phone-number')); ?>">
+                            </div>
                         </div>
-                        <input type="number" class="required lwp_username the_lwp_input" name="lwp_username"
-                               placeholder="<?php echo ($localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? $localizationـoptions['idehweb_localization_placeholder_of_phonenumber_field'] : (__('9*********', $this->textdomain)); ?>">
-
+                        <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
+                            <div class="accept_terms_and_conditions">
+                                <input class="required lwp_check_box" type="checkbox" name="lwp_accept_terms"
+                                       checked="checked">
+                                <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>
+                            </div>
+                        <?php } ?>
                         <button class="submit_button auth_phoneNumber" type="submit">
-                            <?php echo __('Submit', $this->textdomain); ?>
+                            <?php echo __('Submit', 'login-with-phone-number'); ?>
                         </button>
                         <?php
                         if ($options['idehweb_email_login']) {
                             ?>
                             <button class="submit_button auth_with_email secondaryccolor" type="button">
-                                <?php echo __('Login with email', $this->textdomain); ?>
+                                <?php echo __('Login with email', 'login-with-phone-number'); ?>
                             </button>
                         <?php } ?>
                         <a class="close" href="">(x)</a>
@@ -2229,27 +2225,34 @@ class idehwebLwp
                 <?php
                 if ($options['idehweb_email_login']) {
 //                    if($options['idehweb_email_login'] && $options['idehweb_sms_login']){
-                        $ecclass='display:block';
+                    $ecclass = 'display:block';
 //                    }
                     ?>
-                    <form id="lwp_login_email" class="ajax-auth" action="loginemail" style="<?php echo $ecclass; ?>" method="post">
+                    <form id="lwp_login_email" class="ajax-auth" action="loginemail" style="<?php echo $ecclass; ?>"
+                          method="post">
 
-                        <div class="lh1"><?php echo __('Login / register', $this->textdomain); ?></div>
+                        <div class="lh1"><?php echo isset($localizationoptions['idehweb_localization_status']) ? esc_html($localizationoptions['idehweb_localization_title_of_login_form_email']) : (__('Login / register', 'login-with-phone-number')); ?></div>
                         <p class="status"></p>
                         <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
                         <label class="lwp_labels"
-                               for="lwp_email"><?php echo __('Your email:', $this->textdomain); ?></label>
+                               for="lwp_email"><?php echo __('Your email:', 'login-with-phone-number'); ?></label>
                         <input type="email" class="required lwp_email the_lwp_input" name="lwp_email"
-                               placeholder="<?php echo __('Please enter your email', $this->textdomain); ?>">
-
+                               placeholder="<?php echo __('Please enter your email', 'login-with-phone-number'); ?>">
+                        <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
+                            <div class="accept_terms_and_conditions">
+                                <input class="required lwp_check_box lwp_accept_terms_email" type="checkbox"
+                                       name="lwp_accept_terms_email" checked="checked">
+                                <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>
+                            </div>
+                        <?php } ?>
                         <button class="submit_button auth_email" type="submit">
-                            <?php echo __('Submit', $this->textdomain); ?>
+                            <?php echo __('Submit', 'login-with-phone-number'); ?>
                         </button>
                         <?php
                         if ($options['idehweb_sms_login']) {
                             ?>
                             <button class="submit_button auth_with_phoneNumber secondaryccolor" type="button">
-                                <?php echo __('Login with phone number', $this->textdomain); ?>
+                                <?php echo __('Login with phone number', 'login-with-phone-number'); ?>
                             </button>
                         <?php } ?>
                         <a class="close" href="">(x)</a>
@@ -2257,7 +2260,7 @@ class idehwebLwp
                 <?php } ?>
 
                 <form id="lwp_activate" class="ajax-auth" action="activate" method="post">
-                    <div class="lh1"><?php echo __('Activation', $this->textdomain); ?></div>
+                    <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
                     <p class="status"></p>
                     <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
                     <div class="lwp_top_activation">
@@ -2266,20 +2269,23 @@ class idehwebLwp
 
                     </div>
                     <label class="lwp_labels"
-                           for="lwp_scode"><?php echo __('Security code', $this->textdomain); ?></label>
+                           for="lwp_scode"><?php echo __('Security code', 'login-with-phone-number'); ?></label>
                     <input type="text" class="required lwp_scode" name="lwp_scode" placeholder="ـ ـ ـ ـ ـ ـ">
 
                     <button class="submit_button auth_secCode">
-                        <?php echo __('Activate', $this->textdomain); ?>
+                        <?php echo __('Activate', 'login-with-phone-number'); ?>
                     </button>
                     <button class="submit_button lwp_didnt_r_c lwp_disable" type="button">
-                        <?php echo __('Send code again', $this->textdomain); ?>
+                        <?php echo __('Send code again', 'login-with-phone-number'); ?>
                     </button>
                     <hr class="lwp_line"/>
                     <div class="lwp_bottom_activation">
 
                         <a class="lwp_change_pn" href="#">
-                            <?php echo __('Change phone number?', $this->textdomain); ?>
+                            <?php echo __('Change phone number?', 'login-with-phone-number'); ?>
+                        </a>
+                        <a class="lwp_change_el" href="#">
+                            <?php echo __('Change email?', 'login-with-phone-number'); ?>
                         </a>
                     </div>
 
@@ -2292,50 +2298,46 @@ class idehwebLwp
                     ?>
                     <form id="lwp_update_password" class="ajax-auth" action="update_password" method="post">
 
-                        <div class="lh1"><?php echo __('Update password', $this->textdomain); ?></div>
+                        <div class="lh1"><?php echo __('Update password', 'login-with-phone-number'); ?></div>
                         <p class="status"></p>
                         <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
                         <label class="lwp_labels"
-                               for="lwp_email"><?php echo __('Enter new password:', $this->textdomain); ?></label>
+                               for="lwp_email"><?php echo __('Enter new password:', 'login-with-phone-number'); ?></label>
                         <input type="password" class="required lwp_up_password" name="lwp_up_password"
-                               placeholder="<?php echo __('Please choose a password', $this->textdomain); ?>">
+                               placeholder="<?php echo __('Please choose a password', 'login-with-phone-number'); ?>">
 
                         <button class="submit_button auth_email" type="submit">
-                            <?php echo __('Update', $this->textdomain); ?>
+                            <?php echo __('Update', 'login-with-phone-number'); ?>
                         </button>
                         <a class="close" href="">(x)</a>
                     </form>
                     <form id="lwp_enter_password" class="ajax-auth" action="enter_password" method="post">
 
-                        <div class="lh1"><?php echo __('Enter password', $this->textdomain); ?></div>
+                        <div class="lh1"><?php echo __('Enter password', 'login-with-phone-number'); ?></div>
                         <p class="status"></p>
                         <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
                         <label class="lwp_labels"
-                               for="lwp_email"><?php echo __('Your password:', $this->textdomain); ?></label>
+                               for="lwp_email"><?php echo __('Your password:', 'login-with-phone-number'); ?></label>
                         <input type="password" class="required lwp_auth_password" name="lwp_auth_password"
-                               placeholder="<?php echo __('Please enter your password', $this->textdomain); ?>">
+                               placeholder="<?php echo __('Please enter your password', 'login-with-phone-number'); ?>">
 
                         <button class="submit_button login_with_pass" type="submit">
-                            <?php echo __('Login', $this->textdomain); ?>
+                            <?php echo __('Login', 'login-with-phone-number'); ?>
                         </button>
                         <button class="submit_button forgot_password" type="button">
-                            <?php echo __('Forgot password', $this->textdomain); ?>
+                            <?php echo __('Forgot password', 'login-with-phone-number'); ?>
                         </button>
                         <hr class="lwp_line"/>
                         <div class="lwp_bottom_activation">
 
                             <a class="lwp_change_pn" href="#">
-                                <?php echo __('Change phone number?', $this->textdomain); ?>
+                                <?php echo __('Change phone number?', 'login-with-phone-number'); ?>
+                            </a>
+                            <a class="lwp_change_el" href="#">
+                                <?php echo __('Change email?', 'login-with-phone-number'); ?>
                             </a>
                         </div>
 
-                        <!--                    --><?php
-                        //                    if ($options['idehweb_sms_login']) {
-                        //                        ?>
-                        <!--                        <button class="submit_button auth_with_phoneNumber" type="button">-->
-                        <!--                            --><?php //echo __('Login with phone number', $this->textdomain); ?>
-                        <!--                        </button>-->
-                        <!--                    --><?php //} ?>
                         <a class="close" href="">(x)</a>
                     </form>
                 <?php } ?>
@@ -2343,7 +2345,9 @@ class idehwebLwp
             <?php
         } else {
             if ($options['idehweb_redirect_url'])
-                wp_redirect($options['idehweb_redirect_url']);
+                wp_redirect(esc_url($options['idehweb_redirect_url']));
+            else if ($options['idehweb_login_message'])
+                echo esc_html($options['idehweb_login_message']);
         }
         return ob_get_clean();
     }
@@ -2371,6 +2375,8 @@ class idehwebLwp
     function lwp_ajax_login()
     {
         $usesrname = sanitize_text_field($_GET['username']);
+        $options = get_option('idehweb_lwp_settings');
+
         if (preg_replace('/^(\-){0,1}[0-9]+(\.[0-9]+){0,1}/', '', $usesrname) == "") {
             $phone_number = ltrim($usesrname, '0');
             $phone_number = substr($phone_number, 0, 15);
@@ -2380,38 +2386,41 @@ class idehwebLwp
                 echo json_encode([
                     'success' => false,
                     'phone_number' => $phone_number,
-                    'message' => __('phone number is wrong!', $this->textdomain)
+                    'message' => __('phone number is wrong!', 'login-with-phone-number')
                 ]);
                 die();
             }
             $username_exists = $this->phone_number_exist($phone_number);
-            $registration = get_site_option('registration');
+//            $registration = get_site_option('registration');
+            if (!isset($options['idehweb_user_registration'])) $options['idehweb_user_registration'] = '1';
+            $registration = $options['idehweb_user_registration'];
             $is_multisite = is_multisite();
             if ($is_multisite) {
-                if ($registration == 'none' && !$username_exists) {
+                if ($registration == '0' && !$username_exists) {
                     echo json_encode([
                         'success' => false,
                         'phone_number' => $usesrname,
                         'registeration' => $registration,
                         'is_multisite' => $is_multisite,
                         'username_exists' => $username_exists,
-                        'message' => __('users can not register!', $this->textdomain)
+                        'message' => __('users can not register!', 'login-with-phone-number')
                     ]);
                     die();
                 }
             } else {
-                if (!get_option('users_can_register')) {
-//                if (!$username_exists) {
-                    echo json_encode([
-                        'success' => false,
-                        'phone_number' => $usesrname,
-                        'registeration' => $registration,
-                        'is_multisite' => $is_multisite,
-                        'username_exists' => $username_exists,
-                        'message' => __('users can not register!', $this->textdomain)
-                    ]);
-                    die();
-//                }
+                if (!$username_exists) {
+
+                    if ($registration == '0') {
+                        echo json_encode([
+                            'success' => false,
+                            'phone_number' => $usesrname,
+                            'registeration' => $registration,
+                            'is_multisite' => $is_multisite,
+                            'username_exists' => $username_exists,
+                            'message' => __('users can not register!', 'login-with-phone-number')
+                        ]);
+                        die();
+                    }
                 }
             }
             $userRegisteredNow = false;
@@ -2435,14 +2444,14 @@ class idehwebLwp
                         echo json_encode([
                             'success' => false,
                             'phone_number' => $phone_number,
-                            'message' => __('This username is already registered.', $this->textdomain)
+                            'message' => __('This username is already registered.', 'login-with-phone-number')
                         ]);
                         die();
                     } elseif (in_array('existing_user_email', $error)) {
                         echo json_encode([
                             'success' => false,
                             'phone_number' => $phone_number,
-                            'message' => __('This email address is already registered.', $this->textdomain)
+                            'message' => __('This email address is already registered.', 'login-with-phone-number')
                         ]);
                         die();
                     }
@@ -2465,14 +2474,13 @@ class idehwebLwp
             $log = '';
 
 
-
-            $options = get_option('idehweb_lwp_settings');
+//            $options = get_option('idehweb_lwp_settings');
             if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
             $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
             if (!$options['idehweb_password_login']) {
                 $log = $this->lwp_generate_token($username_exists, $phone_number);
 
-            }else{
+            } else {
                 if (!$userRegisteredNow) {
                     $showPass = true;
                 } else {
@@ -2487,7 +2495,7 @@ class idehwebLwp
 //                '$userRegisteredNow' => $userRegisteredNow,
 //                '$userRegisteredNow1' => $options['idehweb_password_login'],
                 'authWithPass' => (bool)(int)$options['idehweb_password_login'],
-                'message' => __('Sms sent successfully!', $this->textdomain),
+                'message' => __('Sms sent successfully!', 'login-with-phone-number'),
                 'log' => $log
             ]);
             die();
@@ -2496,7 +2504,7 @@ class idehwebLwp
             echo json_encode([
                 'success' => false,
                 'phone_number' => $usesrname,
-                'message' => __('phone number is wrong!', $this->textdomain)
+                'message' => __('phone number is wrong!', 'login-with-phone-number')
             ]);
             die();
         }
@@ -2514,78 +2522,87 @@ class idehwebLwp
     function lwp_forgot_password()
     {
         $log = '';
-        if ($_GET['email'] != '' && $_GET['ID']) {
-            $log = $this->lwp_generate_token($_GET['ID'], $_GET['email'], true);
+        if (!isset($_GET['ID'])) $_GET['ID'] = null;
+        $ID = sanitize_text_field($_GET['ID']);
+
+        if (!isset($_GET['email'])) $_GET['email'] = '';
+        $email = sanitize_email($_GET['email']);
+
+        if (!isset($_GET['phone_number'])) $_GET['phone_number'] = '';
+        $phone_number = sanitize_text_field($_GET['phone_number']);
+
+
+//        $_GET['ID'] = (esc_html($_GET['ID']));
+//        $_GET['email'] = (esc_html($_GET['email']));
+//        $_GET['phone_number'] = (esc_html($_GET['phone_number']));
+        if (!is_numeric($ID)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Please enter correct user ID', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if (isset($phone_number) && $phone_number != '' && !is_numeric($phone_number)) {
+            echo json_encode([
+                'success' => false,
+                'phone_number' => $phone_number,
+                'message' => __('Please enter correct phone number', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if (isset($email) && $email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Email is wrong!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        $user = get_user_by('ID', $ID);
+
+        if (is_wp_error($user)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('User not found!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if ($email != '' && $ID) {
+            $log = $this->lwp_generate_token($ID, $email, true);
 
         }
-        if ($_GET['phone_number'] != '' && $_GET['ID'] != '') {
-            $log = $this->lwp_generate_token($_GET['ID'], $_GET['phone_number']);
+        if ($phone_number != '' && $ID != '') {
+            $log = $this->lwp_generate_token($ID, $phone_number);
 
 //
         }
-        update_user_meta($_GET['ID'], 'updatedPass', '0');
-
-
-//        $options = get_option('idehweb_lwp_settings');
-//        if (!isset($options['idehweb_smsbharti_api_key'])) $options['idehweb_smsbharti_api_key'] = '';
-//        if (!isset($options['idehweb_smsbharti_from'])) $options['idehweb_smsbharti_from'] = '';
-//        if (!isset($options['idehweb_smsbharti_template_id'])) $options['idehweb_smsbharti_template_id'] = '';
-//        if (!isset($options['idehweb_smsbharti_routeid'])) $options['idehweb_smsbharti_routeid'] = '';
-//        $api_key = $options['idehweb_smsbharti_api_key'];
-//        $from = $options['idehweb_smsbharti_user_key'];
-//        $template_id = $options['idehweb_smsbharti_template_id'];
-//        $routeid = $options['idehweb_smsbharti_routeid'];
-//        $phone = ltrim($_GET['phone_number'], '0');
-//        $phone = substr($phone, 0, 12);
-//        $phone = substr($phone, 2, 10);
-//        $text='received?';
-//        $url = "http://webmsg.smsbharti.com/app/smsapi/index.php?key=".$api_key."&campaign=0&routeid=".$routeid."&type=text&contacts=".$phone."&senderid=".$from."&msg=".$text."&template_id=".$template_id;
-////        $auth = base64_encode( $this->sid . ':' . $this->token );
-////        return ['ytr'=>$url];
-//        $response = wp_safe_remote_get(
-//            $url,
-//            array(
-//                'method' => 'GET',
-//                'timeout' => 60,
-//                'redirection' => 5,
-////				'httpversion' => '1.1',
-//                'blocking' => true,
-//                'headers' => array(),
-////                'headers' => [
-////                    'Authorization' => "Basic $auth"
-////                ],
-//                'body' => array(),
-//                'cookies' => array(),
-//            )
-//        );
+        update_user_meta($ID, 'updatedPass', '0');
 
         echo json_encode([
             'success' => true,
-            'ID' => $_GET['ID'],
+            'ID' => $ID,
             'log' => $log,
-//            '$url' => $url,
-            'message' => __('Update password', $this->textdomain)
+            'message' => __('Update password', 'login-with-phone-number')
         ]);
-//
         die();
-//        }
     }
 
     function lwp_enter_password_action()
     {
 
-
-        if ($_GET['email'] != '') {
-            $user = get_user_by('email', $_GET['email']);
+        $ID = sanitize_text_field($_GET['ID']);
+        $email = sanitize_email($_GET['email']);
+        $password = sanitize_text_field($_GET['password']);
+        if ($email != '') {
+            $user = get_user_by('email', $email);
 
         }
-        if ($_GET['ID'] != '') {
-            $user = get_user_by('ID', $_GET['ID']);
+        if ($ID != '') {
+            $user = get_user_by('ID', $ID);
 
         }
         $creds = array(
             'user_login' => $user->user_login,
-            'user_password' => $_GET['password'],
+            'user_password' => $password,
             'remember' => true
         );
 
@@ -2596,7 +2613,7 @@ class idehwebLwp
                 'success' => false,
                 'ID' => $user->ID,
                 'err' => $user->get_error_message(),
-                'message' => __('Password is incorrect!', $this->textdomain)
+                'message' => __('Password is incorrect!', 'login-with-phone-number')
             ]);
             die();
         } else {
@@ -2604,7 +2621,7 @@ class idehwebLwp
             echo json_encode([
                 'success' => true,
                 'ID' => $user->ID,
-                'message' => __('Redirecting...', $this->textdomain)
+                'message' => __('Redirecting...', 'login-with-phone-number')
             ]);
 
             die();
@@ -2614,18 +2631,19 @@ class idehwebLwp
     function lwp_update_password_action()
     {
         $user = wp_get_current_user();
+        $password = sanitize_text_field($_GET['password']);
         if ($user) {
             wp_clear_auth_cookie();
             wp_update_user([
                 'ID' => $user->ID,
-                'user_pass' => $_GET['password']
+                'user_pass' => $password
             ]);
             update_user_meta($user->ID, 'updatedPass', 1);
             wp_set_current_user($user->ID); // Set the current user detail
             wp_set_auth_cookie($user->ID); // Set auth details in cookie
             echo json_encode([
                 'success' => true,
-                'message' => __('Password set successfully! redirecting...', $this->textdomain)
+                'message' => __('Password set successfully! redirecting...', 'login-with-phone-number')
             ]);
 
             die();
@@ -2633,7 +2651,7 @@ class idehwebLwp
 
             echo json_encode([
                 'success' => false,
-                'message' => __('User not found', $this->textdomain)
+                'message' => __('User not found', 'login-with-phone-number')
             ]);
 
             die();
@@ -2643,11 +2661,28 @@ class idehwebLwp
     function lwp_ajax_login_with_email()
 
     {
-        $email = sanitize_text_field($_GET['email']);
+        $email = sanitize_email( $_GET['email'] );
         $userRegisteredNow = false;
+
+        $options = get_option('idehweb_lwp_settings');
+
+        if (!isset($options['idehweb_user_registration'])) $options['idehweb_user_registration'] = '1';
+        $registration = $options['idehweb_user_registration'];
+
+
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $email_exists = email_exists($email);
             if (!$email_exists) {
+                if ($registration == '0') {
+                    echo json_encode([
+                        'success' => false,
+                        'email' => $email,
+                        'registeration' => $registration,
+                        'email_exists' => $email_exists,
+                        'message' => __('users can not register!', 'login-with-phone-number')
+                    ]);
+                    die();
+                }
                 $info = array();
                 $info['user_email'] = sanitize_user($email);
                 $info['user_nicename'] = $info['nickname'] = $info['display_name'] = $this->generate_nickname();
@@ -2662,7 +2697,7 @@ class idehwebLwp
                         'email' => $email,
                         '$email_exists' => $email_exists,
                         '$error' => $error,
-                        'message' => __('This email address is already registered.', $this->textdomain)
+                        'message' => __('This email address is already registered.', 'login-with-phone-number')
                     ]);
 
                     die();
@@ -2683,7 +2718,7 @@ class idehwebLwp
             } else {
                 $log = $this->lwp_generate_token($email_exists, $email, true);
             }
-            $options = get_option('idehweb_lwp_settings');
+//            $options = get_option('idehweb_lwp_settings');
             if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
             $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
             if (!$options['idehweb_password_login']) {
@@ -2700,7 +2735,7 @@ class idehwebLwp
                 'authWithPass' => (bool)(int)$options['idehweb_password_login'],
 
                 'email' => $email,
-                'message' => __('Email sent successfully!', $this->textdomain)
+                'message' => __('Email sent successfully!', 'login-with-phone-number')
             ]);
             die();
 
@@ -2708,7 +2743,7 @@ class idehwebLwp
             echo json_encode([
                 'success' => false,
                 'email' => $email,
-                'message' => __('email is wrong!', $this->textdomain)
+                'message' => __('email is wrong!', 'login-with-phone-number')
             ]);
             die();
         }
@@ -2755,7 +2790,7 @@ class idehwebLwp
         $six_digit_random_number = mt_rand(100000, 999999);
         update_user_meta($user_id, 'activation_code', $six_digit_random_number);
         if ($send_email) {
-            $wp_mail = wp_mail($contact, 'activation code', __('your activation code: ', $this->textdomain) . $six_digit_random_number);
+            $wp_mail = wp_mail($contact, 'activation code', __('your activation code: ', 'login-with-phone-number') . $six_digit_random_number);
             return $wp_mail;
         } else {
             return $this->send_sms($contact, $six_digit_random_number);
@@ -2801,7 +2836,7 @@ class idehwebLwp
     function send_sms($phone_number, $code)
     {
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '0';
+        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = 'firebase';
         if ($options['idehweb_use_custom_gateway'] == '1') {
             if ($options['idehweb_default_gateways'] == 'zenziva') {
@@ -2825,6 +2860,9 @@ class idehwebLwp
             } else if ($options['idehweb_default_gateways'] == 'taqnyat') {
                 $taqnyat = new LWP_Taqnyat_Api();
                 return $taqnyat->lwp_send_sms($phone_number, $code);
+            } else if ($options['idehweb_default_gateways'] == 'custom') {
+                $custom = new LWP_CUSTOM_Api();
+                return $custom->lwp_send_sms($phone_number, $code);
             } else {
                 return true;
             }
@@ -2853,7 +2891,7 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = 'firebase';
-        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '0';
+        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
 
         if (isset($_GET['phone_number'])) {
             $phoneNumber = sanitize_text_field($_GET['phone_number']);
@@ -2865,18 +2903,19 @@ class idehwebLwp
                     echo json_encode([
                         'success' => false,
                         'phone_number' => $phone_number,
-                        'message' => __('phone number is wrong!', $this->textdomain)
+                        'message' => __('phone number is wrong!', 'login-with-phone-number')
                     ]);
                     die();
                 }
             }
             $username_exists = $this->phone_number_exist($phone_number);
         } else if (isset($_GET['email'])) {
-            $username_exists = email_exists($_GET['email']);
+            $email=sanitize_email($_GET['email']);
+            $username_exists = email_exists($email);
         } else {
             echo json_encode([
                 'success' => false,
-                'message' => __('phone number is wrong!', $this->textdomain)
+                'message' => __('phone number is wrong!', 'login-with-phone-number')
             ]);
             die();
         }
@@ -2891,7 +2930,7 @@ class idehwebLwp
                         'success' => false,
                         'phone_number' => $phone_number,
                         'firebase' => $response->error,
-                        'message' => __('entered code is wrong!', $this->textdomain)
+                        'message' => __('entered code is wrong!', 'login-with-phone-number')
                     ]);
                     die();
                 } else {
@@ -2906,10 +2945,10 @@ class idehwebLwp
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
                         $updatedPass = (bool)(int)get_user_meta($username_exists, 'updatedPass', true);
 
-                        echo json_encode(array('success' => true, 'firebase' => $response, 'loggedin' => true, 'message' => __('loading...', $this->textdomain), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
+                        echo json_encode(array('success' => true, 'firebase' => $response, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
 
                     } else {
-                        echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', $this->textdomain)));
+                        echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', 'login-with-phone-number')));
 
                     }
 
@@ -2929,10 +2968,10 @@ class idehwebLwp
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
                         $updatedPass = (bool)(int)get_user_meta($username_exists, 'updatedPass', true);
 
-                        echo json_encode(array('success' => true, 'loggedin' => true, 'message' => __('loading...', $this->textdomain), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
+                        echo json_encode(array('success' => true, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
 
                     } else {
-                        echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', $this->textdomain)));
+                        echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', 'login-with-phone-number')));
 
                     }
 
@@ -2942,7 +2981,7 @@ class idehwebLwp
                     echo json_encode([
                         'success' => false,
                         'phone_number' => $phone_number,
-                        'message' => __('entered code is wrong!', $this->textdomain)
+                        'message' => __('entered code is wrong!', 'login-with-phone-number')
                     ]);
                     die();
 
@@ -2953,19 +2992,11 @@ class idehwebLwp
             echo json_encode([
                 'success' => false,
                 'phone_number' => $phone_number,
-                'message' => __('user does not exist!', $this->textdomain)
+                'message' => __('user does not exist!', 'login-with-phone-number')
             ]);
             die();
 
         }
-
-//        echo json_encode([
-//            'success' => false,
-//            'phone_number' => $phoneNumber,
-//            'message' => __('phone number is not correct!', $this->textdomain)
-//        ]);
-//        die();
-
     }
 
     function auth_user_login($user_login, $password, $login)
@@ -2978,10 +3009,10 @@ class idehwebLwp
         // From false to '' since v 4.9
         $user_signon = wp_signon($info, '');
         if (is_wp_error($user_signon)) {
-            echo json_encode(array('loggedin' => false, 'message' => __('Wrong username or password.', $this->textdomain)));
+            echo json_encode(array('loggedin' => false, 'message' => __('Wrong username or password.', 'login-with-phone-number')));
         } else {
             wp_set_current_user($user_signon->ID);
-            echo json_encode(array('loggedin' => true, 'message' => __($login . ' successful, redirecting...', $this->textdomain)));
+            echo json_encode(array('loggedin' => true, 'message' => __($login . ' successful, redirecting...', 'login-with-phone-number')));
         }
 
         die();
@@ -3007,7 +3038,7 @@ class idehwebLwp
             ])
         ]);
         $body = wp_remote_retrieve_body($response);
-        echo $body;
+        echo esc_html($body);
         die();
     }
 
@@ -3029,7 +3060,8 @@ class idehwebLwp
             ])
         ]);
         $body = wp_remote_retrieve_body($response);
-        echo $body;
+        echo esc_html($body);
+
         die();
     }
 
@@ -3071,7 +3103,8 @@ class idehwebLwp
         ]);
         $body = wp_remote_retrieve_body($response);
 
-        echo $body;
+        echo esc_html($body);
+
 
 
         die();
@@ -3094,8 +3127,9 @@ class idehwebLwp
 //        $body = wp_remote_retrieve_body($response);
 
 
-        echo $body;
+//        echo $body;
 
+        echo esc_html($body);
 
         die();
     }
@@ -3117,16 +3151,18 @@ class idehwebLwp
         ]);
         $body = wp_remote_retrieve_body($response);
 
-        echo $body;
+//        echo $body;
+        echo esc_html($body);
 
 
         die();
     }
+
     function lwp_modify_user_table($column)
     {
-        $column['phone_number'] = __('Phone number', $this->textdomain);
-        $column['activation_code'] = __('Activation code', $this->textdomain);
-        $column['registered_date'] = __('Registered date', $this->textdomain);
+        $column['phone_number'] = __('Phone number', 'login-with-phone-number');
+        $column['activation_code'] = __('Activation code', 'login-with-phone-number');
+        $column['registered_date'] = __('Registered date', 'login-with-phone-number');
 
         return $column;
     }
@@ -3165,7 +3201,6 @@ class idehwebLwp
     {
         return wp_parse_args(array('registered_date' => 'registered'), $columns);
     }
-
 
 
 }

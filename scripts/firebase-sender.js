@@ -33,6 +33,9 @@ jQuery(document).ready(function ($) {
                     idehweb_lwp.UserId = data.ID;
 
                 // $('p.status', ctrl).text(data.message);
+                $('.lwp_bottom_activation').css('display', 'block');
+                $('.lwp_bottom_activation .lwp_change_pn').css('display', 'block');
+                $('.lwp_bottom_activation .lwp_change_el').css('display', 'none');
                 if (data.success == true) {
                     if (data.authWithPass && data.showPass) {
                         $('#lwp_login_email').fadeOut(10);

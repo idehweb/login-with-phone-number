@@ -204,8 +204,32 @@ input.lwp_username{
 .rtl #lwp_login.ajax-auth input.lwp_username::placeholder{
     text-align: left;
 }
+.rtl .iti__selected-flag {
+    align-items: center;
+    justify-content: center;
+    align-content: stretch;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+    padding: 0 2px 0 2px;
+}
+.iti__country-list{
+    left: 0;
+}
+.iti__country{
+    padding: 5px 10px;
+    outline: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+input.lwp_username::placeholder{
+    color:#b1b1b1 !important;
+}
 #lwp_login.ajax-auth input.lwp_username{
-    width: calc(100% - 80px);
+    /*width: calc(100% - 0px);*/
     max-width: 100%;
     height: 30px;
     direction: ltr;

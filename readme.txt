@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.1
-Stable tag: 1.4.653
+Stable tag: 1.4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,9 +12,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Login/register with phone number
 
 NEW FEATURE:
-Wow, You can add almost every SMS gateways (if you have) yourself for free
-you can change style and appearance of forms
+Added country flags to login with phone number form
 
+You can add almost every SMS gateways (if you have) yourself for free
+you can change style and appearance of forms
 
 You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
 
@@ -66,11 +67,14 @@ MODAL
 
 == Changelog ==
 
-= 1.4.653=
-some translation bugs, thanks to @alexclassroom at git
-
-= 1.4.651=
-test automation
+= 1.4.7=
+Thanks to @marshallthomas47 (at git) who was sponsor of this update (I think)
+and @monagjr who have done some good changes:
+* Replace the custom-built phone input UI with well-tested and production-ready UI from International Telephone Input
+* Option for Terms Default Check Status
+* Default Country Settings
+* empty placholder shows valid phone example
+* show error msg for invalid form before submitting
 
 = 1.4.63=
 check all echos for security issues

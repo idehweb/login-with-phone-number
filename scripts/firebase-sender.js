@@ -9,12 +9,33 @@ jQuery(document).ready(function ($) {
 
     $('form#lwp_login').on('submit', function (e) {
         console.log('act 1');
-        if (!$(this).valid()) return false;
+        // if (!$(this).valid()) return false;
+        if (!$(this).valid()) {
+            var reason = '';
+            if ($('[name="lwp_accept_terms"]').length && !$('[name="lwp_accept_terms"]').valid()) {
+                reason = 'You must agree to the terms of service!'
+            } else {
+                reason = 'Phone number is required';
+            }
+            $('p.status', this).show().text(reason);
+            return false;
+        }
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login';
-        var username = $('.lwp_username').val();
-        username = username.replace(/^0+/, '');
+        // var username = $('.lwp_username').val();
+        // username = username.replace(/^0+/, '');
+
+        var username = $('[name="lwp_username"]').val();
+        username = username.replace(/^[0\+]+/, '');
+
         var lwp_country_codes = $('#lwp_country_codes').val();
+        console.log('lwp_country_codes',lwp_country_codes);
+
+        // if (!lwp_country_codes) {
+        //     lwp_country_codes = $('.iti__country-list li:first-child').attr('data-dial-code');
+        // }
+        console.log('lwp_country_codes',lwp_country_codes);
+        // return
         username = lwp_country_codes + username;
         var ctrl = $(this);
         $.ajax({
@@ -83,10 +104,10 @@ jQuery(document).ready(function ($) {
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
         // $('#lwp_activate').fadeOut(500);
-        var phone_number = $('.lwp_username').val();
+        var phone_number = $('[name="lwp_username"]').val();
         if (phone_number) {
             var lwp_country_codes = $('#lwp_country_codes').val();
-            phone_number = phone_number.replace(/^0+/, '');
+            phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
         }
@@ -145,9 +166,10 @@ jQuery(document).ready(function ($) {
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
-        var username = $('.lwp_username').val();
-        username = username.replace(/^0+/, '');
-
+        // var username = $('.lwp_username').val();
+        // username = username.replace(/^0+/, '');
+        var username = $('[name="lwp_username"]').val();
+        username = username.replace(/^[0\+]+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
         username = lwp_country_codes + username;
         var email = $('.lwp_email').val();

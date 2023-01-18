@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.4.653
+Version: 1.4.7
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -193,7 +193,7 @@ class idehwebLwp
 //        if (!isset($options['idehweb_phone_number'])) $options['idehweb_phone_number'] = '';
         add_settings_field('idehweb_token', __('Enter api key', 'login-with-phone-number'), array(&$this, 'setting_idehweb_token'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel alwaysDisplayNone']);
         add_settings_field('idehweb_country_codes', __('Country code accepted in front', 'login-with-phone-number'), array(&$this, 'setting_country_code'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
-
+        add_settings_field('idehweb_country_codes_default', __('Default Country', 'login-with-phone-number'), array(&$this, 'setting_country_code_default'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login']);
         if ($options['idehweb_token']) {
 
             add_settings_field('idehweb_sms_shop', __('Buy credit here', 'login-with-phone-number'), array(&$this, 'setting_buy_credit'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_login rltll']);
@@ -225,7 +225,7 @@ class idehwebLwp
         add_settings_field('idehweb_timer_count', __('Timer count', 'login-with-phone-number'), array(&$this, 'setting_timer_count'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_entimer']);
         add_settings_field('idehweb_enable_accept_terms_and_condition', __('Enable accept term & conditions', 'login-with-phone-number'), array(&$this, 'idehweb_enable_accept_term_and_conditions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
         add_settings_field('idehweb_term_and_conditions_text', __('Text of term & conditions part', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_text'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
-
+        add_settings_field('idehweb_term_and_conditions_default_checked', __('Check term & conditions by default?', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_default_checked'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
 
         add_settings_field('idehweb_lwp_space3', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -1297,11 +1297,11 @@ class idehwebLwp
     function setting_idehweb_localization_placeholder_of_phonenumber_field()
     {
         $options = get_option('idehweb_lwp_settings_localization');
-        if (!isset($options['idehweb_localization_placeholder_of_phonenumber_field'])) $options['idehweb_localization_placeholder_of_phonenumber_field'] = '9*********';
+        if (!isset($options['idehweb_localization_placeholder_of_phonenumber_field'])) $options['idehweb_localization_placeholder_of_phonenumber_field'] = '';
         else $options['idehweb_localization_placeholder_of_phonenumber_field'] = sanitize_text_field($options['idehweb_localization_placeholder_of_phonenumber_field']);
 
         echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_placeholder_of_phonenumber_field]" class="regular-text" value="' . esc_attr($options['idehweb_localization_placeholder_of_phonenumber_field']) . '" />
-		<p class="description">' . __('9*********', 'login-with-phone-number') . '</p>';
+		<p class="description">' . __('If empty, a valid example number for the selected country will be shown', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_sms_login()
@@ -1771,6 +1771,14 @@ class idehwebLwp
         echo '<textarea name="idehweb_lwp_settings[idehweb_term_and_conditions_text]" class="regular-text">' . esc_attr($options['idehweb_term_and_conditions_text']) . '</textarea>
 		<p class="description">' . __('enter term and condition accepting text', 'login-with-phone-number') . '</p>';
     }
+    function setting_term_and_conditions_default_checked()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_term_and_conditions_default_checked'])) $options['idehweb_term_and_conditions_default_checked'] = '1';
+
+        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_term_and_conditions_default_checked]" value="0" />
+		<label><input type="checkbox" id="idehweb_term_and_conditions_default_checked" name="idehweb_lwp_settings[idehweb_term_and_conditions_default_checked]" value="1"' . (esc_attr($options['idehweb_term_and_conditions_default_checked']) ? ' checked="checked"' : '') . ' />' . __('Accept/Check by default. ', 'login-with-phone-number') . '</label>';
+    }
 
     function credit_adminbar()
     {
@@ -1797,7 +1805,7 @@ class idehwebLwp
                 $country_codes = $this->get_country_code_options();
 
                 foreach ($country_codes as $country) {
-                    echo '<option value="' . esc_attr($country["value"]) . '" ' . (($options['idehweb_phone_number_ccode'] == $country["value"]) ? ' selected="selected"' : '') . ' >+' . esc_html($country['value']) . ' - ' . esc_html($country["code"]) . '</option>';
+                    echo '<option value="' . esc_attr($country["code"]) . '" ' . (($options['idehweb_phone_number_ccode'] == $country["code"]) ? ' selected="selected"' : '') . ' >+' . esc_html($country['value']) . ' - ' . esc_html($country["code"]) . '</option>';
                 }
                 ?>
             </select>
@@ -1922,21 +1930,40 @@ class idehwebLwp
     function setting_country_code()
     {
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["93"];
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["uk"];
         $country_codes = $this->get_country_code_options();
         ?>
         <select name="idehweb_lwp_settings[idehweb_country_codes][]" id="idehweb_country_codes" multiple>
             <?php
             foreach ($country_codes as $country) {
-                $rr = in_array($country["value"], $options['idehweb_country_codes']);
-                echo '<option value="' . esc_attr($country["value"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($country['label']) . '</option>';
+                $rr = in_array($country["code"], $options['idehweb_country_codes']);
+                echo '<option value="' . esc_attr($country["code"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($country['label']) . '</option>';
             }
             ?>
         </select>
         <?php
 
     }
+    function setting_country_code_default()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_country_codes_default'])) $options['idehweb_country_codes_default'] = "";
+        $country_codes = $this->get_country_code_options();
+        ?>
+        <select name="idehweb_lwp_settings[idehweb_country_codes_default]" id="idehweb_country_codes_default">
+            <option selected="selected" value="">select default country</option>
+            <?php
+            foreach ($country_codes as $country) {
+                if (!in_array($country["code"], $options['idehweb_country_codes'])) continue;
+                $rr = ($country["code"] == $options['idehweb_country_codes_default']);
+                echo '<option value="' . esc_attr($country["code"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($country['label']) . '</option>';
+            }
+            ?>
+        </select>
+<!--        <p class="description">note: if you change accepted countries, you update this after save.</p>-->
+        <?php
 
+    }
     function setting_default_username()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -2090,6 +2117,38 @@ class idehwebLwp
             wp_add_inline_script('idehweb-lwp', '' . htmlspecialchars_decode($options['idehweb_firebase_config']));
         }
 
+
+        // integrate intl-tel-input
+        // get allowed countries
+        $onlyCountries = [];
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["uk"];
+        $country_codes = $this->get_country_code_options();
+        foreach ($country_codes as $country) {
+            $rr = in_array($country["code"], $options['idehweb_country_codes']);
+            if ($rr) $onlyCountries[] = $country["code"];
+        }
+// get initial/default country, and make sure it exists in allowed counties
+        $initialCountry = $options['idehweb_country_codes_default'];
+        $initialCountry = in_array($initialCountry, $onlyCountries) ? $initialCountry : '';
+
+
+        wp_enqueue_style('lwp-intltelinput-style', plugins_url('/styles/intlTelInput.min.css', __FILE__));
+        wp_add_inline_style('lwp-intltelinput-style','.iti { width: 100%; }#phone{font-size: 20px;}');
+        wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
+        wp_add_inline_script('lwp-intltelinput-script', '(function(){
+            var input = document.querySelector("#phone");
+               if(input){
+                        window.intlTelInput(input, {
+                            utilsScript: "' . esc_url(plugins_url('/scripts/utils.js', __FILE__)) . '",
+                            hiddenInput: "lwp_username",
+                            onlyCountries: ' . (wp_json_encode($onlyCountries)). ',
+                            initialCountry: "' . esc_html($initialCountry) . '",
+                        });
+                }
+    })();');
+
+
     }
 
     function idehweb_lwp_metas($vals)
@@ -2137,6 +2196,7 @@ class idehwebLwp
         if (!isset($options['idehweb_sms_login'])) $options['idehweb_sms_login'] = '1';
         if (!isset($options['idehweb_enable_accept_terms_and_condition'])) $options['idehweb_enable_accept_terms_and_condition'] = '1';
         if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = '';
+        if (!isset($options['idehweb_term_and_conditions_default_checked'])) $options['idehweb_term_and_conditions_default_checked'] = '0';
         if (!isset($options['idehweb_email_login'])) $options['idehweb_email_login'] = '1';
         if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
         if (!isset($options['idehweb_redirect_url'])) $options['idehweb_redirect_url'] = '';
@@ -2178,18 +2238,20 @@ class idehwebLwp
                             //                    $country_codes = $this->get_country_code_options();
                             ?>
                             <div class="lwp-form-box-bottom">
-                                <div class="lwp_country_codes_wrap">
-                                    <select id="lwp_country_codes">
-                                        <?php
-                                        foreach ($options['idehweb_country_codes'] as $country) {
-//                            $rr=in_array($country["value"],$options['idehweb_country_codes']);
-                                            echo '<option value="' . esc_attr($country) . '">+' . esc_html($country) . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <input type="number" class="required lwp_username the_lwp_input" name="lwp_username"
-                                       placeholder="<?php echo ($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? sanitize_text_field($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) : (__('9*********', 'login-with-phone-number')); ?>">
+<!--                                <div class="lwp_country_codes_wrap">-->
+<!--                                    <select id="lwp_country_codes">-->
+<!--                                        --><?php
+//                                        foreach ($options['idehweb_country_codes'] as $country) {
+////                            $rr=in_array($country["value"],$options['idehweb_country_codes']);
+//                                            echo '<option value="' . esc_attr($country) . '">+' . esc_html($country) . '</option>';
+//                                        }
+//                                        ?>
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <input type="number" class="required lwp_username the_lwp_input" name="lwp_username"-->
+                                <input type="hidden" id="lwp_country_codes">
+                                <input type="tel" id="phone" class="required lwp_username the_lwp_input"
+                                       placeholder="<?php echo ($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? sanitize_text_field($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) : (__('', 'login-with-phone-number')); ?>">
                             </div>
                         </div>
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
@@ -2230,8 +2292,10 @@ class idehwebLwp
                                placeholder="<?php echo __('Please enter your email', 'login-with-phone-number'); ?>">
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
                             <div class="accept_terms_and_conditions">
+<!--                                name="lwp_accept_terms_email" checked="checked">-->
+
                                 <input class="required lwp_check_box lwp_accept_terms_email" type="checkbox"
-                                       name="lwp_accept_terms_email" checked="checked">
+                                name="lwp_accept_terms_email" <?php echo (($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >
                                 <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>

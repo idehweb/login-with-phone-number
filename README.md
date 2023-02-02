@@ -67,6 +67,10 @@ MODAL
 
 == Changelog ==
 
+= 1.4.8=  
+* remove bugs
+* add billing phone of woocommerce
+
 = 1.4.7=  
 Thanks to @marshallthomas47 (at git) who was sponsor of this update (I think)
 and @monagjr who have done some good changes:

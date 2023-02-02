@@ -301,14 +301,14 @@ class idehwebLwp
                         <span id="oihdfvygehv"></span>
                     </p>
                     <p class="submit">
-                     
+
                         <input type="submit" class="button-primary"
                                value="<?php _e('Save Changes', 'login-with-phone-number'); ?>"/></p>
-                    ?>
+
                     <?php
                     if (empty($options['idehweb_token'])) {
                         ?>
-                      
+
                     <?php } ?>
                 </form>
             </div>
@@ -317,7 +317,8 @@ class idehwebLwp
                     <img src="<?php echo plugins_url('/images/login-with-phone-number-wordpress-buy-pro-version.png', __FILE__) ?>"/>
                 </a>
 
-                <a style="margin-top: 10px;display:block" href="<?php echo esc_url(admin_url('/theme-install.php?theme=nodeeweb')) ?>" target="_blank">
+                <a style="margin-top: 10px;display:block"
+                   href="<?php echo esc_url(admin_url('/theme-install.php?theme=nodeeweb')) ?>" target="_blank">
                     <img src="<?php echo plugins_url('/images/nodeeweb-wordpress-theme.png', __FILE__) ?>"/>
                 </a>
             </div>
@@ -1377,8 +1378,8 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = 'firebase';
         $gateways = [
-            ["value" => "firebase", "label" => __("Firebase (Google)",'login-with-phone-number')],
-            ["value" => "custom", "label" => __("Custom (Config Your Gateway)",'login-with-phone-number')],
+            ["value" => "firebase", "label" => __("Firebase (Google)", 'login-with-phone-number')],
+            ["value" => "custom", "label" => __("Custom (Config Your Gateway)", 'login-with-phone-number')],
         ];
 
         ?>
@@ -1766,11 +1767,12 @@ class idehwebLwp
     {
 
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = __('By submitting, you agree to the <a href="#">Terms and Privacy Policy</a>','login-with-phone-number');
+        if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = __('By submitting, you agree to the <a href="#">Terms and Privacy Policy</a>', 'login-with-phone-number');
         else $options['idehweb_term_and_conditions_text'] = ($options['idehweb_term_and_conditions_text']);
         echo '<textarea name="idehweb_lwp_settings[idehweb_term_and_conditions_text]" class="regular-text">' . esc_attr($options['idehweb_term_and_conditions_text']) . '</textarea>
 		<p class="description">' . __('enter term and condition accepting text', 'login-with-phone-number') . '</p>';
     }
+
     function setting_term_and_conditions_default_checked()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -1789,7 +1791,7 @@ class idehwebLwp
         $credit = '0';
         ?>
 
- <?php
+        <?php
     }
 
     function setting_idehweb_phone_number()
@@ -1944,6 +1946,7 @@ class idehwebLwp
         <?php
 
     }
+
     function setting_country_code_default()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -1960,10 +1963,11 @@ class idehwebLwp
             }
             ?>
         </select>
-<!--        <p class="description">note: if you change accepted countries, you update this after save.</p>-->
+        <!--        <p class="description">note: if you change accepted countries, you update this after save.</p>-->
         <?php
 
     }
+
     function setting_default_username()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -2134,7 +2138,7 @@ class idehwebLwp
 
 
         wp_enqueue_style('lwp-intltelinput-style', plugins_url('/styles/intlTelInput.min.css', __FILE__));
-        wp_add_inline_style('lwp-intltelinput-style','.iti { width: 100%; }#phone{font-size: 20px;}');
+        wp_add_inline_style('lwp-intltelinput-style', '.iti { width: 100%; }#phone{font-size: 20px;}');
         wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
         wp_add_inline_script('lwp-intltelinput-script', '(function(){
             var input = document.querySelector("#phone");
@@ -2142,7 +2146,7 @@ class idehwebLwp
                         window.intlTelInput(input, {
                             utilsScript: "' . esc_url(plugins_url('/scripts/utils.js', __FILE__)) . '",
                             hiddenInput: "lwp_username",
-                            onlyCountries: ' . (wp_json_encode($onlyCountries)). ',
+                            onlyCountries: ' . (wp_json_encode($onlyCountries)) . ',
                             initialCountry: "' . esc_html($initialCountry) . '",
                         });
                 }
@@ -2238,17 +2242,6 @@ class idehwebLwp
                             //                    $country_codes = $this->get_country_code_options();
                             ?>
                             <div class="lwp-form-box-bottom">
-<!--                                <div class="lwp_country_codes_wrap">-->
-<!--                                    <select id="lwp_country_codes">-->
-<!--                                        --><?php
-//                                        foreach ($options['idehweb_country_codes'] as $country) {
-////                            $rr=in_array($country["value"],$options['idehweb_country_codes']);
-//                                            echo '<option value="' . esc_attr($country) . '">+' . esc_html($country) . '</option>';
-//                                        }
-//                                        ?>
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                                <input type="number" class="required lwp_username the_lwp_input" name="lwp_username"-->
                                 <input type="hidden" id="lwp_country_codes">
                                 <input type="tel" id="phone" class="required lwp_username the_lwp_input"
                                        placeholder="<?php echo ($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? sanitize_text_field($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) : (__('', 'login-with-phone-number')); ?>">
@@ -2276,9 +2269,7 @@ class idehwebLwp
                 <?php } ?>
                 <?php
                 if ($options['idehweb_email_login']) {
-//                    if($options['idehweb_email_login'] && $options['idehweb_sms_login']){
                     $ecclass = 'display:block';
-//                    }
                     ?>
                     <form id="lwp_login_email" class="ajax-auth" action="loginemail" style="<?php echo $ecclass; ?>"
                           method="post">
@@ -2292,10 +2283,10 @@ class idehwebLwp
                                placeholder="<?php echo __('Please enter your email', 'login-with-phone-number'); ?>">
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
                             <div class="accept_terms_and_conditions">
-<!--                                name="lwp_accept_terms_email" checked="checked">-->
+                                <!--                                name="lwp_accept_terms_email" checked="checked">-->
 
                                 <input class="required lwp_check_box lwp_accept_terms_email" type="checkbox"
-                                name="lwp_accept_terms_email" <?php echo (($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >
+                                       name="lwp_accept_terms_email" <?php echo(($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >
                                 <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>
@@ -2306,7 +2297,7 @@ class idehwebLwp
                         if ($options['idehweb_sms_login']) {
                             ?>
                             <button class="submit_button auth_with_phoneNumber secondaryccolor" type="button">
-                                <?php echo esc_attr_x('Login with phone number','Button Label', 'login-with-phone-number'); ?>
+                                <?php echo esc_attr_x('Login with phone number', 'Button Label', 'login-with-phone-number'); ?>
                             </button>
                         <?php } ?>
                         <a class="close" href="">(x)</a>
@@ -2715,7 +2706,7 @@ class idehwebLwp
     function lwp_ajax_login_with_email()
 
     {
-        $email = sanitize_email( $_GET['email'] );
+        $email = sanitize_email($_GET['email']);
         $userRegisteredNow = false;
 
         $options = get_option('idehweb_lwp_settings');
@@ -2934,7 +2925,7 @@ class idehwebLwp
                 ])
             ]);
             $body = wp_remote_retrieve_body($response);
-            return $body;
+            return $this->esc_from_server($body);
         }
 //        $response = wp_remote_get($smsUrl);
 //        wp_remote_retrieve_body($response);
@@ -2964,7 +2955,7 @@ class idehwebLwp
             }
             $username_exists = $this->phone_number_exist($phone_number);
         } else if (isset($_GET['email'])) {
-            $email=sanitize_email($_GET['email']);
+            $email = sanitize_email($_GET['email']);
             $username_exists = email_exists($email);
         } else {
             echo json_encode([
@@ -3092,7 +3083,7 @@ class idehwebLwp
             ])
         ]);
         $body = wp_remote_retrieve_body($response);
-        echo esc_html($body);
+         $this->esc_from_server($body);
         die();
     }
 
@@ -3114,7 +3105,7 @@ class idehwebLwp
             ])
         ]);
         $body = wp_remote_retrieve_body($response);
-        echo esc_html($body);
+        $this->esc_from_server($body);
 
         die();
     }
@@ -3157,8 +3148,7 @@ class idehwebLwp
         ]);
         $body = wp_remote_retrieve_body($response);
 
-        echo esc_html($body);
-
+        $this->esc_from_server($body);
 
 
         die();
@@ -3183,9 +3173,16 @@ class idehwebLwp
 
 //        echo $body;
 
-        echo esc_html($body);
+        $this->esc_from_server($body);
 
         die();
+    }
+
+    function esc_from_server($body)
+    {
+        echo json_decode(json_encode($body));
+//        return wp_send_json($body);
+
     }
 
     function idehweb_lwp_activate_customer()
@@ -3206,7 +3203,7 @@ class idehwebLwp
         $body = wp_remote_retrieve_body($response);
 
 //        echo $body;
-        echo esc_html($body);
+        $this->esc_from_server($body);
 
 
         die();

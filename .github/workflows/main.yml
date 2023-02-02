@@ -5,13 +5,20 @@ on:
     tags:
     - "*"
 jobs:
+  validate:
+    name: New Config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Config
+        uses: actions/checkout@v3
+
+      - name: git config
+        run: |
+          git config --global --add safe.directory *
   tag:
     name: New tag
     runs-on: ubuntu-latest
     steps:
-      run: |
-        git config --global --add safe.directory /github/*
-
     - uses: actions/checkout@master
     - name: WordPress Plugin Deploy
       uses: 10up/action-wordpress-plugin-deploy@master

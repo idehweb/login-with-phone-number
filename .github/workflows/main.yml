@@ -17,8 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: WordPress Plugin Deploy
-        run: |
-          git config --global --add safe.directory *
         uses: 10up/action-wordpress-plugin-deploy@master
         env:
           SVN_PASSWORD: ${{secrets.SVN_PASSWORD}}

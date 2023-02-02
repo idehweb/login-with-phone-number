@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.1
-Stable tag: 1.4.7
+Stable tag: 1.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,10 @@ MODAL
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 == Changelog ==
+
+= 1.4.8=
+* remove bugs
+* add billing phone of woocommerce
 
 = 1.4.7=
 Thanks to @marshallthomas47 (at git) who was sponsor of this update (I think)

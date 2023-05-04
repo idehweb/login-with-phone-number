@@ -2273,7 +2273,7 @@ class idehwebLwp
                             <div class="accept_terms_and_conditions">
                                 <input class="required lwp_check_box" type="checkbox" name="lwp_accept_terms"
                                 <?php echo(($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?>>
-                                <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>
+                                <span class="accept_terms_and_conditions_text"><?php echo ($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>
                         <button class="submit_button auth_phoneNumber" type="submit">
@@ -2307,7 +2307,7 @@ class idehwebLwp
                             <div class="accept_terms_and_conditions">
                                 <input class="required lwp_check_box lwp_accept_terms_email" type="checkbox"
                                        name="lwp_accept_terms_email" <?php echo(($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >
-                                <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>
+                                <span class="accept_terms_and_conditions_text"><?php echo ($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>
                         <button class="submit_button auth_email" type="submit">

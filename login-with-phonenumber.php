@@ -1972,6 +1972,7 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_country_codes_default'])) $options['idehweb_country_codes_default'] = "";
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["gb"];
         $country_codes = $this->get_country_code_options();
         ?>
         <select name="idehweb_lwp_settings[idehweb_country_codes_default]" id="idehweb_country_codes_default">

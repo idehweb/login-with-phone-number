@@ -2272,7 +2272,7 @@ class idehwebLwp
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
                             <div class="accept_terms_and_conditions">
                                 <input class="required lwp_check_box" type="checkbox" name="lwp_accept_terms"
-                                       checked="checked">
+                                <?php echo(($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?>>
                                 <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>
                             </div>
                         <?php } ?>

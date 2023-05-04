@@ -2305,8 +2305,6 @@ class idehwebLwp
                                placeholder="<?php echo __('Please enter your email', 'login-with-phone-number'); ?>">
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>
                             <div class="accept_terms_and_conditions">
-                                <!--                                name="lwp_accept_terms_email" checked="checked">-->
-
                                 <input class="required lwp_check_box lwp_accept_terms_email" type="checkbox"
                                        name="lwp_accept_terms_email" <?php echo(($options['idehweb_term_and_conditions_default_checked'] == '1') ? 'checked="checked"' : ''); ?> >
                                 <span class="accept_terms_and_conditions_text"><?php echo esc_html($options['idehweb_term_and_conditions_text']); ?></span>

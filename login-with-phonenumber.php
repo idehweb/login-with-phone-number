@@ -1953,7 +1953,7 @@ class idehwebLwp
     function setting_country_code()
     {
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["uk"];
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["gb"];
         $country_codes = $this->get_country_code_options();
         ?>
         <select name="idehweb_lwp_settings[idehweb_country_codes][]" id="idehweb_country_codes" multiple>
@@ -2147,7 +2147,7 @@ class idehwebLwp
         // get allowed countries
         $onlyCountries = [];
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["uk"];
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = ["gb"];
         $country_codes = $this->get_country_code_options();
         foreach ($country_codes as $country) {
             $rr = in_array($country["code"], $options['idehweb_country_codes']);

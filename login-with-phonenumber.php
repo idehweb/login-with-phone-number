@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.5.1
+Version: 1.5.2
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -291,7 +291,7 @@ class idehwebLwp
                         <p><strong><?php _e('Settings saved.', 'login-with-phone-number'); ?></strong></p>
                     </div>
                 <?php } ?>
-                <form action="options.php" method="post" id="iuytfrdghj">
+                <form action="options.php" method="post" id="iuytfrdghj" class="lwp-setting-page-main">
                     <?php settings_fields('idehweb-lwp'); ?>
                     <?php do_settings_sections('idehweb-lwp'); ?>
 
@@ -1397,12 +1397,14 @@ class idehwebLwp
     function setting_default_gateways()
     {
         $options = get_option('idehweb_lwp_settings');
+        $affected_rows = [];
+        $affected_rows = apply_filters('lwp_add_to_default_gateways', $affected_rows);
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = 'firebase';
         $gateways = [
             ["value" => "firebase", "label" => __("Firebase (Google)", 'login-with-phone-number')],
             ["value" => "custom", "label" => __("Custom (Config Your Gateway)", 'login-with-phone-number')],
         ];
-
+        $gateways=array_merge($gateways, $affected_rows);
         ?>
         <select name="idehweb_lwp_settings[idehweb_default_gateways]" id="idehweb_default_gateways">
             <?php
@@ -3189,11 +3191,12 @@ class idehwebLwp
                 $custom = new LWP_CUSTOM_Api();
                 return $custom->lwp_send_sms($phone_number, $code);
             } else {
-                return true;
+                do_action('lwp_send_sms_'.$options['idehweb_default_gateways'],$phone_number,$code);
+//                return true;
             }
         } else {
-//        $smsUrl = "https://zoomiroom.com/customer/sms/" . $options['idehweb_token'] . "/" . $phone_number . "/" . $code;
-            $response = wp_safe_remote_post("https://zoomiroom.com/customer/sms/", [
+//        $smsUrl = "https://zoomiroom.idehweb.com/customer/sms/" . $options['idehweb_token'] . "/" . $phone_number . "/" . $code;
+            $response = wp_safe_remote_post("https://zoomiroom.idehweb.com/customer/sms/", [
                 'timeout' => 60,
                 'redirection' => 1,
                 'blocking' => true,
@@ -3351,7 +3354,7 @@ class idehwebLwp
         $phone_number = sanitize_text_field($_GET['phone_number']);
         $country_code = sanitize_text_field($_GET['country_code']);
         $url = get_site_url();
-        $response = wp_safe_remote_post("https://zoomiroom.com/customer/customer/authcustomerforsms", [
+        $response = wp_safe_remote_post("https://zoomiroom.idehweb.com/customer/customer/authcustomerforsms", [
             'timeout' => 60,
             'redirection' => 1,
             'blocking' => true,
@@ -3363,7 +3366,7 @@ class idehwebLwp
             ])
         ]);
         $body = wp_remote_retrieve_body($response);
-        $this->esc_from_server($body);
+        echo $this->esc_from_server($body);
         die();
     }
 
@@ -3374,7 +3377,7 @@ class idehwebLwp
 //        if (!isset($options['idehweb_website_url'])) $options['idehweb_website_url'] = $this->settings_get_site_url();
         $url = sanitize_text_field($_GET['url']);
 
-        $response = wp_safe_remote_post("https://zoomiroom.com/customer/customer/authcustomerwithdomain", [
+        $response = wp_safe_remote_post("https://zoomiroom.idehweb.com/customer/customer/authcustomerwithdomain", [
             'timeout' => 60,
             'redirection' => 1,
             'blocking' => true,
@@ -3385,7 +3388,7 @@ class idehwebLwp
             ])
         ]);
         $body = wp_remote_retrieve_body($response);
-        $this->esc_from_server($body);
+        echo $this->esc_from_server($body);
 
         die();
     }
@@ -3448,7 +3451,7 @@ class idehwebLwp
 //        $url = "https://idehweb.com/wp-json/check-credit/$idehweb_token";
 //        $response = wp_remote_get($url);
 
-        $response = wp_safe_remote_post("https://zoomiroom.com/customer/customer/checkCredit", [
+        $response = wp_safe_remote_post("https://zoomiroom.idehweb.com/customer/customer/checkCredit", [
             'timeout' => 60,
             'redirection' => 1,
             'blocking' => true,
@@ -3457,7 +3460,7 @@ class idehwebLwp
         ]);
         $body = wp_remote_retrieve_body($response);
 
-        $this->esc_from_server($body);
+        echo $this->esc_from_server($body);
 
 
         die();
@@ -3468,7 +3471,7 @@ class idehwebLwp
 //        $url = "https://idehweb.com/wp-json/all-products/0";
 //        $response = wp_remote_get($url);
         $lan = get_bloginfo("language");
-        $response = wp_safe_remote_post("https://zoomiroom.com/customer/post/smsproducts", [
+        $response = wp_safe_remote_post("https://zoomiroom.idehweb.com/customer/post/smsproducts", [
             'timeout' => 60,
             'redirection' => 1,
             'blocking' => true,
@@ -3499,7 +3502,7 @@ class idehwebLwp
         $phone_number = sanitize_text_field($_GET['phone_number']);
         $secod = sanitize_text_field($_GET['secod']);
 
-        $response = wp_safe_remote_post("https://zoomiroom.com/customer/customer/activateCustomer", [
+        $response = wp_safe_remote_post("https://zoomiroom.idehweb.com/customer/customer/activateCustomer", [
             'timeout' => 60,
             'redirection' => 1,
             'blocking' => true,

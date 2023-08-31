@@ -7,6 +7,9 @@
 .rtl .col-lg-2, .rtl .col-sm-6, .rtl .col-md-4 {
     float: right;
 }
+.lwp-setting-page-main{
+
+}
 .col-sm-6 {
     width: 50%;
 }

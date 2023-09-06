@@ -350,6 +350,14 @@ msgstr ""
 msgid "Activation code"
 msgstr ""
 
+#: login-with-phonenumber.php:2613
+msgid "Change phone number?"
+msgstr ""
+
+#: login-with-phonenumber.php:2616
+msgid "Change email?"
+msgstr ""
+
 #. Plugin URI of the plugin/theme
 msgid "http://idehweb.com/login-with-phone-number"
 msgstr ""

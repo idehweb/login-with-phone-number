@@ -10,6 +10,15 @@
 .lwp-setting-page-main{
 
 }
+#lwp_media-preview-image{
+    max-width: 150px;
+}
+.pro-not-exist{
+    color: #ff0000;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: bold;
+}
 .col-sm-6 {
     width: 50%;
 }

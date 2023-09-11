@@ -340,7 +340,11 @@ a.login_button {
     margin-top: 10px;
     margin-bottom: 5px;
 }
-
+.lwp-radio-otp,.lwp-radio-otp input,.lwp-radio-otp label{
+    display: inline-block;
+    width: auto;
+    margin: 0;
+}
 .lwp_login_overlay {
     height: 100%;
     width: 100%;

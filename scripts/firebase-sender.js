@@ -2,13 +2,28 @@ jQuery(document).ready(function ($) {
 
     if (firebase)
         if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+            try {
+                firebase.initializeApp(firebaseConfig);
+
+            } catch(e) {
+                console.error('firebaseConfig is not defined!')
+
+            }
+
         } else {
             firebase.app(); // if already initialized, use that one
         }
 
-    $('form#lwp_login').on('submit', function (e) {
-        console.log('act 1');
+    $('body').on('submit', 'form.ajax-auth.lwp-login-form-i.firebase', function (e) {
+
+        // $('form.ajax-auth.lwp-login-form-i.firebase').on('submit', function (e) {
+        console.log('click on submit firebase...');
+        let method=$('input[name="otp-method"]:checked').val();
+        console.log('method',method)
+        if(method!=='firebase'){
+            console.log('method is not firebase, return false')
+            return false;
+        }
         // if (!$(this).valid()) return false;
         if (!$(this).valid()) {
             var reason = '';
@@ -29,12 +44,12 @@ jQuery(document).ready(function ($) {
         username = username.replace(/^[0\+]+/, '');
 
         var lwp_country_codes = $('#lwp_country_codes').val();
-        console.log('lwp_country_codes',lwp_country_codes);
+        // console.log('lwp_country_codes', lwp_country_codes);
 
         // if (!lwp_country_codes) {
         //     lwp_country_codes = $('.iti__country-list li:first-child').attr('data-dial-code');
         // }
-        console.log('lwp_country_codes',lwp_country_codes);
+        // console.log('lwp_country_codes', lwp_country_codes);
         // return
         username = lwp_country_codes + username;
         var ctrl = $(this);
@@ -45,6 +60,7 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': action,
                 'username': username,
+                'method': method,
                 // 'password': password,
                 // 'email': email,
                 // 'security': security
@@ -90,8 +106,10 @@ jQuery(document).ready(function ($) {
         //     otpForm.verifyOTP( { firebase_error: JSON.stringify( error ) } );
         // });
     });
+    $('body').on('submit', 'form.ajax-auth.lwp-register-form-i.firebase', function (e) {
+        e.preventDefault();
 
-    $('form#lwp_activate').on('submit', function (e) {
+    // $('form#lwp_activate').on('submit', function (e) {
         if (!$(this).valid()) return false;
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
@@ -100,6 +118,7 @@ jQuery(document).ready(function ($) {
         var obj = {
             'action': action,
             'secod': security,
+            'method': 'firebase',
         };
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
@@ -155,15 +174,19 @@ jQuery(document).ready(function ($) {
         //     // ...
         // });
 
-        e.preventDefault();
     });
 
 
-    $('body').on('click', '.forgot_password , .lwp_didnt_r_c', function (e) {
-        console.log('act 2');
+    $('body').on('click', '.forgot_password.firebase , .lwp_didnt_r_c.firebase', function (e) {
+        console.log('forgot_password with method firebase');
 
         if (!$(this).valid()) return false;
+        let method = $('input[name="otp-method"]:checked').val();
+        if (method !== 'firebase') {
+            console.log('method is not firebase')
 
+            return false;
+        }
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
         // var username = $('.lwp_username').val();
@@ -184,6 +207,7 @@ jQuery(document).ready(function ($) {
                 'phone_number': username,
                 'email': email,
                 'ID': idehweb_lwp.UserId,
+                'method': method
             },
             success: function (data) {
 

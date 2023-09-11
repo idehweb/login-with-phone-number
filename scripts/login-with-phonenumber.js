@@ -39,11 +39,16 @@ jQuery(document).ready(function ($) {
         //     $('form#register').fadeIn(500);
         e.preventDefault();
     });
-    $('body').on('click', '.forgot_password , .lwp_didnt_r_c', function (e) {
+    $('body').on('click', '.forgot_password:not(.firebase) , .lwp_didnt_r_c:not(.firebase)', function (e) {
         e.preventDefault();
         if (!$(this).valid()) return false;
-        if (typeof firebaseConfig !== 'undefined') return false;
+        // if (typeof firebaseConfig !== 'undefined') return false;
+        let method = $('input[name="otp-method"]:checked').val();
+        if (method === 'firebase') {
+            console.log('method is firebase, return false')
 
+            return false;
+        }
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
         // var username = $('.lwp_username').val();
@@ -68,6 +73,7 @@ jQuery(document).ready(function ($) {
                 'phone_number': username,
                 'email': email,
                 'ID': idehweb_lwp.UserId,
+                'method': method,
             },
             success: function (data) {
 
@@ -86,8 +92,28 @@ jQuery(document).ready(function ($) {
     });
     $('#show_login').click();
     // Perform AJAX login/register on form submit
-    $('body').on('submit', 'form#lwp_login', function (e) {
+    $('body').on('click', 'input[name="otp-method"]', function (e) {
+        if(e.target.value){
+            let value=e.target.value;
+            $('.ajax-auth.lwp-login-form-i').attr('class','ajax-auth lwp-login-form-i '+value);
+            $('.submit_button.forgot_password').attr('class','submit_button forgot_password '+value);
+            $('.submit_button.lwp_didnt_r_c').attr('class','submit_button lwp_didnt_r_c '+value);
+            $('.ajax-auth.lwp-register-form-i').attr('class','ajax-auth lwp-register-form-i '+value);
+        }
+    })
+    $('body').on('submit', 'form.ajax-auth.lwp-login-form-i:not(.firebase)', function (e) {
+        // $('form#lwp_login').on('submit', function (e) {
+        console.log('click on submit...')
+
         e.preventDefault();
+
+        let method = $('input[name="otp-method"]:checked').val();
+        if (method === 'firebase') {
+            console.log('method is firebase, return false')
+
+            return false;
+        }
+        console.log('method', method)
 
         if (!$(this).valid()) {
             var reason = '';
@@ -97,9 +123,13 @@ jQuery(document).ready(function ($) {
                 reason = 'Phone number is required';
             }
             $('p.status', this).show().text(reason);
+            console.log('not valid...')
             return false;
         }
-        if (typeof firebaseConfig !== 'undefined') return false;
+        // if (typeof firebaseConfig !== 'undefined') {
+        //     console.log('it is firebase')
+        //     return false;
+        // }
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_login';
         // var username = $('.lwp_username').val();
@@ -107,7 +137,7 @@ jQuery(document).ready(function ($) {
         var username = $('[name="lwp_username"]').val();
         username = username.replace(/^[0\+]+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
-        // console.log('lwp_country_codes', lwp_country_codes);
+        console.log('lwp_country_codes', lwp_country_codes);
 
         // if (!lwp_country_codes) {
         //     lwp_country_codes = $('.iti__country-list li:first-child').attr('data-dial-code');
@@ -123,11 +153,13 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': action,
                 'username': username,
+                'method': method
                 // 'password': password,
                 // 'email': email,
                 // 'security': security
             },
             success: function (data) {
+                console.log('return response...')
 
                 $('p.status', ctrl).text(data.message);
                 if (data.success == true) {
@@ -220,11 +252,16 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('body').on('submit', 'form#lwp_activate', function (e) {
+    $('body').on('submit', 'form.ajax-auth.lwp-register-form-i:not(.firebase)', function (e) {
         e.preventDefault();
         if (!$(this).valid()) return false;
-        if (typeof firebaseConfig !== 'undefined') return false;
-
+        // if (typeof firebaseConfig !== 'undefined') return false;
+        let method = $('input[name="otp-method"]:checked').val();
+        // if (method === 'firebase') {
+        //     console.log('method is firebase, return false')
+        //
+        //     return false;
+        // }
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_register';
@@ -232,6 +269,7 @@ jQuery(document).ready(function ($) {
         var obj = {
             'action': action,
             'secod': security,
+            'method': method,
         };
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);

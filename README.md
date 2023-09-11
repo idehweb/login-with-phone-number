@@ -2,10 +2,10 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.3
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
+Tags: Login with phone number, login with mobile number, WooCommerce
 
 == Description ==
 
@@ -66,6 +66,12 @@ MODAL
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 == Changelog ==
+
+= 1.5.4=  
+* add modular structure in whole plugin (for developers)
+* handle multiple gateways at a time, user can choose OTP gateway on authentication
+* enhance UX in admin
+* enhance front validations
 
 = 1.5.3=  
 * introduce new plugin "WhatsApp gateway"

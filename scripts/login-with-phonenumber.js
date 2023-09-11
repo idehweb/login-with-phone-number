@@ -49,6 +49,11 @@ jQuery(document).ready(function ($) {
 
             return false;
         }
+        if (!method) {
+            method = $('#lwp_activate').attr('data-method');
+        }
+        console.log('method', method)
+
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';
         // var username = $('.lwp_username').val();
@@ -93,12 +98,12 @@ jQuery(document).ready(function ($) {
     $('#show_login').click();
     // Perform AJAX login/register on form submit
     $('body').on('click', 'input[name="otp-method"]', function (e) {
-        if(e.target.value){
-            let value=e.target.value;
-            $('.ajax-auth.lwp-login-form-i').attr('class','ajax-auth lwp-login-form-i '+value);
-            $('.submit_button.forgot_password').attr('class','submit_button forgot_password '+value);
-            $('.submit_button.lwp_didnt_r_c').attr('class','submit_button lwp_didnt_r_c '+value);
-            $('.ajax-auth.lwp-register-form-i').attr('class','ajax-auth lwp-register-form-i '+value);
+        if (e.target.value) {
+            let value = e.target.value;
+            $('.ajax-auth.lwp-login-form-i').attr('class', 'ajax-auth lwp-login-form-i ' + value);
+            $('.submit_button.forgot_password').attr('class', 'submit_button forgot_password ' + value);
+            $('.submit_button.lwp_didnt_r_c').attr('class', 'submit_button lwp_didnt_r_c ' + value);
+            $('.ajax-auth.lwp-register-form-i').attr('class', 'ajax-auth lwp-register-form-i ' + value);
         }
     })
     $('body').on('submit', 'form.ajax-auth.lwp-login-form-i:not(.firebase)', function (e) {
@@ -112,6 +117,9 @@ jQuery(document).ready(function ($) {
             console.log('method is firebase, return false')
 
             return false;
+        }
+        if (!method) {
+            method = $(this).attr('data-method');
         }
         console.log('method', method)
 

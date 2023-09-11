@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.5.5
+Version: 1.5.6
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -2509,7 +2509,7 @@ class idehwebLwp
                     }
 
                     ?>
-                    <form id="lwp_login" class="ajax-auth lwp-login-form-i <?php echo $theClasses; ?>" action="login" style="<?php echo $cclass; ?>" method="post">
+                    <form id="lwp_login" class="ajax-auth lwp-login-form-i <?php echo $theClasses; ?>" data-method="<?php echo $theClasses; ?>" action="login" style="<?php echo $cclass; ?>" method="post">
                         <?php
                         if (intval($image_id) > 0) {
                             $image = wp_get_attachment_image($image_id, 'full', false, array('class' => 'lwp_media-logo-image'));
@@ -2611,7 +2611,7 @@ class idehwebLwp
                     </form>
                 <?php } ?>
 
-                <form id="lwp_activate" class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
+                <form id="lwp_activate" data-method="<?php echo $theClasses; ?>" class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
                     <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
                     <p class="status"></p>
                     <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>

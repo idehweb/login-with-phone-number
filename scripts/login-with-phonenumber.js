@@ -52,7 +52,7 @@ jQuery(document).ready(function ($) {
         if (!method) {
             method = $('#lwp_activate').attr('data-method');
         }
-        console.log('method', method)
+        console.log('method:', method)
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_forgot_password';

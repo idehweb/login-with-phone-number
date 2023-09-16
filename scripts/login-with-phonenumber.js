@@ -69,12 +69,16 @@ jQuery(document).ready(function ($) {
         $('#lwp_enter_password').fadeOut(10);
 
         $('#lwp_activate').fadeIn(500);
+        let nonce = $('#lwp_enter_password #security').val();
+        console.log('nonce', nonce)
         window.lwp_runTimer();
         $.ajax({
             dataType: 'json',
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
+                'nonce': nonce,
+
                 'phone_number': username,
                 'email': email,
                 'ID': idehweb_lwp.UserId,
@@ -154,12 +158,15 @@ jQuery(document).ready(function ($) {
 
         username = lwp_country_codes + username;
         var ctrl = $(this);
+        let nonce = $('#lwp_login #security').val();
+
         $.ajax({
             // type: 'GET',
             dataType: 'json',
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
+                'nonce': nonce,
                 'username': username,
                 'method': method
                 // 'password': password,
@@ -219,6 +226,8 @@ jQuery(document).ready(function ($) {
         var email = $('.lwp_email').val();
 
         // security = $('form#lwp_login .lwp_scode').val();
+        let nonce = $('#lwp_login_email #security').val();
+
         var ctrl = $(this);
         $.ajax({
             // type: 'GET',
@@ -226,7 +235,8 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
-                'email': email
+                'email': email,
+                'nonce':nonce
             },
             success: function (data) {
 
@@ -297,7 +307,8 @@ jQuery(document).ready(function ($) {
         }
 
         var ctrl = $(this);
-
+        let nonce = $('#lwp_login #security').val();
+        obj['nonce'] = nonce;
         $.ajax({
             // type: 'GET',
             dataType: 'json',
@@ -396,9 +407,13 @@ jQuery(document).ready(function ($) {
         lwp_username = lwp_username.replace(/^[0\+]+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
         lwp_username = lwp_country_codes + lwp_username;
+        let nonce = $('#lwp_enter_password #security').val();
+
         var obj = {
             'action': action,
             'password': lwp_up_password,
+            'nonce': nonce,
+
             'ID': idehweb_lwp.UserId,
             'email': lwp_email,
             'phoneNumber': lwp_username

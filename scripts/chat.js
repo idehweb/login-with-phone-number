@@ -69,26 +69,26 @@ if(window.makecrispactivate) {
             "id": "call-date",
             "text": "Hello my friend, How can I help you?",
             "choices": [
-                {
-                    "value": "1",
-                    "label": "How should I config plugin to work?",
-                    "selected": false
-                },
-                {
-                    "value": "2",
-                    "label": "Should I pay money or buy plugin?",
-                    "selected": false
-                },
-                {
-                    "value": "3",
-                    "label": "I am not receiving OTP!",
-                    "selected": false
-                },
-                {
-                    "value": "4",
-                    "label": "I used [idehweb_lwp] shortcode and created a page, but I am not seeing any login form!",
-                    "selected": false
-                },
+                // {
+                //     "value": "1",
+                //     "label": "How should I config plugin to work?",
+                //     "selected": false
+                // },
+                // {
+                //     "value": "2",
+                //     "label": "Should I pay money or buy plugin?",
+                //     "selected": false
+                // },
+                // {
+                //     "value": "3",
+                //     "label": "I am not receiving OTP!",
+                //     "selected": false
+                // },
+                // {
+                //     "value": "4",
+                //     "label": "I used [idehweb_lwp] shortcode and created a page, but I am not seeing any login form!",
+                //     "selected": false
+                // },
                 // {
                 //     "value": "5",
                 //     "label": "Is it compatible with Woocommerce?",

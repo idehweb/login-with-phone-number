@@ -52,6 +52,10 @@ jQuery(document).ready(function ($) {
         // console.log('lwp_country_codes', lwp_country_codes);
         // return
         username = lwp_country_codes + username;
+
+
+        let security=$('#lwp_login #security').val();
+        console.log('security',security)
         var ctrl = $(this);
         $.ajax({
             // type: 'GET',
@@ -59,6 +63,7 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
+                'nonce':security,
                 'username': username,
                 'method': method,
                 // 'password': password,
@@ -115,10 +120,13 @@ jQuery(document).ready(function ($) {
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_register';
         var security = $('.lwp_scode').val();
+        let nonce = $('#lwp_activate #security').val();
+
         var obj = {
             'action': action,
             'secod': security,
             'method': 'firebase',
+            'nonce':nonce
         };
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
@@ -199,6 +207,8 @@ jQuery(document).ready(function ($) {
         // $('#lwp_login').fadeOut(10);
         $('#lwp_enter_password').fadeOut(10);
         $('#lwp_login').fadeIn(500);
+        let nonce=$('#lwp_enter_password #security').val();
+
         $.ajax({
             dataType: 'json',
             url: idehweb_lwp.ajaxurl,
@@ -206,6 +216,7 @@ jQuery(document).ready(function ($) {
                 'action': action,
                 'phone_number': username,
                 'email': email,
+                'nonce': nonce,
                 'ID': idehweb_lwp.UserId,
                 'method': method
             },

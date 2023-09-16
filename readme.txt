@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.3
-Stable tag: 1.5.6
+Stable tag: 1.5.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Login with phone number, login with mobile number, WooCommerce
@@ -66,6 +66,9 @@ MODAL
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 == Changelog ==
+
+= 1.5.7=
+* add nonce in ajax requests
 
 = 1.5.6=
 * send method while we have enabled only one method

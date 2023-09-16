@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.5.6
+Version: 1.5.7
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -2582,7 +2582,7 @@ class idehwebLwp
                         ?>
                         <div class="lh1"><?php echo isset($localizationoptions['idehweb_localization_status']) ? esc_html($localizationoptions['idehweb_localization_title_of_login_form_email']) : (__('Login / register', 'login-with-phone-number')); ?></div>
                         <p class="status"></p>
-                        <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
+                        <?php wp_nonce_field('lwp-ajax-login-with-email-nonce', 'security'); ?>
                         <label class="lwp_labels"
                                for="lwp_email"><?php echo __('Your email:', 'login-with-phone-number'); ?></label>
                         <input type="email" class="required lwp_email the_lwp_input" name="lwp_email"
@@ -2614,7 +2614,7 @@ class idehwebLwp
                 <form id="lwp_activate" data-method="<?php echo $theClasses; ?>" class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
                     <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
                     <p class="status"></p>
-                    <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
+                    <?php wp_nonce_field('lwp-ajax-activate-nonce', 'security'); ?>
                     <div class="lwp_top_activation">
                         <div class="lwp_timer"></div>
 
@@ -2664,7 +2664,7 @@ class idehwebLwp
 
                         <div class="lh1"><?php echo __('Enter password', 'login-with-phone-number'); ?></div>
                         <p class="status"></p>
-                        <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
+                        <?php wp_nonce_field('lwp-ajax-enter-password-nonce', 'security'); ?>
                         <label class="lwp_labels"
                                for="lwp_email"><?php echo __('Your password:', 'login-with-phone-number'); ?></label>
                         <input type="password" class="required lwp_auth_password" name="lwp_auth_password"
@@ -2726,7 +2726,10 @@ class idehwebLwp
         $usesrname = sanitize_text_field($_GET['username']);
         $method = sanitize_text_field($_GET['method']);
         $options = get_option('idehweb_lwp_settings');
-
+//        echo $_GET['nonce'];
+        if ( ! wp_verify_nonce( $_GET['nonce'], 'ajax-login-nonce' ) ) {
+            die ( 'Busted!');
+        }
         if (preg_replace('/^(\-){0,1}[0-9]+(\.[0-9]+){0,1}/', '', $usesrname) == "") {
             $phone_number = ltrim($usesrname, '0');
             $phone_number = substr($phone_number, 0, 15);
@@ -2871,6 +2874,9 @@ class idehwebLwp
 
     function lwp_forgot_password()
     {
+        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-enter-password-nonce' ) ) {
+            die ( 'Busted!');
+        }
         $log = '';
         if (!isset($_GET['ID'])) $_GET['ID'] = null;
         $ID = sanitize_text_field($_GET['ID']);
@@ -2941,7 +2947,9 @@ class idehwebLwp
 
     function lwp_enter_password_action()
     {
-
+        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-enter-password-nonce' ) ) {
+            die ( 'Busted!');
+        }
         $ID = sanitize_text_field($_GET['ID']);
         $email = sanitize_email($_GET['email']);
         $password = sanitize_text_field($_GET['password']);
@@ -3014,6 +3022,9 @@ class idehwebLwp
     function lwp_ajax_login_with_email()
 
     {
+        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-login-with-email-nonce' ) ) {
+            die ( 'Busted!');
+        }
         $email = sanitize_email($_GET['email']);
         $userRegisteredNow = false;
 
@@ -3225,6 +3236,9 @@ class idehwebLwp
 
     function lwp_ajax_register()
     {
+        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-activate-nonce' ) ) {
+            die ( 'Busted!');
+        }
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
         if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';

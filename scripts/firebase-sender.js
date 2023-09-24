@@ -19,7 +19,11 @@ jQuery(document).ready(function ($) {
         // $('form.ajax-auth.lwp-login-form-i.firebase').on('submit', function (e) {
         console.log('click on submit firebase...');
         let method=$('input[name="otp-method"]:checked').val();
+        if (!method) {
+            method = $('#lwp_login').attr('data-method');
+        }
         console.log('method',method)
+
         if(method!=='firebase'){
             console.log('method is not firebase, return false')
             return false;
@@ -54,7 +58,7 @@ jQuery(document).ready(function ($) {
         username = lwp_country_codes + username;
 
 
-        let security=$('#lwp_login #security').val();
+        let security=idehweb_lwp.nonce;
         console.log('security',security)
         var ctrl = $(this);
         $.ajax({
@@ -120,7 +124,7 @@ jQuery(document).ready(function ($) {
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_register';
         var security = $('.lwp_scode').val();
-        let nonce = $('#lwp_activate #security').val();
+        let nonce = idehweb_lwp.nonce;
 
         var obj = {
             'action': action,
@@ -190,6 +194,9 @@ jQuery(document).ready(function ($) {
 
         if (!$(this).valid()) return false;
         let method = $('input[name="otp-method"]:checked').val();
+        if (!method) {
+            method = $('#lwp_login').attr('data-method');
+        }
         if (method !== 'firebase') {
             console.log('method is not firebase')
 
@@ -207,7 +214,7 @@ jQuery(document).ready(function ($) {
         // $('#lwp_login').fadeOut(10);
         $('#lwp_enter_password').fadeOut(10);
         $('#lwp_login').fadeIn(500);
-        let nonce=$('#lwp_enter_password #security').val();
+        let nonce=idehweb_lwp.nonce;
 
         $.ajax({
             dataType: 'json',

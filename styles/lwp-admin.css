@@ -13,6 +13,9 @@
 #lwp_media-preview-image{
     max-width: 150px;
 }
+.select2 .select2-selection.select2-selection--multiple {
+    display: flex;
+}
 .pro-not-exist{
     color: #ff0000;
     margin-left: 10px;

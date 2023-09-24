@@ -69,7 +69,7 @@ jQuery(document).ready(function ($) {
         $('#lwp_enter_password').fadeOut(10);
 
         $('#lwp_activate').fadeIn(500);
-        let nonce = $('#lwp_enter_password #security').val();
+        let nonce = idehweb_lwp.nonce;
         console.log('nonce', nonce)
         window.lwp_runTimer();
         $.ajax({
@@ -158,7 +158,7 @@ jQuery(document).ready(function ($) {
 
         username = lwp_country_codes + username;
         var ctrl = $(this);
-        let nonce = $('#lwp_login #security').val();
+        let nonce = idehweb_lwp.nonce;
 
         $.ajax({
             // type: 'GET',
@@ -226,7 +226,7 @@ jQuery(document).ready(function ($) {
         var email = $('.lwp_email').val();
 
         // security = $('form#lwp_login .lwp_scode').val();
-        let nonce = $('#lwp_login_email #security').val();
+        let nonce = idehweb_lwp.nonce;
 
         var ctrl = $(this);
         $.ajax({
@@ -307,7 +307,7 @@ jQuery(document).ready(function ($) {
         }
 
         var ctrl = $(this);
-        let nonce = $('#lwp_login #security').val();
+        let nonce = idehweb_lwp.nonce;
         obj['nonce'] = nonce;
         $.ajax({
             // type: 'GET',
@@ -407,7 +407,7 @@ jQuery(document).ready(function ($) {
         lwp_username = lwp_username.replace(/^[0\+]+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
         lwp_username = lwp_country_codes + lwp_username;
-        let nonce = $('#lwp_enter_password #security').val();
+        let nonce = idehweb_lwp.nonce;
 
         var obj = {
             'action': action,
@@ -468,8 +468,8 @@ jQuery(document).ready(function ($) {
     });
 
 
-    if (jQuery("#lwp_login").length)
-        jQuery("#lwp_login").validate();
+    if ($("#lwp_login").length)
+        $("#lwp_login").validate();
 
     window.lwp_runTimer = function () {
         if (idehweb_lwp.timer && (idehweb_lwp.timer == '1' || idehweb_lwp.timer == 1)) {

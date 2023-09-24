@@ -1,8 +1,8 @@
-=== Plugin Name ===
+=== Login with phone number ===
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.3
-Stable tag: 1.5.7
+Stable tag: 1.5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Login with phone number, login with mobile number, WooCommerce
@@ -66,6 +66,15 @@ MODAL
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 == Changelog ==
+
+= 1.5.9=
+* change jQuery to $
+* resolve problem of firebase
+* remove inside esc_from_server
+* add "get email after verifying phone number" feature
+
+= 1.5.8=
+* add Learnpress support
 
 = 1.5.7=
 * add nonce in ajax requests

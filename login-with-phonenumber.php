@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.5.7
+Version: 1.5.9
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -70,6 +70,12 @@ class idehwebLwp
         add_filter('manage_users_sortable_columns', array(&$this, 'lwp_make_registered_column_sortable'));
         add_filter('woocommerce_locate_template', array(&$this, 'lwp_addon_woocommerce_login'), 1, 3);
 
+        add_filter('learn-press/override-templates', function () {
+            return true;
+        }, 1);
+        add_filter('learn_press_locate_template', array(&$this, 'lwp_addon_learnpress_login'), 1, 3);
+
+//        return apply_filters( 'learn_press_locate_template', $template, $template_name, $template_path );
 
         add_shortcode('idehweb_lwp', array(&$this, 'shortcode'));
         add_shortcode('idehweb_lwp_metas', array(&$this, 'idehweb_lwp_metas'));
@@ -79,6 +85,8 @@ class idehwebLwp
     function lwp_load_wp_media_files($page)
     {
 //        echo $page;
+//        wp_enqueue_script('idehweb-lwp-admin-select2-sortable', plugins_url('/scripts/select2.sortable.js', __FILE__), array('jquery'), true, true);
+
         if ($page == 'login-setting_page_idehweb-lwp-styles') {
             wp_enqueue_media();
             // Enqueue custom script that will interact with wp.media
@@ -148,7 +156,6 @@ class idehwebLwp
         $idehweb_lwp_lang_dir = apply_filters('idehweb_lwp_languages_directory', $idehweb_lwp_lang_dir);
 
         load_plugin_textdomain('login-with-phone-number', false, $idehweb_lwp_lang_dir);
-
 
     }
 
@@ -249,6 +256,7 @@ class idehwebLwp
 
         add_settings_field('idehweb_lwp_space', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('idehweb_email_login', __('Enable email login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_email_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_email_force_after_phonenumber', __('Force to get email after phone number', 'login-with-phone-number'), array(&$this, 'setting_idehweb_email_force'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_lwp_space2', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
 
         add_settings_field('idehweb_user_registration', __('Enable user registration', 'login-with-phone-number'), array(&$this, 'setting_idehweb_user_registration'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -393,6 +401,37 @@ class idehwebLwp
                         $("#idehweb_phone_number_ccode").select2();
                         idehweb_country_codes.select2();
                         $("#idehweb_default_gateways").select2();
+                        $(".idehweb_default_gateways_wrapper ul.select2-selection__rendered").sortable({
+                            containment: 'parent',
+                            // stop: function (event, ui) {
+                            //     // event target would be the <ul> which also contains a list item for searching (which has to be excluded)
+                            //     var arr = Array.from($(event.target).find('li:not(.select2-search)').map(function () {
+                            //         return {name: $(this).attr('title'), value: $(this).attr('data-select2-id')};
+                            //     }));
+                            //     // $("#idehweb_default_gateways").val(arr)
+                            //     console.log(arr);
+                            // }
+                            stop: function(event, ui) {
+                                var formData=[];
+                                var _li= $('.idehweb_default_gateways_wrapper li.select2-selection__choice');
+                                _li.each(function(idx) {
+                                    var currentObj=$(this);
+                                    var data=currentObj.text();
+                                    data=data.substr(1,data.length);
+                                    formData.push({name:data,value:currentObj.val()})
+                                })
+                                console.log(formData)
+                            },
+                            update: function() {
+                                var _li= $('.idehweb_default_gateways_wrapper li');
+                                // _li.removeAttr("value");
+                                _li.each(function(idx) {
+                                    var currentObj=$(this);
+                                    console.log(currentObj.text());
+                                    $(this).attr("value", idx + 1);
+                                })
+                            }
+                        });
 
 
                         <?php
@@ -995,6 +1034,15 @@ class idehwebLwp
 		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_email_login]" value="1"' . (($options['idehweb_email_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with email', 'login-with-phone-number') . '</label>';
 
     }
+    function setting_idehweb_email_force()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_email_force_after_phonenumber'])) $options['idehweb_email_force_after_phonenumber'] = '1';
+
+        echo '<input  type="hidden" name="idehweb_lwp_settings[idehweb_email_force_after_phonenumber]" value="0" />
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_email_force_after_phonenumber]" value="1"' . (($options['idehweb_email_force_after_phonenumber']) ? ' checked="checked"' : '') . ' />' . __('I want user enter email after verifying phone number', 'login-with-phone-number') . '</label>';
+
+    }
 
     function setting_idehweb_pro_label()
     {
@@ -1368,8 +1416,8 @@ class idehwebLwp
                 <?php
                 foreach ($gateways as $gateway) {
                     $rr = false;
-                    if(!is_array($options['idehweb_default_gateways'])){
-                        $options['idehweb_default_gateways']=[];
+                    if (!is_array($options['idehweb_default_gateways'])) {
+                        $options['idehweb_default_gateways'] = [];
                     }
                     if (in_array($gateway["value"], $options['idehweb_default_gateways'])) {
 //                    if (($gateway["value"] == $options['idehweb_default_gateways'])) {
@@ -1879,6 +1927,7 @@ class idehwebLwp
 
     }
 
+
     function setting_idehweb_login_message()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -2373,6 +2422,7 @@ class idehwebLwp
 
             $localize['firebase_api'] = $options['idehweb_firebase_api'];
         }
+        $localize['nonce'] = wp_create_nonce('lwp_login');
         wp_localize_script('idehweb-lwp', 'idehweb_lwp', $localize);
         if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways'])) {
 
@@ -2489,9 +2539,9 @@ class idehwebLwp
         if ($options['idehweb_position_form'] == '1') {
             $class = 'lw-sticky';
         }
-        $theClasses='';
+        $theClasses = '';
         if ($options['idehweb_default_gateways'][0])
-            $theClasses=$options['idehweb_default_gateways'][0];
+            $theClasses = $options['idehweb_default_gateways'][0];
 
         $is_user_logged_in = is_user_logged_in();
         if (!$is_user_logged_in) {
@@ -2509,7 +2559,9 @@ class idehwebLwp
                     }
 
                     ?>
-                    <form id="lwp_login" class="ajax-auth lwp-login-form-i <?php echo $theClasses; ?>" data-method="<?php echo $theClasses; ?>" action="login" style="<?php echo $cclass; ?>" method="post">
+                    <form id="lwp_login" class="ajax-auth lwp-login-form-i <?php echo $theClasses; ?>"
+                          data-method="<?php echo $theClasses; ?>" action="login" style="<?php echo $cclass; ?>"
+                          method="post">
                         <?php
                         if (intval($image_id) > 0) {
                             $image = wp_get_attachment_image($image_id, 'full', false, array('class' => 'lwp_media-logo-image'));
@@ -2611,7 +2663,8 @@ class idehwebLwp
                     </form>
                 <?php } ?>
 
-                <form id="lwp_activate" data-method="<?php echo $theClasses; ?>" class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
+                <form id="lwp_activate" data-method="<?php echo $theClasses; ?>"
+                      class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
                     <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
                     <p class="status"></p>
                     <?php wp_nonce_field('lwp-ajax-activate-nonce', 'security'); ?>
@@ -2727,8 +2780,8 @@ class idehwebLwp
         $method = sanitize_text_field($_GET['method']);
         $options = get_option('idehweb_lwp_settings');
 //        echo $_GET['nonce'];
-        if ( ! wp_verify_nonce( $_GET['nonce'], 'ajax-login-nonce' ) ) {
-            die ( 'Busted!');
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
         }
         if (preg_replace('/^(\-){0,1}[0-9]+(\.[0-9]+){0,1}/', '', $usesrname) == "") {
             $phone_number = ltrim($usesrname, '0');
@@ -2831,13 +2884,13 @@ class idehwebLwp
             if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
             $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
             if (!$options['idehweb_password_login']) {
-                $log = $this->lwp_generate_token($username_exists, $phone_number,false,$method);
+                $log = $this->lwp_generate_token($username_exists, $phone_number, false, $method);
 
             } else {
                 if (!$userRegisteredNow) {
                     $showPass = true;
                 } else {
-                    $log = $this->lwp_generate_token($username_exists, $phone_number,false,$method);
+                    $log = $this->lwp_generate_token($username_exists, $phone_number, false, $method);
                 }
             }
             echo json_encode([
@@ -2874,8 +2927,8 @@ class idehwebLwp
 
     function lwp_forgot_password()
     {
-        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-enter-password-nonce' ) ) {
-            die ( 'Busted!');
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
         }
         $log = '';
         if (!isset($_GET['ID'])) $_GET['ID'] = null;
@@ -2930,7 +2983,7 @@ class idehwebLwp
 
         }
         if ($phone_number != '' && $ID != '') {
-            $log = $this->lwp_generate_token($ID, $phone_number,false,$method);
+            $log = $this->lwp_generate_token($ID, $phone_number, false, $method);
 
 //
         }
@@ -2947,8 +3000,8 @@ class idehwebLwp
 
     function lwp_enter_password_action()
     {
-        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-enter-password-nonce' ) ) {
-            die ( 'Busted!');
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
         }
         $ID = sanitize_text_field($_GET['ID']);
         $email = sanitize_email($_GET['email']);
@@ -3022,8 +3075,8 @@ class idehwebLwp
     function lwp_ajax_login_with_email()
 
     {
-        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-login-with-email-nonce' ) ) {
-            die ( 'Busted!');
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
         }
         $email = sanitize_email($_GET['email']);
         $userRegisteredNow = false;
@@ -3149,7 +3202,7 @@ class idehwebLwp
     }
 
 
-    function lwp_generate_token($user_id, $contact, $send_email = false,$method='')
+    function lwp_generate_token($user_id, $contact, $send_email = false, $method = '')
     {
         $six_digit_random_number = mt_rand(100000, 999999);
         update_user_meta($user_id, 'activation_code', $six_digit_random_number);
@@ -3157,7 +3210,7 @@ class idehwebLwp
             $wp_mail = wp_mail($contact, 'activation code', __('your activation code: ', 'login-with-phone-number') . $six_digit_random_number);
             return $wp_mail;
         } else {
-            return $this->send_sms($contact, $six_digit_random_number,$method);
+            return $this->send_sms($contact, $six_digit_random_number, $method);
         }
     }
 
@@ -3197,19 +3250,22 @@ class idehwebLwp
         return $options['idehweb_default_nickname'];
     }
 
-    function send_sms($phone_number, $code,$method)
+    function send_sms($phone_number, $code, $method)
     {
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
         if ($options['idehweb_use_custom_gateway'] == '1') {
-            if(!in_array($method,$options['idehweb_default_gateways'])){
+            if (!in_array($method, $options['idehweb_default_gateways'])) {
                 return false;
             }
             if ($method == 'custom') {
                 $custom = new LWP_CUSTOM_Api();
                 return $custom->lwp_send_sms($phone_number, $code);
             } else {
+//                echo 'lwp_send_sms_' . $method;
+//                echo $phone_number;
+//                echo $code;
                 do_action('lwp_send_sms_' . $method, $phone_number, $code);
 //                return true;
             }
@@ -3236,8 +3292,8 @@ class idehwebLwp
 
     function lwp_ajax_register()
     {
-        if ( ! wp_verify_nonce( $_GET['nonce'], 'lwp-ajax-activate-nonce' ) ) {
-            die ( 'Busted!');
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
         }
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
@@ -3273,7 +3329,7 @@ class idehwebLwp
             $activation_code = get_user_meta($username_exists, 'activation_code', true);
             $secod = sanitize_text_field($_GET['secod']);
             $verificationId = sanitize_text_field($_GET['verificationId']);
-            if ($options['idehweb_use_custom_gateway'] == '1' && $options['idehweb_default_gateways'] == 'firebase' && isset($_GET['phone_number'])) {
+            if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways']) && isset($_GET['phone_number'])) {
                 $response = $this->idehweb_lwp_activate_through_firebase($verificationId, $secod);
                 if ($response->error && $response->error->code == 400) {
                     echo json_encode([
@@ -3514,7 +3570,7 @@ class idehwebLwp
 
     function esc_from_server($body)
     {
-        return json_decode(json_encode($body));
+//        return json_decode(json_encode($body));
 //        return wp_send_json($body);
 
     }
@@ -3573,12 +3629,29 @@ class idehwebLwp
         global $woocommerce;
         $_template = $template;
         if (!$template_path) $template_path = $woocommerce->template_url;
-        $plugin_path = untrailingslashit(plugin_dir_path(__FILE__)) . '/template/woocommerce/';
+        $plugin_path = untrailingslashit(plugin_dir_path(__FILE__)) . '/templates/woocommerce/';
         // Look within passed path within the theme - this is priority
         $template = locate_template(array($template_path . $template_name, $template_name));
         if (!$template && file_exists($plugin_path . $template_name)) $template = $plugin_path . $template_name;
         if (!$template) $template = $_template;
         return $template;
+    }
+
+    function lwp_addon_learnpress_login($template, $template_name, $template_path)
+    {
+//        print_r($template);
+
+//        global $woocommerce;
+        $_template = $template;
+//        if (!$template_path) $template_path = $woocommerce->template_url;
+        $plugin_path = untrailingslashit(plugin_dir_path(__FILE__)) . '/templates/learnpress/';
+        // Look within passed path within the theme - this is priority
+        $template = locate_template(array($template_path . $template_name, $template_name));
+        if (!$template && file_exists($plugin_path . $template_name)) $template = $plugin_path . $template_name;
+        if (!$template) $template = $_template;
+//        die();
+        return $template;
+
     }
 
 

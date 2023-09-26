@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.5.9
+Version: 1.6.0
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -2525,6 +2525,7 @@ class idehwebLwp
         if (!isset($options['idehweb_login_message'])) $options['idehweb_login_message'] = 'Welcome, You are logged in...';
         if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = [];
         if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
+        if (!isset($options['idehweb_email_force_after_phonenumber'])) $options['idehweb_email_force_after_phonenumber'] = true;
 
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
         if (!is_array($options['idehweb_default_gateways'])) {
@@ -2750,6 +2751,61 @@ class idehwebLwp
                 wp_redirect(esc_url($options['idehweb_redirect_url']));
             else if ($options['idehweb_login_message'])
                 echo esc_html($options['idehweb_login_message']);
+            ?>
+            <?php
+            if ($options['idehweb_email_force_after_phonenumber']) {
+                $ecclass = 'display:block';
+            ?>
+            <form id="lwp_login_email" class="ajax-auth" action="loginemail" style="<?php echo $ecclass; ?>"
+                  method="post">
+                <?php
+                if (intval($image_id) > 0) {
+                    $image = wp_get_attachment_image($image_id, 'full', false, array('class' => 'lwp_media-logo-image'));
+                    echo '<div class="lwp_logo_parent">' . $image . '</div>';
+                }
+                ?>
+                <p class="status"></p>
+                <?php wp_nonce_field('lwp-ajax-login-with-email-nonce', 'security'); ?>
+                <label class="lwp_labels"
+                       for="lwp_email"><?php echo __('Your email:', 'login-with-phone-number'); ?></label>
+                <input type="email" class="required lwp_email the_lwp_input" name="lwp_email"
+                       placeholder="<?php echo __('Please enter your email', 'login-with-phone-number'); ?>">
+
+                <button class="submit_button auth_email" type="submit">
+                    <?php echo __('Submit', 'login-with-phone-number'); ?>
+                </button>
+            </form>
+                <form id="lwp_activate" data-method="<?php echo $theClasses; ?>"
+                      class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
+                    <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
+                    <p class="status"></p>
+                    <?php wp_nonce_field('lwp-ajax-activate-nonce', 'security'); ?>
+                    <div class="lwp_top_activation">
+                        <div class="lwp_timer"></div>
+
+
+                    </div>
+                    <label class="lwp_labels"
+                           for="lwp_scode"><?php echo __('Security code', 'login-with-phone-number'); ?></label>
+                    <input type="text" class="required lwp_scode" name="lwp_scode" placeholder="ـ ـ ـ ـ ـ ـ">
+
+                    <button class="submit_button auth_secCode">
+                        <?php echo __('Activate', 'login-with-phone-number'); ?>
+                    </button>
+                    <button class="submit_button lwp_didnt_r_c lwp_disable  <?php echo $theClasses; ?>" type="button">
+                        <?php echo __('Send code again', 'login-with-phone-number'); ?>
+                    </button>
+                    <hr class="lwp_line"/>
+                    <div class="lwp_bottom_activation">
+                        <a class="lwp_change_el" href="#">
+                            <?php echo __('Change email?', 'login-with-phone-number'); ?>
+                        </a>
+                    </div>
+                    <a class="close" href="">(x)</a>
+                </form>
+
+            <?php } ?>
+<?php
         }
         return ob_get_clean();
     }

@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.3
-Stable tag: 1.5.9
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Login with phone number, login with mobile number, WooCommerce
@@ -11,13 +11,15 @@ Tags: Login with phone number, login with mobile number, WooCommerce
 
 Login/register with phone number
 
-NEW FEATURE: 
 Added country flags to login with phone number form
 
 You can add almost every SMS gateways (if you have) yourself for free
+
 you can change style and appearance of forms 
 
 You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
+
+You can use your custom gateway. you can also use other ready sms gateways from [SMS gateways](https://idehweb.com/product-category/wordpress/wordpress-plugins/ "sms gateways").
 
 For checking docs and getting more help please visit:
 [Login with phone number documentations](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login & register with phone number")
@@ -50,9 +52,13 @@ For checking docs and getting more help please visit:
 
 * Redirect Users to Specific URLs After Logging in or Registering
 
-AJAX
+Supported gateways for now:
 
-MODAL
+* [Twilio for login with phone number](https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/ "Twilio for login with phone number")
+* [BlueSoft for login with phone number](https://idehweb.com/product/bluesoft-gateway-for-login-with-phone-number/ "BlueSoft for login with phone number")
+* [ASQS for login with phone number](https://idehweb.com/product/asqs-gateway-for-login-with-phone-number/ "ASQS for login with phone number")
+* [Ippanel for login with phone number](https://idehweb.com/product/ippanel-gateway-for-login-with-phone-number/ "Ippanel for login with phone number")
+* [Whatsapp for login with phone number](https://idehweb.com/product/whatsap-gateway-for-login-with-phone-number/ "Whatsapp for login with phone number")
 
 [youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
@@ -66,6 +72,9 @@ MODAL
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 == Changelog ==
+
+= 1.6.0=
+
 
 = 1.5.9=
 * change jQuery to $

@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.3
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Login-with-phone-number, login-with-mobile-number, WooCommerce
@@ -54,11 +54,11 @@ You can use your custom gateway. you can also use other ready sms gateways from 
 
 Supported gateways for now:
 
-* [Twilio for login with phone number](https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/ "Twilio for login with phone number")
-* [BlueSoft for login with phone number](https://idehweb.com/product/bluesoft-gateway-for-login-with-phone-number/ "BlueSoft for login with phone number")
-* [IQSMS for login with phone number](https://idehweb.com/product/asqs-gateway-for-login-with-phone-number/ "IQSMS for login with phone number")
-* [Ippanel for login with phone number](https://idehweb.com/product/ippanel-gateway-for-login-with-phone-number/ "Ippanel for login with phone number")
-* [Whatsapp for login with phone number](https://idehweb.com/product/whatsap-gateway-for-login-with-phone-number/ "Whatsapp for login with phone number")
+* Twilio 
+* BlueSoft 
+* IQSMS 
+* Ippanel 
+* Whatsapp 
 
 [youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
@@ -72,6 +72,9 @@ Supported gateways for now:
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 ##Changelog
+
+###1.6.2
+
 
 ###1.6.1
 * support learn press

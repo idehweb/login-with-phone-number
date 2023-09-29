@@ -268,9 +268,69 @@ jQuery(document).ready(function ($) {
         });
         e.preventDefault();
     });
+    $('body').on('submit', 'form#lwp_verify_email', function (e) {
+        // if (!$(this).valid()) return false;
+        if (!$(this).valid()) {
+            var reason = '';
+            if ($('[name="lwp_accept_terms_email"]').length && !$('[name="lwp_accept_terms_email"]').valid()) {
+                reason = 'You must agree to the terms of service!'
+            } else {
+                reason = 'Email is required';
+            }
+            $('p.status', this).show().text(reason);
+            return false;
+        }
+        $('p.status', this).show().text(idehweb_lwp.loadingmessage);
+        var action = 'lwp_ajax_verify_with_email';
+        var email = $('.lwp_email').val();
+
+        // security = $('form#lwp_login .lwp_scode').val();
+        let nonce = idehweb_lwp.nonce;
+
+        var ctrl = $(this);
+        $.ajax({
+            // type: 'GET',
+            dataType: 'json',
+            url: idehweb_lwp.ajaxurl,
+            data: {
+                'action': action,
+                'email': email,
+                'nonce':nonce
+            },
+            success: function (data) {
+
+                $('p.status', ctrl).text(data.message);
+                if (data.success == true) {
+                    $('#lwp_verify_email').fadeOut(10);
+                    $('#lwp_login_email').fadeOut(10);
+                    $('#lwp_login').fadeOut(10);
+                    idehweb_lwp.UserId = data.ID;
+                    $('.lwp_line').css('display', 'none');
+                    $('.lwp_bottom_activation').css('display', 'block');
+                    $('.lwp_bottom_activation .lwp_change_pn').css('display', 'none');
+                    $('.lwp_bottom_activation .lwp_change_el').css('display', 'block');
+                    if (data.authWithPass) {
+
+                        if (data.showPass) {
+                            $('#lwp_enter_password').fadeIn(500);
+
+                        } else {
+                            $('#lwp_activate_email').fadeIn(500);
+
+                        }
+                    } else {
+                        $('#lwp_activate_email').fadeIn(500);
+
+                    }
+                    //     document.location.href = idehweb_lwp.redirecturl;
+                }
+            }
+        });
+        e.preventDefault();
+    });
 
 
-    $('body').on('submit', 'form.ajax-auth.lwp-register-form-i:not(.firebase)', function (e) {
+    $('body').on('submit', 'form.ajax-auth.lwp-register-form-i:not(.firebase,.email)', function (e) {
         e.preventDefault();
         if (!$(this).valid()) return false;
         // if (typeof firebaseConfig !== 'undefined') return false;
@@ -293,6 +353,67 @@ jQuery(document).ready(function ($) {
         $('#lwp_login_email').fadeOut(10);
         // $('#lwp_activate').fadeOut(500);
         // var phone_number = $('.lwp_username').val();
+        var phone_number = $('[name="lwp_username"]').val();
+        if (phone_number) {
+            var lwp_country_codes = $('#lwp_country_codes').val();
+            // phone_number = phone_number.replace(/^0+/, '');
+            phone_number = phone_number.replace(/^[0\+]+/, '');
+            phone_number = lwp_country_codes + phone_number;
+            obj['phone_number'] = phone_number;
+        }
+        var email = $('.lwp_email').val();
+        if (email) {
+            obj['email'] = email;
+        }
+
+        var ctrl = $(this);
+        let nonce = idehweb_lwp.nonce;
+        obj['nonce'] = nonce;
+        $.ajax({
+            // type: 'GET',
+            dataType: 'json',
+            url: idehweb_lwp.ajaxurl,
+            data: obj,
+            success: function (data) {
+                if (data.authWithPass) {
+
+                    if (!data.updatedPass) {
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_password').fadeIn(500);
+
+                    } else {
+                        $('p.status', ctrl).text(data.message);
+                        if (data.success)
+                            document.location.href = idehweb_lwp.redirecturl;
+
+                    }
+                } else {
+                    $('p.status', ctrl).text(data.message);
+                    if (data.success)
+                        document.location.href = idehweb_lwp.redirecturl;
+                }
+
+                // console.log('');
+                // if (data.loggedin == true && idehweb_lwp.redirecturl) {
+                //     location.replace(idehweb_lwp.redirecturl);
+                // }
+            }
+        });
+    });
+    $('body').on('submit', 'form#lwp_activate_email', function (e) {
+        e.preventDefault();
+        if (!$(this).valid()) return false;
+        let method = $('input[name="otp-method"]:checked').val();
+        $('p.status', this).show().text(idehweb_lwp.loadingmessage);
+        var action = 'lwp_activate_email';
+        var security = $('.lwp_scode').val();
+        var obj = {
+            'action': action,
+            'secod': security,
+            'method': method,
+        };
+        $('#lwp_login').fadeOut(10);
+        $('#lwp_login_email').fadeOut(10);
         var phone_number = $('[name="lwp_username"]').val();
         if (phone_number) {
             var lwp_country_codes = $('#lwp_country_codes').val();

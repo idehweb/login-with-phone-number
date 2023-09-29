@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.0
+Version: 1.6.2
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -37,13 +37,17 @@ class idehwebLwp
         add_action('wp_ajax_lwp_update_password_action', array(&$this, 'lwp_update_password_action'));
         add_action('wp_ajax_lwp_enter_password_action', array(&$this, 'lwp_enter_password_action'));
         add_action('wp_ajax_lwp_ajax_login_with_email', array(&$this, 'lwp_ajax_login_with_email'));
+        add_action('wp_ajax_lwp_ajax_verify_with_email', array(&$this, 'lwp_ajax_verify_with_email'));
         add_action('wp_ajax_lwp_ajax_register', array(&$this, 'lwp_ajax_register'));
+        add_action('wp_ajax_lwp_activate_email', array(&$this, 'lwp_activate_email'));
         add_action('wp_ajax_lwp_forgot_password', array(&$this, 'lwp_forgot_password'));
         add_action('wp_ajax_lwp_verify_domain', array(&$this, 'lwp_verify_domain'));
         add_action('wp_ajax_nopriv_lwp_verify_domain', array(&$this, 'lwp_verify_domain'));
         add_action('wp_ajax_nopriv_lwp_ajax_login', array(&$this, 'lwp_ajax_login'));
         add_action('wp_ajax_nopriv_lwp_ajax_login_with_email', array(&$this, 'lwp_ajax_login_with_email'));
+        add_action('wp_ajax_nopriv_lwp_ajax_verify_with_email', array(&$this, 'lwp_ajax_verify_with_email'));
         add_action('wp_ajax_nopriv_lwp_ajax_register', array(&$this, 'lwp_ajax_register'));
+        add_action('wp_ajax_nopriv_lwp_activate_email', array(&$this, 'lwp_activate_email'));
         add_action('wp_ajax_nopriv_lwp_update_password_action', array(&$this, 'lwp_update_password_action'));
         add_action('wp_ajax_nopriv_lwp_enter_password_action', array(&$this, 'lwp_enter_password_action'));
         add_action('wp_ajax_nopriv_lwp_forgot_password', array(&$this, 'lwp_forgot_password'));
@@ -411,22 +415,22 @@ class idehwebLwp
                             //     // $("#idehweb_default_gateways").val(arr)
                             //     console.log(arr);
                             // }
-                            stop: function(event, ui) {
-                                var formData=[];
-                                var _li= $('.idehweb_default_gateways_wrapper li.select2-selection__choice');
-                                _li.each(function(idx) {
-                                    var currentObj=$(this);
-                                    var data=currentObj.text();
-                                    data=data.substr(1,data.length);
-                                    formData.push({name:data,value:currentObj.val()})
+                            stop: function (event, ui) {
+                                var formData = [];
+                                var _li = $('.idehweb_default_gateways_wrapper li.select2-selection__choice');
+                                _li.each(function (idx) {
+                                    var currentObj = $(this);
+                                    var data = currentObj.text();
+                                    data = data.substr(1, data.length);
+                                    formData.push({name: data, value: currentObj.val()})
                                 })
                                 console.log(formData)
                             },
-                            update: function() {
-                                var _li= $('.idehweb_default_gateways_wrapper li');
+                            update: function () {
+                                var _li = $('.idehweb_default_gateways_wrapper li');
                                 // _li.removeAttr("value");
-                                _li.each(function(idx) {
-                                    var currentObj=$(this);
+                                _li.each(function (idx) {
+                                    var currentObj = $(this);
                                     console.log(currentObj.text());
                                     $(this).attr("value", idx + 1);
                                 })
@@ -1034,6 +1038,7 @@ class idehwebLwp
 		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_email_login]" value="1"' . (($options['idehweb_email_login']) ? ' checked="checked"' : '') . ' />' . __('I want user login with email', 'login-with-phone-number') . '</label>';
 
     }
+
     function setting_idehweb_email_force()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -2755,57 +2760,69 @@ class idehwebLwp
             <?php
             if ($options['idehweb_email_force_after_phonenumber']) {
                 $ecclass = 'display:block';
-            ?>
-            <form id="lwp_login_email" class="ajax-auth" action="loginemail" style="<?php echo $ecclass; ?>"
-                  method="post">
-                <?php
-                if (intval($image_id) > 0) {
-                    $image = wp_get_attachment_image($image_id, 'full', false, array('class' => 'lwp_media-logo-image'));
-                    echo '<div class="lwp_logo_parent">' . $image . '</div>';
-                }
+                $user = wp_get_current_user();
+
                 ?>
-                <p class="status"></p>
-                <?php wp_nonce_field('lwp-ajax-login-with-email-nonce', 'security'); ?>
-                <label class="lwp_labels"
-                       for="lwp_email"><?php echo __('Your email:', 'login-with-phone-number'); ?></label>
-                <input type="email" class="required lwp_email the_lwp_input" name="lwp_email"
-                       placeholder="<?php echo __('Please enter your email', 'login-with-phone-number'); ?>">
+                <?php if (empty($user->user_email)) {
+                    ?>
+                    <form id="lwp_verify_email" class="ajax-auth" action="loginemail" style="<?php echo $ecclass; ?>"
+                          method="post">
+                        <?php
+                        if (intval($image_id) > 0) {
+                            $image = wp_get_attachment_image($image_id, 'full', false, array('class' => 'lwp_media-logo-image'));
+                            echo '<div class="lwp_logo_parent">' . $image . '</div>';
+                        }
+                        ?>
+                        <p class="status"></p>
+                        <?php wp_nonce_field('lwp-ajax-login-with-email-nonce', 'security'); ?>
+                        <label class="lwp_labels"
+                               for="lwp_email"><?php echo __('Your email:', 'login-with-phone-number'); ?></label>
+                        <input type="email" class="required lwp_email the_lwp_input" name="lwp_email"
+                               placeholder="<?php echo __('Please enter your email', 'login-with-phone-number'); ?>">
 
-                <button class="submit_button auth_email" type="submit">
-                    <?php echo __('Submit', 'login-with-phone-number'); ?>
-                </button>
-            </form>
-                <form id="lwp_activate" data-method="<?php echo $theClasses; ?>"
-                      class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
-                    <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
-                    <p class="status"></p>
-                    <?php wp_nonce_field('lwp-ajax-activate-nonce', 'security'); ?>
-                    <div class="lwp_top_activation">
-                        <div class="lwp_timer"></div>
+                        <button class="submit_button auth_email" type="submit">
+                            <?php echo __('Submit', 'login-with-phone-number'); ?>
+                        </button>
+                    </form>
+                    <form id="lwp_activate_email" data-method="email"
+                          class="ajax-auth lwp-register-form-i email" action="activate"
+                          method="post">
+                        <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
+                        <p class="status"></p>
+                        <?php wp_nonce_field('lwp-ajax-activate-nonce', 'security'); ?>
+                        <div class="lwp_top_activation">
+                            <div class="lwp_timer"></div>
 
 
-                    </div>
-                    <label class="lwp_labels"
-                           for="lwp_scode"><?php echo __('Security code', 'login-with-phone-number'); ?></label>
-                    <input type="text" class="required lwp_scode" name="lwp_scode" placeholder="ـ ـ ـ ـ ـ ـ">
+                        </div>
+                        <label class="lwp_labels"
+                               for="lwp_scode"><?php echo __('Security code', 'login-with-phone-number'); ?></label>
+                        <input type="text" class="required lwp_scode" name="lwp_scode" placeholder="ـ ـ ـ ـ ـ ـ">
 
-                    <button class="submit_button auth_secCode">
-                        <?php echo __('Activate', 'login-with-phone-number'); ?>
-                    </button>
-                    <button class="submit_button lwp_didnt_r_c lwp_disable  <?php echo $theClasses; ?>" type="button">
-                        <?php echo __('Send code again', 'login-with-phone-number'); ?>
-                    </button>
-                    <hr class="lwp_line"/>
-                    <div class="lwp_bottom_activation">
-                        <a class="lwp_change_el" href="#">
-                            <?php echo __('Change email?', 'login-with-phone-number'); ?>
-                        </a>
-                    </div>
-                    <a class="close" href="">(x)</a>
-                </form>
+                        <button class="submit_button auth_secCode">
+                            <?php echo __('Activate', 'login-with-phone-number'); ?>
+                        </button>
+                        <button class="submit_button lwp_didnt_r_c lwp_disable  <?php echo $theClasses; ?>"
+                                type="button">
+                            <?php echo __('Send code again', 'login-with-phone-number'); ?>
+                        </button>
+                        <hr class="lwp_line"/>
+                        <div class="lwp_bottom_activation">
+                            <a class="lwp_change_el" href="#">
+                                <?php echo __('Change email?', 'login-with-phone-number'); ?>
+                            </a>
+                        </div>
+                        <a class="close" href="">(x)</a>
+                    </form>
+                <?php } else {
+                    echo $user->user_email;
+                    ?>
+
+                    <?php
+                } ?>
 
             <?php } ?>
-<?php
+            <?php
         }
         return ob_get_clean();
     }
@@ -2832,10 +2849,10 @@ class idehwebLwp
 
     function lwp_ajax_login()
     {
+
         $usesrname = sanitize_text_field($_GET['username']);
         $method = sanitize_text_field($_GET['method']);
         $options = get_option('idehweb_lwp_settings');
-//        echo $_GET['nonce'];
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
@@ -3103,14 +3120,14 @@ class idehwebLwp
         $user = wp_get_current_user();
         $password = sanitize_text_field($_GET['password']);
         if ($user) {
-            wp_clear_auth_cookie();
+//            wp_clear_auth_cookie();
             wp_update_user([
                 'ID' => $user->ID,
                 'user_pass' => $password
             ]);
             update_user_meta($user->ID, 'updatedPass', 1);
             wp_set_current_user($user->ID); // Set the current user detail
-            wp_set_auth_cookie($user->ID); // Set auth details in cookie
+            wp_set_auth_cookie($user->ID, true); // Set auth details in cookie
             echo json_encode([
                 'success' => true,
                 'message' => __('Password set successfully! redirecting...', 'login-with-phone-number')
@@ -3211,6 +3228,58 @@ class idehwebLwp
                 'message' => __('Email sent successfully!', 'login-with-phone-number')
             ]);
             die();
+
+        } else {
+            echo json_encode([
+                'success' => false,
+                'email' => $email,
+                'message' => __('email is wrong!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+    }
+
+    function lwp_ajax_verify_with_email()
+
+    {
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
+        }
+        $email = sanitize_email($_GET['email']);
+        $userRegisteredNow = false;
+        $current_user = wp_get_current_user();
+        $options = get_option('idehweb_lwp_settings');
+
+//        if (!isset($options['idehweb_user_registration'])) $options['idehweb_user_registration'] = '1';
+//        $registration = $options['idehweb_user_registration'];
+//print_r($current_user);
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $info = array();
+            $info['user_email'] = sanitize_user($email);
+            $user_data = wp_update_user(array('ID' => $current_user->ID, 'user_email' => $info['user_email']));
+
+            if (is_wp_error($user_data)) {
+                if ($user_data->errors['existing_user_email']) {
+                    //set email for this user
+                    update_user_meta($current_user->ID, 'temporary_email', $info['user_email']);
+                    $log = $this->lwp_generate_token($current_user->ID, $email, true);
+                    echo json_encode([
+                        'success' => true,
+                        'ID' => $current_user->ID,
+                        'log' => $log,
+                        'showPass' => false,
+                        'authWithPass' => (bool)(int)$options['idehweb_password_login'],
+                        'email' => $email,
+                        'message' => __('Email sent successfully!', 'login-with-phone-number')
+                    ]);
+                    die();
+                }
+
+            } else {
+                // Success!
+                echo 'User profile updated.';
+            }
 
         } else {
             echo json_encode([
@@ -3348,6 +3417,11 @@ class idehwebLwp
 
     function lwp_ajax_register()
     {
+
+//        print_r($_COOKIE[ 'lp_session_guest' ]);
+//        die();
+
+//die();
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
@@ -3385,7 +3459,7 @@ class idehwebLwp
             $activation_code = get_user_meta($username_exists, 'activation_code', true);
             $secod = sanitize_text_field($_GET['secod']);
             $verificationId = sanitize_text_field($_GET['verificationId']);
-            if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways']) && isset($_GET['phone_number'])) {
+            if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways']) && isset($_GET['phone_number']) && isset($_GET['method']) && $_GET['method'] == 'firebase') {
                 $response = $this->idehweb_lwp_activate_through_firebase($verificationId, $secod);
                 if ($response->error && $response->error->code == 400) {
                     echo json_encode([
@@ -3399,9 +3473,9 @@ class idehwebLwp
 //                if($response=='true') {
                     $user = get_user_by('ID', $username_exists);
                     if (!is_wp_error($user)) {
-                        wp_clear_auth_cookie();
+//                        wp_clear_auth_cookie();
                         wp_set_current_user($user->ID); // Set the current user detail
-                        wp_set_auth_cookie($user->ID); // Set auth details in cookie
+                        wp_set_auth_cookie($user->ID, true); // Set auth details in cookie
                         update_user_meta($username_exists, 'activation_code', '');
                         if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
@@ -3417,14 +3491,29 @@ class idehwebLwp
                     die();
                 }
             } else {
+
                 if ($activation_code == $secod) {
                     // First get the user details
                     $user = get_user_by('ID', $username_exists);
 
                     if (!is_wp_error($user)) {
-                        wp_clear_auth_cookie();
-                        wp_set_current_user($user->ID); // Set the current user detail
-                        wp_set_auth_cookie($user->ID); // Set auth details in cookie
+//                        wp_clear_auth_cookie();
+                        if(class_exists('LearnPress')) {
+                            $guest_session_id = $_COOKIE['lp_session_guest'];
+                            $session = LearnPress::instance()->session;
+                            $session->_customer_id = $guest_session_id;
+                            $data_session_before_user_login = $session->get_session_by_customer_id($guest_session_id);
+                        }
+                        wp_set_current_user($user->ID);
+                        if(class_exists('LearnPress')) {
+                            $session->_customer_id = $user->ID;
+                            foreach ($data_session_before_user_login as $key => $item) {
+                                $session->set($key, maybe_unserialize($item));
+                            }
+                            $session->save_data();
+                        }
+
+                        wp_set_auth_cookie($user->ID, true); // Set auth details in cookie
                         update_user_meta($username_exists, 'activation_code', '');
                         if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
@@ -3458,6 +3547,94 @@ class idehwebLwp
             ]);
             die();
 
+        }
+    }
+
+    function lwp_activate_email()
+    {
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
+        }
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
+        $current_user = wp_get_current_user();
+
+
+        if (is_wp_error($current_user) || 0 == $current_user->ID) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('user is not logged in!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if (isset($_GET['email'])) {
+            $email = sanitize_email($_GET['email']);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => __('email is not entered!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if ($current_user) {
+            $temporary_email = get_user_meta($current_user->ID, 'temporary_email', true);
+            $activation_code = get_user_meta($current_user->ID, 'activation_code', true);
+            $secod = sanitize_text_field($_GET['secod']);
+            if ($activation_code == $secod) {
+
+                //remove this email from other user
+                $this->remove_email_from_all_users($temporary_email);
+                $user = wp_update_user([
+                    'ID' => $current_user->ID,
+                    'user_email' => $temporary_email
+                ]);
+                if (is_wp_error($user)) {
+                    echo json_encode(array('success' => false, 'message' => __('There is problem with activating user.', 'login-with-phone-number'), 'updatedPass' => false, 'authWithPass' => false));
+                    die();
+                }
+                update_user_meta($current_user->ID, 'activation_code', '');
+                if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
+                $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
+                $updatedPass = (bool)(int)get_user_meta($current_user->ID, 'updatedPass', true);
+
+                echo json_encode(array('success' => true, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
+
+
+                die();
+
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'email' => $email,
+                    'user_id' => $current_user->ID,
+                    'message' => __('Activation code is not correct!', 'login-with-phone-number')
+                ]);
+                die();
+
+            }
+        } else {
+
+            echo json_encode([
+                'success' => false,
+                'email' => $email,
+                'message' => __('user does not exist!', 'login-with-phone-number')
+            ]);
+            die();
+
+        }
+    }
+
+    function remove_email_from_all_users($email)
+    {
+        $username_exists = email_exists($email);
+        if ($username_exists) {
+            wp_update_user(
+                [
+                    'ID' => $username_exists,
+                    'user_email' => ''
+                ]
+            );
         }
     }
 

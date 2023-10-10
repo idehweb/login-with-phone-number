@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.3
+Version: 1.6.4
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -373,9 +373,9 @@ class idehwebLwp
                     </a>
 
                     <a style="margin-top: 10px;display:block"
-                       href="https://idehweb.com/product/whatsap-gateway-for-login-with-phone-number/" target="_blank">
+                       href="https://idehweb.com/" target="_blank">
                         <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/whatsapp-gateway-banner.webp', __FILE__) ?>"/>
+                             src="<?php echo plugins_url('/images/webdesign.webp', __FILE__) ?>"/>
                     </a>
 
                     <a style="margin-top: 10px;display:block"

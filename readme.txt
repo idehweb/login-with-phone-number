@@ -2,10 +2,10 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.3
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: Login-with-phone-number, login-with-mobile-number, WooCommerce
+Tags: Loginwithphonenumber, WooCommerce, Learnpress
 
 ## Description
 
@@ -73,7 +73,8 @@ Supported gateways for now:
 
 ##Changelog
 
-###1.6.2
+###1.6.4
+* add web design banner
 
 
 ###1.6.1

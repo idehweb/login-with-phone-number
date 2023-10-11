@@ -2,10 +2,10 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.3
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: Loginwithphonenumber, WooCommerce, Learnpress
+Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS, multi factor authentication, WooCommerce, Learnpress
 
 ## Description
 
@@ -13,7 +13,7 @@ Login/register with phone number
 
 Added country flags to login with phone number form
 
-You can add almost every SMS gateways (if you have) yourself for free
+You can add almost every SMS gateways (if you have) yourself for free, or you can ask us to develop your sms gateway with paying extra.
 
 you can change style and appearance of forms 
 
@@ -73,9 +73,11 @@ Supported gateways for now:
 
 ##Changelog
 
+###1.6.5
+* set utm
+
 ###1.6.4
 * add web design banner
-
 
 ###1.6.1
 * support learn press

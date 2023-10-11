@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.4
+Version: 1.6.5
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -367,19 +367,19 @@ class idehwebLwp
 
                 ?>
                 <div class="lwp-wrap-right">
-                    <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank">
+                    <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?utm_source=lwp-plugin&utm_medium=banner-lwp&utm_campaign=plugin-install" target="_blank">
                         <img style="width: 100%;max-width: 100%"
                              src="<?php echo plugins_url('/images/login-with-phone-number-wordpress-buy-pro-version.png', __FILE__) ?>"/>
                     </a>
 
                     <a style="margin-top: 10px;display:block"
-                       href="https://idehweb.com/" target="_blank">
+                       href="https://idehweb.com/?utm_source=lwp-plugin&utm_medium=banner-webdesign&utm_campaign=plugin-install" target="_blank">
                         <img style="width: 100%;max-width: 100%"
                              src="<?php echo plugins_url('/images/webdesign.webp', __FILE__) ?>"/>
                     </a>
 
                     <a style="margin-top: 10px;display:block"
-                       href="https://idehweb.com/product/nodeeweb-wordpress-theme/" target="_blank">
+                       href="https://idehweb.com/product/nodeeweb-wordpress-theme/?utm_source=lwp-plugin&utm_medium=banner-nodeeweb&utm_campaign=plugin-install" target="_blank">
                         <img style="width: 100%;max-width: 100%"
                              src="<?php echo plugins_url('/images/nodeeweb-wordpress-theme.png', __FILE__) ?>"/>
                     </a>

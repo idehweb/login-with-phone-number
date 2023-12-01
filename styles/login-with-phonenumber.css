@@ -15,7 +15,22 @@ form.ajax-auth {
     position: relative;
     font-size: 11px;
 }
+.lwp_sso_gateways{
+    margin-top:10px
+}
+.ajax-auth .lwp_sso_gateways > button{
+    display: flex;
 
+    border: 1px solid #eee;
+    border-radius: 5px;
+    text-align: center;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    cursor:pointer;
+    align-items: center;
+    margin-bottom:10px;
+}
 .lw-sticky form.ajax-auth {
     position: fixed;
     top: 50%;

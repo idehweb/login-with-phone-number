@@ -73,6 +73,9 @@ Supported gateways for now:
 
 ##Changelog
 
+###1.6.7
+* add SSO support
+
 ###1.6.5
 * set utm
 

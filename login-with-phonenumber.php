@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.8
+Version: 1.6.81
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -1719,7 +1719,7 @@ class idehwebLwp
         if (!isset($options['idehweb_firebase_api'])) $options['idehweb_firebase_api'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_firebase_api]" class="regular-text" value="' . esc_attr($options['idehweb_firebase_api']) . '" />
-		<p class="description">' . __('enter Firebase api', 'login-with-phone-number') . ' - <a  href="https://idehweb.com/support/login-with-phone-number-wordpress/send-10000-sms-free-with-firebase-in-plugin-login-with-phone-number-wordpress/" target="_blank">' . __('Firebase config help - documentation', 'login-with-phone-number') . '</a></p>';
+		<p class="description">' . __('enter Firebase api', 'login-with-phone-number') . ' - <a  href="https://idehweb.com/send-10000-free-otp-sms-with-firebase-in-login-with-phone-number-wordpress-plugin/" target="_blank">' . __('Firebase config help - documentation', 'login-with-phone-number') . '</a></p>';
     }
 
     function setting_firebase_config()

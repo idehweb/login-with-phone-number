@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
             try {
                 firebase.initializeApp(firebaseConfig);
 
-            } catch(e) {
+            } catch (e) {
                 console.error('firebaseConfig is not defined!')
 
             }
@@ -18,13 +18,13 @@ jQuery(document).ready(function ($) {
 
         // $('form.ajax-auth.lwp-login-form-i.firebase').on('submit', function (e) {
         console.log('click on submit firebase...');
-        let method=$('input[name="otp-method"]:checked').val();
+        let method = $('input[name="otp-method"]:checked').val();
         if (!method) {
             method = $('#lwp_login').attr('data-method');
         }
-        console.log('method',method)
+        console.log('method', method)
 
-        if(method!=='firebase'){
+        if (method !== 'firebase') {
             console.log('method is not firebase, return false')
             return false;
         }
@@ -58,8 +58,8 @@ jQuery(document).ready(function ($) {
         username = lwp_country_codes + username;
 
 
-        let security=idehweb_lwp.nonce;
-        console.log('security',security)
+        let security = idehweb_lwp.nonce;
+        console.log('security', security)
         var ctrl = $(this);
         $.ajax({
             // type: 'GET',
@@ -67,7 +67,7 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
-                'nonce':security,
+                'nonce': security,
                 'username': username,
                 'method': method,
                 // 'password': password,
@@ -118,7 +118,7 @@ jQuery(document).ready(function ($) {
     $('body').on('submit', 'form.ajax-auth.lwp-register-form-i.firebase', function (e) {
         e.preventDefault();
 
-    // $('form#lwp_activate').on('submit', function (e) {
+        // $('form#lwp_activate').on('submit', function (e) {
         if (!$(this).valid()) return false;
 
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
@@ -130,7 +130,7 @@ jQuery(document).ready(function ($) {
             'action': action,
             'secod': security,
             'method': 'firebase',
-            'nonce':nonce
+            'nonce': nonce
         };
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
@@ -214,7 +214,7 @@ jQuery(document).ready(function ($) {
         // $('#lwp_login').fadeOut(10);
         $('#lwp_enter_password').fadeOut(10);
         $('#lwp_login').fadeIn(500);
-        let nonce=idehweb_lwp.nonce;
+        let nonce = idehweb_lwp.nonce;
 
         $.ajax({
             dataType: 'json',
@@ -275,6 +275,8 @@ jQuery(document).ready(function ($) {
                 grecaptcha.reset(widgetId);
             });
             console.log(error);
+            if (error && error.message && error.code)
+                $('p.status').html("<strong>"+error.code+"</strong><div>"+error.message+"</div>");
 
         });
     }

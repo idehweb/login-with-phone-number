@@ -12,35 +12,110 @@
 .lwp-setting-page-main {
 
 }
-.lwp-gateway-item-title-f{
+
+.lwp-gateway-item-title-f {
     font-size: 15px;
     font-weight: bold;
     text-decoration: none;
 }
-.lwp-gateway-item-title-s{
-    color:#000;
+
+.lwp-gateway-item-title-s {
+    color: #000;
     font-size: 13px;
     text-decoration: none;
 
     font-weight: bold;
 
 }
-.lwp-gateway-item-price{
+
+.lwp-guid-popup {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.lwp-guid-popup.lwp-open {
+    display: block;
+}
+
+.lwp-guid-popup-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .48);
+
+}
+
+.lwp-guid-popup-page {
+    display: none;
+}
+
+.lwp-guid-popup-page.lwp-gp-active {
+    display: flex;
+    flex-direction: column;
+}
+.lwp-label{
+    font-size: 25px;
+    line-height: 1.5;
+}
+.lwp-answer-fields{
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+.lwp-radio{
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.lwp-radio input{
+
+}
+.lwp-radio label{
+
+}
+.lwp-guid-popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 50vw;
+    max-width: 300px;
+    height: 50vw;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    box-shadow: 0px 0px 6px #212121;
+
+}
+
+.lwp-gateway-item-price {
     font-size: 20px;
     margin-top: 10px;
-    margin-bottom:5px;
+    margin-bottom: 5px;
 }
+
 .lwp-gateway-items {
-display: flex;
+    display: flex;
     flex-wrap: wrap;
 }
-.lwp-gateway-items a{
+
+.lwp-gateway-items a {
     text-decoration: none;
 }
-.lwp-gateway-item-inside{
-    width:300px;
+
+.lwp-gateway-item-inside {
+    width: 300px;
     background-color: #fff;
 }
+
 .lwp-gateway-item {
     max-width: 320px;
     background-color: #fff;
@@ -51,9 +126,11 @@ display: flex;
     box-sizing: border-box;
     box-shadow: 1px 1px 1px #d7d7d7;
 }
-.lwp-gateway-item img{
+
+.lwp-gateway-item img {
     max-width: 100%;
 }
+
 .lwp-d-none {
     display: none !important;
 }

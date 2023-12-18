@@ -304,7 +304,7 @@ class idehwebLwp
         );
         $page_hook_styles = add_submenu_page('idehweb-lwp', __('Style settings', 'login-with-phone-number'), __('Style Settings', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-styles', array(&$this, 'style_settings_page'));
         add_submenu_page('idehweb-lwp', __('Text & localization', 'login-with-phone-number'), __('Text & localization', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-localization', array(&$this, 'localization_settings_page'));
-        $page_hook_gateway = add_submenu_page('idehweb-lwp', __('SMS Gateways', 'login-with-phone-number'), __('SMS Gateways', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-gateways', array(&$this, 'gateways_settings_page'));
+        $page_hook_gateway = add_submenu_page('idehweb-lwp', __('Add-ons', 'login-with-phone-number'), __('SMS Gateways', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-gateways', array(&$this, 'gateways_settings_page'));
         add_action('admin_print_styles-' . $page_hook, array(&$this, 'admin_custom_css'));
         add_action('admin_print_styles-' . $page_hook_styles, array(&$this, 'admin_custom_css'));
         add_action('admin_print_styles-' . $page_hook_gateway, array(&$this, 'admin_custom_css'));
@@ -390,6 +390,41 @@ class idehwebLwp
 
                     <?php } ?>
                 </form>
+
+                <div class="lwp-guid-popup lwp-open" style="display: none">
+                    <div class="lwp-guid-popup-bg">
+                    </div>
+                    <div class="lwp-guid-popup-content">
+                        <div class="lwp-guid-popup-page lwp-gp-active">
+                            <div class="lwp-label">
+                                <?php _e('Please, Answer us to show you best options:', 'login-with-phone-number'); ?>
+                            </div>
+                            <div class="lwp-answer-fields lwp-radios">
+                                <div class="lwp-radio">
+                                      <input type="radio" id="lwp-radio1" name="lwp_users_location" value="HTML">
+                                    <label for="lwp-radio1"><?php _e('My website users are from special countries', 'login-with-phone-number'); ?></label>
+                                </div>
+                                <div class="lwp-radio">
+                                      <input type="radio" id="lwp-radio2" name="lwp_users_location" value="HTML">
+                                    <label for="lwp-radio2"><?php _e('My website users are from one country', 'login-with-phone-number'); ?></label>
+                                </div>
+                                <div class="lwp-radio">
+                                      <input type="radio" id="lwp-radio3" name="lwp_users_location" value="HTML">
+                                    <label for="lwp-radio3"><?php _e('I am working internationally', 'login-with-phone-number'); ?></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lwp-guid-popup-page ">
+                            hello
+                        </div>
+                        <div class="lwp-guid-popup-page ">
+                            hello
+                        </div>
+                        <div class="lwp-guid-popup-page ">
+                            hello
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <?php

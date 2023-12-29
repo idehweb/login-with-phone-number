@@ -1,15 +1,15 @@
 #Login with phone number
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
-Tested up to: 6.3
-Stable tag: 1.6.82
+Tested up to: 6.4
+Stable tag: 1.6.83
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS, multi factor authentication, WooCommerce, Learnpress
 
 ## Description
 
-Login/register with phone number
+Login/register with phone number in WordPress can happen with this plugin. Your customer can authenticate with their mobile number via OTP.
 
 Added country flags to login with phone number form
 
@@ -72,6 +72,10 @@ Supported gateways for now:
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 ##Changelog
+
+###1.6.83
+* support WordPress 6.4
+* change meta description of plugin
 
 ###1.6.82
 * change sms gateways name to add-ons

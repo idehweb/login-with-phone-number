@@ -1,5 +1,6 @@
 jQuery(document).ready( function($) {
 
+
     jQuery('input#lwp_media_media_manager').click(function(e) {
 
         e.preventDefault();

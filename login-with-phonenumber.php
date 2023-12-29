@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.82
+Version: 1.6.83
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -304,7 +304,7 @@ class idehwebLwp
         );
         $page_hook_styles = add_submenu_page('idehweb-lwp', __('Style settings', 'login-with-phone-number'), __('Style Settings', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-styles', array(&$this, 'style_settings_page'));
         add_submenu_page('idehweb-lwp', __('Text & localization', 'login-with-phone-number'), __('Text & localization', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-localization', array(&$this, 'localization_settings_page'));
-        $page_hook_gateway = add_submenu_page('idehweb-lwp', __('Add-ons', 'login-with-phone-number'), __('SMS Gateways', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-gateways', array(&$this, 'gateways_settings_page'));
+        $page_hook_gateway = add_submenu_page('idehweb-lwp', __('Add-ons', 'login-with-phone-number'), __('Add-ons', 'login-with-phone-number'), 'manage_options', 'idehweb-lwp-gateways', array(&$this, 'gateways_settings_page'));
         add_action('admin_print_styles-' . $page_hook, array(&$this, 'admin_custom_css'));
         add_action('admin_print_styles-' . $page_hook_styles, array(&$this, 'admin_custom_css'));
         add_action('admin_print_styles-' . $page_hook_gateway, array(&$this, 'admin_custom_css'));
@@ -391,26 +391,29 @@ class idehwebLwp
                     <?php } ?>
                 </form>
 
-                <div class="lwp-guid-popup lwp-open" style="display: none">
+                <div class="lwp-guid-popup lwp-open"
+                     style="display: none"
+
+                >
                     <div class="lwp-guid-popup-bg">
                     </div>
                     <div class="lwp-guid-popup-content">
                         <div class="lwp-guid-popup-page lwp-gp-active">
                             <div class="lwp-label">
-                                <?php _e('Please, Answer us to show you best options:', 'login-with-phone-number'); ?>
+                                <?php _e('Please, Answer us to help you setup this plugin:', 'login-with-phone-number'); ?>
                             </div>
                             <div class="lwp-answer-fields lwp-radios">
                                 <div class="lwp-radio">
                                       <input type="radio" id="lwp-radio1" name="lwp_users_location" value="HTML">
-                                    <label for="lwp-radio1"><?php _e('My website users are from special countries', 'login-with-phone-number'); ?></label>
+                                    <label for="lwp-radio1"><?php _e('My website users come from special countries', 'login-with-phone-number'); ?></label>
                                 </div>
                                 <div class="lwp-radio">
                                       <input type="radio" id="lwp-radio2" name="lwp_users_location" value="HTML">
-                                    <label for="lwp-radio2"><?php _e('My website users are from one country', 'login-with-phone-number'); ?></label>
+                                    <label for="lwp-radio2"><?php _e('My website users come from one country', 'login-with-phone-number'); ?></label>
                                 </div>
                                 <div class="lwp-radio">
                                       <input type="radio" id="lwp-radio3" name="lwp_users_location" value="HTML">
-                                    <label for="lwp-radio3"><?php _e('I am working internationally', 'login-with-phone-number'); ?></label>
+                                    <label for="lwp-radio3"><?php _e('I am working internationally, my website users come from many countries', 'login-with-phone-number'); ?></label>
                                 </div>
                             </div>
                         </div>
@@ -464,6 +467,10 @@ class idehwebLwp
 
                 ?>
                 jQuery(function ($) {
+                    $('input[name="lwp_users_location"]').click(function(e) {
+                        var lwp_users_location = $(this).val();
+                        console.log('lwp_users_location',lwp_users_location);
+                    })
                     var idehweb_country_codes = $("#idehweb_country_codes");
                     var idehweb_phone_number_ccodeG = '1';
                     $(window).load(function () {
@@ -473,37 +480,30 @@ class idehwebLwp
                         $("#idehweb_phone_number_ccode").select2();
                         idehweb_country_codes.select2();
                         $("#idehweb_default_gateways").select2();
-                        $(".idehweb_default_gateways_wrapper ul.select2-selection__rendered").sortable({
-                            containment: 'parent',
-                            // stop: function (event, ui) {
-                            //     // event target would be the <ul> which also contains a list item for searching (which has to be excluded)
-                            //     var arr = Array.from($(event.target).find('li:not(.select2-search)').map(function () {
-                            //         return {name: $(this).attr('title'), value: $(this).attr('data-select2-id')};
-                            //     }));
-                            //     // $("#idehweb_default_gateways").val(arr)
-                            //     console.log(arr);
-                            // }
-                            stop: function (event, ui) {
-                                var formData = [];
-                                var _li = $('.idehweb_default_gateways_wrapper li.select2-selection__choice');
-                                _li.each(function (idx) {
-                                    var currentObj = $(this);
-                                    var data = currentObj.text();
-                                    data = data.substr(1, data.length);
-                                    formData.push({name: data, value: currentObj.val()})
-                                })
-                                console.log(formData)
-                            },
-                            update: function () {
-                                var _li = $('.idehweb_default_gateways_wrapper li');
-                                // _li.removeAttr("value");
-                                _li.each(function (idx) {
-                                    var currentObj = $(this);
-                                    console.log(currentObj.text());
-                                    $(this).attr("value", idx + 1);
-                                })
-                            }
-                        });
+                        // $(".idehweb_default_gateways_wrapper ul.select2-selection__rendered").sortable({
+                        //     containment: 'parent',
+                        //
+                        //     stop: function (event, ui) {
+                        //         var formData = [];
+                        //         var _li = $('.idehweb_default_gateways_wrapper li.select2-selection__choice');
+                        //         _li.each(function (idx) {
+                        //             var currentObj = $(this);
+                        //             var data = currentObj.text();
+                        //             data = data.substr(1, data.length);
+                        //             formData.push({name: data, value: currentObj.val()})
+                        //         })
+                        //         console.log(formData)
+                        //     },
+                        //     update: function () {
+                        //         var _li = $('.idehweb_default_gateways_wrapper li');
+                        //         // _li.removeAttr("value");
+                        //         _li.each(function (idx) {
+                        //             var currentObj = $(this);
+                        //             console.log(currentObj.text());
+                        //             $(this).attr("value", idx + 1);
+                        //         })
+                        //     }
+                        // });
 
 
                         <?php

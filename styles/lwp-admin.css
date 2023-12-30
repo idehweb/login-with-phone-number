@@ -68,11 +68,19 @@
     border-top: 1px solid #eee;
     padding-top: 20px;
 }
+.lwp-guid-popup-top-bar{
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
 .lwp-radio{
     padding: 10px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+.lwp-select .select2.select2-container{
+    width: 100% !important;
 }
 .lwp-radio input{
 

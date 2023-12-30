@@ -390,41 +390,67 @@ class idehwebLwp
 
                     <?php } ?>
                 </form>
-
+                <!--                     style="display: none"
+                -->
                 <div class="lwp-guid-popup lwp-open"
-                     style="display: none"
 
                 >
                     <div class="lwp-guid-popup-bg">
                     </div>
                     <div class="lwp-guid-popup-content">
-                        <div class="lwp-guid-popup-page lwp-gp-active">
+                        <div class="lwp-guid-popup-page lwp-guid-popup-home lwp-gp-active">
                             <div class="lwp-label">
                                 <?php _e('Please, Answer us to help you setup this plugin:', 'login-with-phone-number'); ?>
                             </div>
                             <div class="lwp-answer-fields lwp-radios">
                                 <div class="lwp-radio">
-                                      <input type="radio" id="lwp-radio1" name="lwp_users_location" value="HTML">
+                                      <input type="radio" id="lwp-radio1" name="lwp_users_location"
+                                             value="special-countries">
                                     <label for="lwp-radio1"><?php _e('My website users come from special countries', 'login-with-phone-number'); ?></label>
                                 </div>
                                 <div class="lwp-radio">
-                                      <input type="radio" id="lwp-radio2" name="lwp_users_location" value="HTML">
+                                      <input type="radio" id="lwp-radio2" name="lwp_users_location" value="one-country">
                                     <label for="lwp-radio2"><?php _e('My website users come from one country', 'login-with-phone-number'); ?></label>
                                 </div>
                                 <div class="lwp-radio">
-                                      <input type="radio" id="lwp-radio3" name="lwp_users_location" value="HTML">
+                                      <input type="radio" id="lwp-radio3" name="lwp_users_location"
+                                             value="international-users">
                                     <label for="lwp-radio3"><?php _e('I am working internationally, my website users come from many countries', 'login-with-phone-number'); ?></label>
                                 </div>
                             </div>
                         </div>
-                        <div class="lwp-guid-popup-page ">
-                            hello
+                        <div class="lwp-guid-popup-page lwp-special-countries">
+
+                            <div class="lwp-guid-popup-top-bar">
+                                <button class="lwp-guid-popup-back"><?php _e('Back', 'login-with-phone-number'); ?></button>
+                            </div>
+                            <div class="lwp-label">
+                                <?php _e('Please, Choose the countries your users come from:', 'login-with-phone-number'); ?>
+                            </div>
+                            <div class="lwp-answer-fields lwp-select">
+                                <?php
+                                $country_codes = $this->get_country_code_options();
+                                //        print_r($options['idehweb_country_codes']);
+                                ?>
+                                <select id="lwp_idehweb_country_codes" multiple>
+                                    <?php
+                                    foreach ($country_codes as $country) {
+//                                        $rr = in_array($country["code"], $options['idehweb_country_codes']);
+                                        echo '<option value="' . esc_attr($country["code"]) . '" >' . esc_html($country['label']) . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
-                        <div class="lwp-guid-popup-page ">
-                            hello
+                        <div class="lwp-guid-popup-page lwp-one-country">
+                            <div class="lwp-guid-popup-top-bar">
+                                <button class="lwp-guid-popup-back"><?php _e('Back', 'login-with-phone-number'); ?></button>
+                            </div>
                         </div>
-                        <div class="lwp-guid-popup-page ">
-                            hello
+                        <div class="lwp-guid-popup-page lwp-international-users">
+                            <div class="lwp-guid-popup-top-bar">
+                                <button class="lwp-guid-popup-back"><?php _e('Back', 'login-with-phone-number'); ?></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -467,11 +493,22 @@ class idehwebLwp
 
                 ?>
                 jQuery(function ($) {
-                    $('input[name="lwp_users_location"]').click(function(e) {
+                    $('body').on('click', '.lwp-guid-popup-bg', function (e) {
+                        $('.lwp-guid-popup.lwp-open').removeClass('lwp-open')
+                    });
+                    $('body').on('click', '.lwp-guid-popup-back', function (e) {
+                        $('.lwp-guid-popup-page.lwp-gp-active').removeClass('lwp-gp-active');
+                        $('.lwp-guid-popup-page.lwp-guid-popup-home').addClass('lwp-gp-active')
+
+                    });
+                    $('input[name="lwp_users_location"]').click(function (e) {
                         var lwp_users_location = $(this).val();
-                        console.log('lwp_users_location',lwp_users_location);
+                        $('.lwp-guid-popup-page.lwp-gp-active').removeClass('lwp-gp-active');
+                        $('.lwp-' + lwp_users_location).addClass('lwp-gp-active')
+                        console.log('lwp_users_location', lwp_users_location);
                     })
                     var idehweb_country_codes = $("#idehweb_country_codes");
+                    var lwp_idehweb_country_codes = $("#lwp_idehweb_country_codes");
                     var idehweb_phone_number_ccodeG = '1';
                     $(window).load(function () {
 
@@ -479,6 +516,7 @@ class idehwebLwp
                         $('.refreshShop').click();
                         $("#idehweb_phone_number_ccode").select2();
                         idehweb_country_codes.select2();
+                        lwp_idehweb_country_codes.select2();
                         $("#idehweb_default_gateways").select2();
                         // $(".idehweb_default_gateways_wrapper ul.select2-selection__rendered").sortable({
                         //     containment: 'parent',

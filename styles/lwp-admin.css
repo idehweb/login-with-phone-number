@@ -68,6 +68,12 @@
     border-top: 1px solid #eee;
     padding-top: 20px;
 }
+.lwp-font-size-15{
+    font-size: 15px;
+}
+.lwp-font-size-18{
+    font-size: 18px;
+}
 .lwp-guid-popup-top-bar{
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;

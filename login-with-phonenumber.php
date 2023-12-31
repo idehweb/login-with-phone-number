@@ -399,7 +399,7 @@ class idehwebLwp
                     </div>
                     <div class="lwp-guid-popup-content">
                         <div class="lwp-guid-popup-page lwp-guid-popup-home lwp-gp-active">
-                            <div class="lwp-label">
+                            <div class="lwp-label lwp-font-size-18">
                                 <?php _e('Please, Answer us to help you setup this plugin:', 'login-with-phone-number'); ?>
                             </div>
                             <div class="lwp-answer-fields lwp-radios">
@@ -424,7 +424,7 @@ class idehwebLwp
                             <div class="lwp-guid-popup-top-bar">
                                 <button class="lwp-guid-popup-back"><?php _e('Back', 'login-with-phone-number'); ?></button>
                             </div>
-                            <div class="lwp-label">
+                            <div class="lwp-label lwp-font-size-18">
                                 <?php _e('Please, Choose the countries your users come from:', 'login-with-phone-number'); ?>
                             </div>
                             <div class="lwp-answer-fields lwp-select">
@@ -446,10 +446,31 @@ class idehwebLwp
                             <div class="lwp-guid-popup-top-bar">
                                 <button class="lwp-guid-popup-back"><?php _e('Back', 'login-with-phone-number'); ?></button>
                             </div>
+                            <?php
+                            $country_codes = $this->get_country_code_options();
+                            //        print_r($options['idehweb_country_codes']);
+                            ?>
+                            <select id="lwp_idehweb_country_codes_guid" >
+                                <?php
+                                foreach ($country_codes as $country) {
+//                                        $rr = in_array($country["code"], $options['idehweb_country_codes']);
+                                    echo '<option value="' . esc_attr($country["code"]) . '" >' . esc_html($country['label']) . '</option>';
+                                }
+                                ?>
+                            </select>
                         </div>
                         <div class="lwp-guid-popup-page lwp-international-users">
                             <div class="lwp-guid-popup-top-bar">
                                 <button class="lwp-guid-popup-back"><?php _e('Back', 'login-with-phone-number'); ?></button>
+                            </div>
+                            <div class="lwp-label lwp-font-size-15">
+                                <?php _e('Use international gateways like Firebase, Twilio or...', 'login-with-phone-number'); ?>
+                                <br/>
+                                <?php _e('You can even use multiple gateways at once. So you let your customers to choose the gateway they want to get sms from.', 'login-with-phone-number'); ?>
+                                <br/>
+                                <?php _e('Firebase is free.', 'login-with-phone-number'); ?>
+                                <br/>
+                                <?php _e('Also you can buy other sms gateways from add-ons part.', 'login-with-phone-number'); ?>
                             </div>
                         </div>
                     </div>
@@ -493,6 +514,13 @@ class idehwebLwp
 
                 ?>
                 jQuery(function ($) {
+                    $('#lwp_idehweb_country_codes').on("select2:select", function(e) {
+                        // var value = e.params.data;
+                        let selectedValues=$('#lwp_idehweb_country_codes').select2('data');
+                        // let selectedValues=$('#lwp_idehweb_country_codes').find(':selected');
+                        console.log('selectedValues',selectedValues);
+                        // Using {id,text} format
+                    });
                     $('body').on('click', '.lwp-guid-popup-bg', function (e) {
                         $('.lwp-guid-popup.lwp-open').removeClass('lwp-open')
                     });

@@ -15,6 +15,43 @@ form.ajax-auth {
     position: relative;
     font-size: 11px;
 }
+.lwp_scode_parent{
+    position: relative;
+    height: 100px;
+}
+.lwp_scode_parent .lwp_scode:before{
+    content: '';
+    height: 74px;
+    width: 100%;
+}
+.lwp_scode_parent .lwp_scode{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+:where([autocomplete=one-time-code]) {
+    --otp-digits: 6; /* length */
+    --otc-ls: 2ch;
+    --otc-gap: 1.25;
+    /* private consts */
+    --_otp-bgsz: calc(var(--otc-ls) + 1ch);
+
+    all: unset;
+    background: linear-gradient(90deg,
+    var(--otc-bg, #EEE) calc(var(--otc-gap) * var(--otc-ls)),
+    transparent 0
+    ) 0 0 / var(--_otp-bgsz) 100%;
+    caret-color: var(--otc-cc, #333);
+    clip-path: inset(0% calc(var(--otc-ls) / 3) 0% 0%);
+    font-family: ui-monospace, monospace;
+    font-size: var(--otc-fz, 2.5em);
+    inline-size: calc(var(--otc-digits) * var(--_otp-bgsz));
+    letter-spacing: var(--otc-ls);
+    padding-block: var(--otc-pb, 1ch);
+    padding-inline-start: calc(((var(--otc-ls) - 1ch) / 2) * var(--otc-gap));
+}
 .lwp_sso_gateways{
     margin-top:10px
 }
@@ -153,7 +190,7 @@ form.ajax-auth {
     color: #000;
 }
 
-.ajax-auth input, .ajax-auth label, .ajax-auth button {
+.ajax-auth input:not(.lwp_scode), .ajax-auth label, .ajax-auth button {
     font-size: 15px;
     width: 100%;
     font-family: inherit;

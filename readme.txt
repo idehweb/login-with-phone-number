@@ -76,6 +76,7 @@ Supported gateways for now:
 ###1.6.9
 * add popup guid
 * add activation code separate style
+* add auto-complete code
 
 ###1.6.83
 * support WordPress 6.4

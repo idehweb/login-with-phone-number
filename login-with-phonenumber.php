@@ -393,7 +393,7 @@ class idehwebLwp
                 <!--                     style="display: none"
                 -->
                 <div class="lwp-guid-popup lwp-open"
-
+                     style="display: none"
                 >
                     <div class="lwp-guid-popup-bg">
                     </div>
@@ -1017,27 +1017,27 @@ class idehwebLwp
                         var wrap = $('.wrap');
                         $('.wrap .lwp_modal_overlay').removeClass('lwp-d-none');
                         $('.wrap .lwp_modal').removeClass('lwp-d-none');
-                        //wrap.prepend('<div class="lwp_modal_overlay"></div>')
-                        //    .prepend('<div class="lwp_modal">' +
-                        //        '<div class="lwp_modal_header">' +
-                        //        '<div class="lwp_l"></div>' +
-                        //        '<div class="lwp_r"><button class="lwp_close">x</button></div>' +
-                        //        '</div>' +
-                        //        '<div class="lwp_modal_body">' +
-                        //        '<ul>' +
-                        //        '<li>' + '<?php //_e("1. create a page and name it login or register or what ever", 'login-with-phone-number') ?>//' + '</li>' +
-                        //        '<li>' + '<?php //_e("2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step 1", 'login-with-phone-number') ?>//' + '</li>' +
-                        //        '<li>' + '<?php //_e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", 'login-with-phone-number') ?>//' +
-                        //        '</li>' +
-                        //        '<li>' +
-                        //        '<?php //_e("for more information visit: ", 'login-with-phone-number') ?>//' + '<a target="_blank" href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?lang=en">Idehweb</a>' +
-                        //        '</li>' +
-                        //        '</ul>' +
-                        //        '</div>' +
-                        //        '<div class="lwp_modal_footer">' +
-                        //        '<button class="lwp_button"><?php //_e("got it ", 'login-with-phone-number') ?>//</button>' +
-                        //        '</div>' +
-                        //        '</div>');
+                        wrap.prepend('<div class="lwp_modal_overlay"></div>')
+                            .prepend('<div class="lwp_modal">' +
+                                '<div class="lwp_modal_header">' +
+                                '<div class="lwp_l"></div>' +
+                                '<div class="lwp_r"><button class="lwp_close">x</button></div>' +
+                                '</div>' +
+                                '<div class="lwp_modal_body">' +
+                                '<ul>' +
+                                '<li>' + '<?php _e("1. create a page and name it login or register or what ever", 'login-with-phone-number') ?>' + '</li>' +
+                                '<li>' + '<?php _e("2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step 1", 'login-with-phone-number') ?>' + '</li>' +
+                                '<li>' + '<?php _e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", 'login-with-phone-number') ?>' +
+                                '</li>' +
+                                '<li>' +
+                                '<?php _e("for more information visit: ", 'login-with-phone-number') ?>' + '<a target="_blank" href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?lang=en">Idehweb</a>' +
+                                '</li>' +
+                                '</ul>' +
+                                '</div>' +
+                                '<div class="lwp_modal_footer">' +
+                                '<button class="lwp_button"><?php _e("got it ", 'login-with-phone-number') ?></button>' +
+                                '</div>' +
+                                '</div>');
 
                     }
                 });
@@ -2008,7 +2008,7 @@ class idehwebLwp
             ?>
         </div>
         <?php
-        echo '<input type="text" name="idehweb_lwp_settings[idehweb_secod]" id="lwp_secod" class="regular-text" style="display:none" value="" placeholder="_ _ _ _ _ _" />';
+        echo '<input type="text"  name="idehweb_lwp_settings[idehweb_secod]" id="lwp_secod" class="regular-text" style="display:none" value="" placeholder="_ _ _ _ _ _"   />';
         ?>
         <button type="button" class="button-primary auth i35"
                 value="<?php _e('Authenticate', 'login-with-phone-number'); ?>"><?php _e('activate sms login', 'login-with-phone-number'); ?></button>
@@ -2837,10 +2837,11 @@ class idehwebLwp
 
 
                     </div>
+                    <div class="lwp_scode_parent">
                     <label class="lwp_labels"
                            for="lwp_scode"><?php echo __('Security code', 'login-with-phone-number'); ?></label>
-                    <input type="text" class="required lwp_scode" name="lwp_scode" placeholder="ـ ـ ـ ـ ـ ـ">
-
+                    <input type="text" class="required lwp_scode" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="\d{6}" name="lwp_scode">
+                    </div>
                     <button class="submit_button auth_secCode">
                         <?php echo __('Activate', 'login-with-phone-number'); ?>
                     </button>

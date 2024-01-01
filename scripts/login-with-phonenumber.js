@@ -11,6 +11,14 @@ jQuery(document).ready(function ($) {
 
     // Show the login/signup popup on click
 
+    $('body').on('input', 'input.lwp_scode[name="lwp_scode"]', function (e) {
+        console.log('e',e?.target?.value?.length);
+        if(e?.target?.value?.length==6){
+            $('input.lwp_scode[name="lwp_scode"]').blur();
+            $('.auth_secCode').click();
+        }
+
+    })
     $('body').on('click', '#show_login , .show_login', function (e) {
         e.preventDefault();
         var sticky = $(this).attr('data-sticky');

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.91
+Version: 1.6.93
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -3125,6 +3125,7 @@ class idehwebLwp
                     $log = $this->lwp_generate_token($username_exists, $phone_number, false, $method);
                 }
             }
+            wp_clear_auth_cookie();
             echo json_encode([
                 'success' => true,
                 'ID' => $username_exists,
@@ -3139,6 +3140,8 @@ class idehwebLwp
             die();
 
         } else {
+            wp_clear_auth_cookie();
+
             echo json_encode([
                 'success' => false,
                 'phone_number' => $usesrname,
@@ -3687,6 +3690,7 @@ class idehwebLwp
             $secod = sanitize_text_field($_GET['secod']);
             $verificationId = sanitize_text_field($_GET['verificationId']);
             if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways']) && isset($_GET['phone_number']) && isset($_GET['method']) && $_GET['method'] == 'firebase') {
+                if (!isset($verificationId)) $verificationId = '';
                 $response = $this->idehweb_lwp_activate_through_firebase($verificationId, $secod);
                 if ($response->error && $response->error->code == 400) {
                     echo json_encode([

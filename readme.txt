@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.4
-Stable tag: 1.6.91
+Stable tag: 1.6.93
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS, multi factor authentication, WooCommerce, Learnpress
@@ -72,6 +72,14 @@ Supported gateways for now:
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
 ##Changelog
+
+###1.6.93
+* optimize activation code separate style
+
+
+###1.6.92
+* add "wp_clear_auth_cookie();" to lwp_ajax_login
+* add $verificationId variable for error notice of php
 
 ###1.6.9
 * add popup guid

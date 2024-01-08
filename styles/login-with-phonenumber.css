@@ -31,27 +31,59 @@ form.ajax-auth {
     width: 100%;
     box-sizing: border-box;
 }
-:where([autocomplete=one-time-code]) {
-    --otp-digits: 6; /* length */
-    --otc-ls: 2ch;
-    --otc-gap: 1.25;
-    /* private consts */
-    --_otp-bgsz: calc(var(--otc-ls) + 1ch);
-
-    all: unset;
-    background: linear-gradient(90deg,
-    var(--otc-bg, #EEE) calc(var(--otc-gap) * var(--otc-ls)),
-    transparent 0
-    ) 0 0 / var(--_otp-bgsz) 100%;
-    caret-color: var(--otc-cc, #333);
-    clip-path: inset(0% calc(var(--otc-ls) / 3) 0% 0%);
-    font-family: ui-monospace, monospace;
-    font-size: var(--otc-fz, 2.5em);
-    inline-size: calc(var(--otc-digits) * var(--_otp-bgsz));
-    letter-spacing: var(--otc-ls);
-    padding-block: var(--otc-pb, 1ch);
-    padding-inline-start: calc(((var(--otc-ls) - 1ch) / 2) * var(--otc-gap));
+.lwp_scode_parent input[autocomplete="one-time-code"] {
+    --magic-number: 45px !important;
+    position: absolute !important;
+    background-image: linear-gradient(#fff, #fff),
+    url("../images/rounded-rectangle.svg") !important;
+    background-size: var(--magic-number) !important;
+    background-position-x: right, left !important;
+    background-repeat: no-repeat, repeat-x !important;
+    border: 0 !important;
+    height: var(--magic-number) !important;
+/*width: calc(6 * var(--magic-number)) !important;*/
+    font-size: calc(0.6 * var(--magic-number)) !important;
+    font-family: monospace !important;
+    letter-spacing: calc(0.64 * var(--magic-number)) !important;
+    padding-inline-start: calc(0.3 * var(--magic-number)) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    max-width: 310px !important;
+    width: 310px !important;
+    transform: translate(calc(-50% + 20px), calc(50% + 10px)) !important;
+    left: 50% !important;
+    bottom: 50% !important;
+/*transform: translatex(calc(0.5 * var(--magic-number))) !important;*/
 }
+.lwp_scode_parent input[autocomplete="one-time-code"]:focus {
+    outline: none !important;
+    background-image: linear-gradient(#fff, #fff),
+    url("../images/blue-rounded-rectangle.svg") !important;
+    background-size: var(--magic-number) !important;
+    background-position-x: right, left !important;
+    background-repeat: no-repeat, repeat-x !important;
+}
+/*:where([autocomplete=one-time-code]) {*/
+    /*--otp-digits: 6; !* length *!*/
+    /*--otc-ls: 2ch;*/
+    /*--otc-gap: 1.25;*/
+    /*!* private consts *!*/
+    /*--_otp-bgsz: calc(var(--otc-ls) + 1ch);*/
+
+    /*all: unset;*/
+    /*background: linear-gradient(90deg,*/
+    /*var(--otc-bg, #EEE) calc(var(--otc-gap) * var(--otc-ls)),*/
+    /*transparent 0*/
+    /*) 0 0 / var(--_otp-bgsz) 100%;*/
+    /*caret-color: var(--otc-cc, #333);*/
+    /*clip-path: inset(0% calc(var(--otc-ls) / 3) 0% 0%);*/
+    /*font-family: ui-monospace, monospace;*/
+    /*font-size: var(--otc-fz, 2.5em);*/
+    /*inline-size: calc(var(--otc-digits) * var(--_otp-bgsz));*/
+    /*letter-spacing: var(--otc-ls);*/
+    /*padding-block: var(--otc-pb, 1ch);*/
+    /*padding-inline-start: calc(((var(--otc-ls) - 1ch) / 2) * var(--otc-gap));*/
+/*}*/
 .lwp_sso_gateways{
     margin-top:10px
 }
@@ -145,7 +177,7 @@ form.ajax-auth {
 }
 
 .ajax-auth input.error {
-    border: 1px solid #FF0000 !important;
+    /*border: 1px solid #FF0000 !important;*/
 }
 
 .ajax-auth input.submit_button {
@@ -376,7 +408,7 @@ a.login_button {
 
 }
 
-.ajax-auth .lwp_check_box {
+.ajax-auth .accept_terms_and_conditions .lwp_check_box {
     width: auto;
     display: inline-block;
 }
@@ -392,10 +424,12 @@ a.login_button {
     margin-top: 10px;
     margin-bottom: 5px;
 }
-.lwp-radio-otp,.lwp-radio-otp input,.lwp-radio-otp label{
+.ajax-auth .lwp-radio-otp,
+.ajax-auth .lwp-radio-otp input,
+.ajax-auth .lwp-radio-otp label{
     display: inline-block;
     width: auto;
-    margin: 0;
+    margin: 1px 2px;
 }
 .lwp_login_overlay {
     height: 100%;

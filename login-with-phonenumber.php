@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: http://idehweb.com/login-with-phone-number
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.93
+Version: 1.6.94
 Author: Hamid Alinia - idehweb
 Author URI: http://idehweb.com
 Text Domain: login-with-phone-number
@@ -83,6 +83,7 @@ class idehwebLwp
 
         add_shortcode('idehweb_lwp', array(&$this, 'shortcode'));
         add_shortcode('idehweb_lwp_metas', array(&$this, 'idehweb_lwp_metas'));
+        add_action( 'set_logged_in_cookie',  array(&$this,'my_update_cookie') );
 
     }
 
@@ -2863,7 +2864,7 @@ class idehwebLwp
                 <?php
                 if ($options['idehweb_password_login']) {
                     ?>
-                    <form id="lwp_update_password" class="ajax-auth" action="update_password" method="post">
+                    <form id="lwp_update_password" data-method="<?php echo $theClasses; ?>" class="ajax-auth <?php echo $theClasses; ?>" action="update_password" method="post">
 
                         <div class="lh1"><?php echo __('Update password', 'login-with-phone-number'); ?></div>
                         <p class="status"></p>
@@ -3159,8 +3160,89 @@ class idehwebLwp
         ]);
         die();
     }
-
     function lwp_forgot_password()
+    {
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
+        }
+        $log = '';
+        if (!isset($_GET['email'])) $_GET['email'] = '';
+        $email = sanitize_email($_GET['email']);
+        if ($email == "") {
+            $email = null;
+        }
+
+        if (!isset($_GET['method'])) $_GET['method'] = '';
+        $method = sanitize_text_field($_GET['method']);
+
+        if (!isset($_GET['phone_number'])) $_GET['phone_number'] = '';
+        $phone_number = sanitize_text_field($_GET['phone_number']);
+        if ($phone_number == "") {
+            $phone_number = null;
+        }
+        if (isset($phone_number) && $phone_number != '' && !is_numeric($phone_number)) {
+            echo json_encode([
+                'success' => false,
+                'phone_number' => $phone_number,
+                'message' => __('Please enter correct phone number', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if (isset($email) && $email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Email is wrong!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if (isset($phone_number) && !isset($email)) {
+            $ID = $this->phone_number_exist($phone_number);
+        }
+
+        if (!isset($phone_number) && isset($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $ID = email_exists($email);
+        }
+        if (!is_numeric($ID)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Please enter correct user ID', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        $user = get_user_by('ID', $ID);
+
+        if (is_wp_error($user)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('User not found!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if ($email != '' && $ID) {
+            $log = $this->lwp_generate_token($ID, $email, true);
+
+        }
+        if ($phone_number != '' && $ID != '') {
+            $log = $this->lwp_generate_token($ID, $phone_number, false, $method);
+
+//
+        }
+        update_user_meta($ID, 'updatedPass', '0');
+
+        echo json_encode([
+            'success' => true,
+            'ID' => $ID,
+            'log' => $log,
+            'message' => __('Update password', 'login-with-phone-number')
+        ]);
+        die();
+    }
+    function my_update_cookie( $logged_in_cookie ){
+        $_COOKIE[LOGGED_IN_COOKIE] = $logged_in_cookie;
+//        echo $_COOKIE[LOGGED_IN_COOKIE];
+//        die();
+    }
+    function lwp_forgot_password_old()
     {
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
@@ -3276,9 +3358,84 @@ class idehwebLwp
             die();
         }
     }
-
     function lwp_update_password_action()
     {
+        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+            die ('Busted!');
+        }
+
+        if (!isset($_GET['email'])) $_GET['email'] = '';
+        $email = sanitize_email($_GET['email']);
+        if($email==""){
+            $email=null;
+        }
+        if (!isset($_GET['phone_number'])) $_GET['phone_number'] = '';
+        $phone_number = sanitize_text_field($_GET['phone_number']);
+        if($phone_number==""){
+            $phone_number=null;
+        }
+
+
+        if (isset($phone_number) && $phone_number != '' && !is_numeric($phone_number)) {
+            echo json_encode([
+                'success' => false,
+                'phone_number' => $phone_number,
+                'message' => __('Please enter correct phone number', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        if (isset($email) && $email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Email is wrong!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+
+        if(isset($phone_number) && !isset($email)){
+            $ID = $this->phone_number_exist($phone_number);
+        }
+
+        if (!isset($phone_number) && isset($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $ID = email_exists($email);
+        }
+        if (!is_numeric($ID)) {
+            echo json_encode([
+                'success' => false,
+                'message' => __('Please enter correct user ID', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        $user = get_user_by('ID', $ID);
+
+
+        $password = sanitize_text_field($_GET['password']);
+        if ($user) {
+            wp_update_user([
+                'ID' => $user->ID,
+                'user_pass' => $password
+            ]);
+            update_user_meta($user->ID, 'updatedPass', 1);
+            echo json_encode([
+                'success' => true,
+                'message' => __('Password set successfully! redirecting...', 'login-with-phone-number')
+            ]);
+
+            die();
+        } else {
+
+            echo json_encode([
+                'success' => false,
+                'message' => __('User not found', 'login-with-phone-number')
+            ]);
+
+            die();
+        }
+    }
+
+    function lwp_update_password_action_old()
+    {
+
         $user = wp_get_current_user();
         $password = sanitize_text_field($_GET['password']);
         if ($user) {
@@ -3648,10 +3805,6 @@ class idehwebLwp
     function lwp_ajax_register()
     {
 
-//        print_r($_COOKIE[ 'lp_session_guest' ]);
-//        die();
-
-//die();
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
@@ -3712,7 +3865,7 @@ class idehwebLwp
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
                         $updatedPass = (bool)(int)get_user_meta($username_exists, 'updatedPass', true);
 
-                        echo json_encode(array('success' => true, 'firebase' => $response, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
+                        echo json_encode(array('success' => true,'nonce'=>wp_create_nonce('lwp_login'), 'firebase' => $response, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
 
                     } else {
                         echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', 'login-with-phone-number')));
@@ -3750,7 +3903,7 @@ class idehwebLwp
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
                         $updatedPass = (bool)(int)get_user_meta($username_exists, 'updatedPass', true);
 
-                        echo json_encode(array('success' => true, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
+                        echo json_encode(array('success' => true,'nonce'=>wp_create_nonce('lwp_login') , 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
 
                     } else {
                         echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', 'login-with-phone-number')));

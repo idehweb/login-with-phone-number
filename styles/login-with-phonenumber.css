@@ -15,75 +15,20 @@ form.ajax-auth {
     position: relative;
     font-size: 11px;
 }
-.lwp_scode_parent{
-    position: relative;
-    height: 100px;
-}
-.lwp_scode_parent .lwp_scode:before{
-    content: '';
-    height: 74px;
-    width: 100%;
-}
-.lwp_scode_parent .lwp_scode{
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
+#lwp_activate.ajax-auth input.lwp_scode,
+#lwp_activate_email.ajax-auth input.lwp_scode {
+     width: calc(100% - 0px);
+    max-width: 100%;
+    height: 30px;
+    direction: ltr;
+    float: left;
     box-sizing: border-box;
+    border: 1px solid #757575;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
 }
-.lwp_scode_parent input[autocomplete="one-time-code"] {
-    --magic-number: 45px !important;
-    position: absolute !important;
-    background-image: linear-gradient(#fff, #fff),
-    url("../images/rounded-rectangle.svg") !important;
-    background-size: var(--magic-number) !important;
-    background-position-x: right, left !important;
-    background-repeat: no-repeat, repeat-x !important;
-    border: 0 !important;
-    height: var(--magic-number) !important;
-/*width: calc(6 * var(--magic-number)) !important;*/
-    font-size: calc(0.6 * var(--magic-number)) !important;
-    font-family: monospace !important;
-    letter-spacing: calc(0.64 * var(--magic-number)) !important;
-    padding-inline-start: calc(0.3 * var(--magic-number)) !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-    max-width: 310px !important;
-    width: 310px !important;
-    transform: translate(calc(-50% + 20px), calc(50% + 10px)) !important;
-    left: 50% !important;
-    bottom: 50% !important;
-/*transform: translatex(calc(0.5 * var(--magic-number))) !important;*/
-}
-.lwp_scode_parent input[autocomplete="one-time-code"]:focus {
-    outline: none !important;
-    background-image: linear-gradient(#fff, #fff),
-    url("../images/blue-rounded-rectangle.svg") !important;
-    background-size: var(--magic-number) !important;
-    background-position-x: right, left !important;
-    background-repeat: no-repeat, repeat-x !important;
-}
-/*:where([autocomplete=one-time-code]) {*/
-    /*--otp-digits: 6; !* length *!*/
-    /*--otc-ls: 2ch;*/
-    /*--otc-gap: 1.25;*/
-    /*!* private consts *!*/
-    /*--_otp-bgsz: calc(var(--otc-ls) + 1ch);*/
-
-    /*all: unset;*/
-    /*background: linear-gradient(90deg,*/
-    /*var(--otc-bg, #EEE) calc(var(--otc-gap) * var(--otc-ls)),*/
-    /*transparent 0*/
-    /*) 0 0 / var(--_otp-bgsz) 100%;*/
-    /*caret-color: var(--otc-cc, #333);*/
-    /*clip-path: inset(0% calc(var(--otc-ls) / 3) 0% 0%);*/
-    /*font-family: ui-monospace, monospace;*/
-    /*font-size: var(--otc-fz, 2.5em);*/
-    /*inline-size: calc(var(--otc-digits) * var(--_otp-bgsz));*/
-    /*letter-spacing: var(--otc-ls);*/
-    /*padding-block: var(--otc-pb, 1ch);*/
-    /*padding-inline-start: calc(((var(--otc-ls) - 1ch) / 2) * var(--otc-gap));*/
-/*}*/
 .lwp_sso_gateways{
     margin-top:10px
 }

@@ -1,4 +1,5 @@
 jQuery(document).ready(function ($) {
+var fb_lwp_nonce=idehweb_lwp.nonce,fb_lwp_phone_number='',fb_lwp_email='';
 
     if (firebase)
         if (!firebase.apps.length) {
@@ -56,10 +57,9 @@ jQuery(document).ready(function ($) {
         // console.log('lwp_country_codes', lwp_country_codes);
         // return
         username = lwp_country_codes + username;
+        fb_lwp_phone_number=username;
 
-
-        let security = idehweb_lwp.nonce;
-        console.log('security', security)
+        console.log('security', fb_lwp_nonce)
         var ctrl = $(this);
         $.ajax({
             // type: 'GET',
@@ -67,7 +67,7 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
-                'nonce': security,
+                'nonce': fb_lwp_nonce,
                 'username': username,
                 'method': method,
                 // 'password': password,
@@ -124,13 +124,12 @@ jQuery(document).ready(function ($) {
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_ajax_register';
         var security = $('.lwp_scode').val();
-        let nonce = idehweb_lwp.nonce;
 
         var obj = {
             'action': action,
             'secod': security,
             'method': 'firebase',
-            'nonce': nonce
+            'nonce': fb_lwp_nonce
         };
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeOut(10);
@@ -141,10 +140,14 @@ jQuery(document).ready(function ($) {
             phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
+            fb_lwp_phone_number=phone_number;
+
         }
         var email = $('.lwp_email').val();
         if (email) {
             obj['email'] = email;
+            fb_lwp_email=email;
+
         }
         if (window.confirmationResult && window.confirmationResult.verificationId) {
             obj['verificationId'] = window.confirmationResult.verificationId;
@@ -161,6 +164,9 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: obj,
             success: function (data) {
+                if(data.nonce){
+                    fb_lwp_nonce=data.nonce;
+                }
                 if (data.authWithPass) {
 
                     if (!data.updatedPass) {
@@ -188,6 +194,39 @@ jQuery(document).ready(function ($) {
 
     });
 
+    $('body').on('submit', 'form#lwp_update_password.firebase', function (e) {
+        e.preventDefault();
+
+        if (!$(this).valid()) return false;
+        $('p.status', this).show().text(idehweb_lwp.loadingmessage);
+        var action = 'lwp_update_password_action';
+        var lwp_up_password = $('.lwp_up_password').val();
+        var obj = {
+            'action': action,
+            'password': lwp_up_password,
+            'nonce':fb_lwp_nonce
+        };
+        if(fb_lwp_phone_number){
+            obj['phone_number']=fb_lwp_phone_number;
+        }
+        if(fb_lwp_email){
+            obj['email']=fb_lwp_email;
+        }
+        var ctrl = $(this);
+
+        $.ajax({
+            // type: 'GET',
+            dataType: 'json',
+            url: idehweb_lwp.ajaxurl,
+            data: obj,
+            success: function (data) {
+                $('p.status', ctrl).text(data.message);
+                if (data.success)
+                    document.location.href = idehweb_lwp.redirecturl;
+
+            }
+        });
+    });
 
     $('body').on('click', '.forgot_password.firebase , .lwp_didnt_r_c.firebase', function (e) {
         console.log('forgot_password with method firebase');
@@ -214,8 +253,12 @@ jQuery(document).ready(function ($) {
         // $('#lwp_login').fadeOut(10);
         $('#lwp_enter_password').fadeOut(10);
         $('#lwp_login').fadeIn(500);
-        let nonce = idehweb_lwp.nonce;
-
+if(username){
+    fb_lwp_phone_number=username;
+}
+if(email){
+    fb_lwp_email=email;
+}
         $.ajax({
             dataType: 'json',
             url: idehweb_lwp.ajaxurl,
@@ -223,7 +266,7 @@ jQuery(document).ready(function ($) {
                 'action': action,
                 'phone_number': username,
                 'email': email,
-                'nonce': nonce,
+                'nonce': fb_lwp_nonce,
                 'ID': idehweb_lwp.UserId,
                 'method': method
             },

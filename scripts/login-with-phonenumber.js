@@ -1,6 +1,6 @@
 var lwp_refreshIntervalId;
 jQuery(document).ready(function ($) {
-
+    var lwp_nonce=idehweb_lwp.nonce,lwp_phone_number='',lwp_email='';
     $(document).on('click', '.lwp_login_overlay, .close', function (e) {
         e.preventDefault();
         $('form#lwp_login, form#lwp_login_email, form#lwp_activate').fadeOut(500, function () {
@@ -77,19 +77,24 @@ jQuery(document).ready(function ($) {
         $('#lwp_enter_password').fadeOut(10);
 
         $('#lwp_activate').fadeIn(500);
-        let nonce = idehweb_lwp.nonce;
-        console.log('nonce', nonce)
+        console.log('nonce', lwp_nonce);
+        if(username){
+            lwp_phone_number=username;
+        }
+        if(email){
+            lwp_email=email;
+        }
         window.lwp_runTimer();
         $.ajax({
             dataType: 'json',
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
-                'nonce': nonce,
+                'nonce': lwp_nonce,
 
                 'phone_number': username,
                 'email': email,
-                'ID': idehweb_lwp.UserId,
+                // 'ID': idehweb_lwp.UserId,
                 'method': method,
             },
             success: function (data) {
@@ -165,8 +170,8 @@ jQuery(document).ready(function ($) {
         // console.log('lwp_country_codes', lwp_country_codes);
 
         username = lwp_country_codes + username;
+        lwp_phone_number=username;
         var ctrl = $(this);
-        let nonce = idehweb_lwp.nonce;
 
         $.ajax({
             // type: 'GET',
@@ -174,7 +179,7 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: {
                 'action': action,
-                'nonce': nonce,
+                'nonce': lwp_nonce,
                 'username': username,
                 'method': method
                 // 'password': password,
@@ -234,7 +239,7 @@ jQuery(document).ready(function ($) {
         var email = $('.lwp_email').val();
 
         // security = $('form#lwp_login .lwp_scode').val();
-        let nonce = idehweb_lwp.nonce;
+        lwp_email=email;
 
         var ctrl = $(this);
         $.ajax({
@@ -244,7 +249,7 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': action,
                 'email': email,
-                'nonce':nonce
+                'nonce':lwp_nonce
             },
             success: function (data) {
 
@@ -293,8 +298,8 @@ jQuery(document).ready(function ($) {
         var email = $('.lwp_email').val();
 
         // security = $('form#lwp_login .lwp_scode').val();
-        let nonce = idehweb_lwp.nonce;
 
+        lwp_email=email;
         var ctrl = $(this);
         $.ajax({
             // type: 'GET',
@@ -303,7 +308,7 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': action,
                 'email': email,
-                'nonce':nonce
+                'nonce':lwp_nonce
             },
             success: function (data) {
 
@@ -368,21 +373,27 @@ jQuery(document).ready(function ($) {
             phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
+            lwp_phone_number=phone_number;
+
         }
         var email = $('.lwp_email').val();
         if (email) {
             obj['email'] = email;
+            lwp_email=email;
         }
 
         var ctrl = $(this);
-        let nonce = idehweb_lwp.nonce;
-        obj['nonce'] = nonce;
+        obj['nonce'] = lwp_nonce;
+
         $.ajax({
             // type: 'GET',
             dataType: 'json',
             url: idehweb_lwp.ajaxurl,
             data: obj,
             success: function (data) {
+                if(data.nonce){
+                    lwp_nonce=data.nonce;
+                }
                 if (data.authWithPass) {
 
                     if (!data.updatedPass) {
@@ -429,15 +440,16 @@ jQuery(document).ready(function ($) {
             phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
+            lwp_phone_number=phone_number;
         }
         var email = $('.lwp_email').val();
         if (email) {
             obj['email'] = email;
+            lwp_email=email;
         }
 
         var ctrl = $(this);
-        let nonce = idehweb_lwp.nonce;
-        obj['nonce'] = nonce;
+        obj['nonce'] = lwp_nonce;
         $.ajax({
             // type: 'GET',
             dataType: 'json',
@@ -471,31 +483,24 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('body').on('submit', 'form#lwp_update_password', function (e) {
+    $('body').on('submit', 'form#lwp_update_password:not(.firebase)', function (e) {
         e.preventDefault();
 
         if (!$(this).valid()) return false;
-
-
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_update_password_action';
         var lwp_up_password = $('.lwp_up_password').val();
         var obj = {
             'action': action,
             'password': lwp_up_password,
+            'nonce':lwp_nonce
         };
-        // $('#lwp_login').fadeOut(10);
-        // $('#lwp_login_email').fadeOut(10);
-        // $('#lwp_activate').fadeOut(500);
-        // var phone_number = $('.lwp_username').val();
-        // if(phone_number){
-        //     obj['phone_number']=phone_number;
-        // }
-        // var email = $('.lwp_email').val();
-        // if(email){
-        //     obj['email']=email;
-        // }
-        //
+        if(lwp_phone_number){
+            obj['phone_number']=lwp_phone_number;
+        }
+        if(lwp_email){
+            obj['email']=lwp_email;
+        }
         var ctrl = $(this);
 
         $.ajax({
@@ -504,20 +509,10 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: obj,
             success: function (data) {
-                // if(data.updatedPass){
-                //     $('#lwp_activate').fadeOut(500);
-                //     $('#lwp_update_password').fadeIn(500);
-                //
-                // }else{
                 $('p.status', ctrl).text(data.message);
                 if (data.success)
                     document.location.href = idehweb_lwp.redirecturl;
-                //
-                // }
-                // console.log('');
-                // if (data.loggedin == true && idehweb_lwp.redirecturl) {
-                //     location.replace(idehweb_lwp.redirecturl);
-                // }
+
             }
         });
     });
@@ -528,7 +523,7 @@ jQuery(document).ready(function ($) {
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_enter_password_action';
         var lwp_up_password = $('.lwp_auth_password').val();
-        var lwp_email = $('.lwp_email').val();
+        lwp_email = $('.lwp_email').val();
         // var lwp_username = $('.lwp_username').val();
         // lwp_username = lwp_username.replace(/^0+/, '');
 
@@ -536,12 +531,15 @@ jQuery(document).ready(function ($) {
         lwp_username = lwp_username.replace(/^[0\+]+/, '');
         var lwp_country_codes = $('#lwp_country_codes').val();
         lwp_username = lwp_country_codes + lwp_username;
-        let nonce = idehweb_lwp.nonce;
+
+        if(lwp_username){
+            lwp_phone_number=lwp_username;
+        }
 
         var obj = {
             'action': action,
             'password': lwp_up_password,
-            'nonce': nonce,
+            'nonce': lwp_nonce,
 
             'ID': idehweb_lwp.UserId,
             'email': lwp_email,
@@ -586,12 +584,15 @@ jQuery(document).ready(function ($) {
         $('.lwp_didnt_r_c').removeClass('lwp_disable');
         $('.lwp_timer').empty();
         $('#lwp_activate').fadeOut(10);
+        $('#lwp_activate_email').fadeOut(10);
         $('#lwp_enter_password').fadeOut(10);
         $('.ajax-auth .status').hide().empty();
         $('.lwp_didnt_r_c').addClass('lwp_none');
         $('.lwp_username').val('');
+        $('input.lwp_email').val('');
         $('#lwp_login').fadeOut(0);
 
+        $('#lwp_verify_email').fadeIn(500);
         $('#lwp_login_email').fadeIn(500);
 
     });

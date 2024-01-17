@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.4
-Stable tag: 1.6.93
+Stable tag: 1.6.94
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS, multi factor authentication, WooCommerce, Learnpress
@@ -71,11 +71,25 @@ Supported gateways for now:
 1. use  [idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"] where you want to show logged in users metas. for example you can use this shortcode in user's profile page. you can show phone number, email, username and nicename.
 1. for sending otp sms, you need credit. you can buy credit inside plugin and use our default gateway, or you can use your custom gateways. some gateways have been added.
 
+
+##Frequently Asked Questions
+
+== How can I report security bugs? ==
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/login-with-phone-number)
+
 ##Changelog
+
+###1.6.94
+* remove OTP separate style from Free version
+* add lwp_update_password_action_old
+* remove ID from "lwp_forgot_password" function
+* add new lwp_forgot_password function
+* add nonce in lwp_update_password_action
+* update security issues
 
 ###1.6.93
 * optimize activation code separate style
-
 
 ###1.6.92
 * add "wp_clear_auth_cookie();" to lwp_ajax_login

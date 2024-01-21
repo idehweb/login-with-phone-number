@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.4
-Stable tag: 1.6.95
+Stable tag: 1.6.96
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS, multi factor authentication, WooCommerce, Learnpress
@@ -15,7 +15,7 @@ Added country flags to login with phone number form
 
 You can add almost every SMS gateways (if you have) yourself for free, or you can ask us to develop your sms gateway with paying extra.
 
-you can change style and appearance of forms
+you can change style and appearance of forms 
 
 You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
 
@@ -54,11 +54,11 @@ You can use your custom gateway. you can also use other ready sms gateways from 
 
 Supported gateways for now:
 
-* Twilio
-* BlueSoft
-* IQSMS
-* Ippanel
-* Whatsapp
+* Twilio 
+* BlueSoft 
+* IQSMS 
+* Ippanel 
+* Whatsapp 
 
 [youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
@@ -79,6 +79,9 @@ Supported gateways for now:
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/login-with-phone-number)
 
 ##Changelog
+
+###1.6.96
+* update author_uri link
 
 ###1.6.94
 * remove OTP separate style from Free version
@@ -144,7 +147,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ###1.5.5
 * fix fatal error
-
+  
 ###1.5.4
 * add modular structure in whole plugin (for developers)
 * handle multiple gateways at a time, user can choose OTP gateway on authentication
@@ -189,22 +192,22 @@ esc outputs
 
 ###1.4.6
 esc and sanitize inputs, set text domain in string
-
+ 
 ###1.4.3
 remove security bugs
-
+ 
 ###1.4.2
 tested with wordpress 6.1.2
 
 ###1.4.1
-add login message for logged-in users
+add login message for logged-in users    
 
 ###1.4.0
 remove bugs of registered users
 
 ###1.3.9
 you can add your custom sms gateway yourself
-
+ 
 ###1.3.7
 security bug: delete.php file deleted
 add sanitize to inputs
@@ -230,7 +233,7 @@ fix class name sticky > lw-sticky
 add documentations in readme
 
 ###1.3.1
-fix bugs
+fix bugs 
 
 ###1.3.0
 add timer for sending sms again
@@ -238,7 +241,7 @@ fix bugs of email: code entered wrong
 add text localization, ability to change text of labels, fields, errors and...
 
 ###1.2.23
-remove default option idehweb_use_custom_gateway
+remove default option idehweb_use_custom_gateway 
 
 ###1.2.22
 enable option of only login and not register users for network and multi site
@@ -260,7 +263,7 @@ add Woocommerce form auto change
 set Firebase to default
 
 ###1.2.17
-remove bugs
+remove bugs 
 
 ###1.2.16
 remove smsbharti gateway :-( :-x :-|
@@ -409,7 +412,7 @@ stable version
 
 ###1.0.8
 login with password
-add more countries
+add more countries 
 
 ###1.0.1
 login with email

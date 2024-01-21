@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Login with phone number
-Plugin URI: http://idehweb.com/login-with-phone-number
+Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.95
+Version: 1.6.96
 Author: Hamid Alinia - idehweb
-Author URI: http://idehweb.com
+Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
 Domain Path: /languages
 */

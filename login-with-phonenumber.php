@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.96
+Version: 1.6.97
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -1255,7 +1255,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه ملی پیامک</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    ۵۰ هزار تومان
+                                   رایگان
                                 </div>
                             </a>
                         </div>
@@ -1271,7 +1271,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه کاوه نگار</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    ۵۰ هزار تومان
+                                    رایگان
                                 </div>
                             </a>
                         </div>
@@ -1283,11 +1283,11 @@ class idehwebLwp
                                target="_blank">
                                 <img src="https://fa.idehweb.com/wp-content/uploads/2023/09/ippanel-gateway-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
-                                    <div class="lwp-gateway-item-title-f">FarazSMS gateway</div>
-                                    <div class="lwp-gateway-item-title-s">درگاه فراز اس ام اس</div>
+                                    <div class="lwp-gateway-item-title-f">FarazSMS & ippanel gateway</div>
+                                    <div class="lwp-gateway-item-title-s">درگاه فراز اس ام اس و آی پی پنل</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    ۵۰ هزار تومان
+                                   رایگان
                                 </div>
                             </a>
                         </div>

@@ -1,19 +1,20 @@
 var lwp_refreshIntervalId;
 jQuery(document).ready(function ($) {
-    var lwp_nonce=idehweb_lwp.nonce,lwp_phone_number='',lwp_email='';
+    var lwp_nonce = idehweb_lwp.nonce, close_button = idehweb_lwp.close_button, lwp_phone_number = '', lwp_email = '';
     $(document).on('click', '.lwp_login_overlay, .close', function (e) {
         e.preventDefault();
-        $('form#lwp_login, form#lwp_login_email, form#lwp_activate').fadeOut(500, function () {
-            $('.lwp_login_overlay').remove();
-        });
+        if (close_button=="0")
+            $('form#lwp_login, form#lwp_login_email, form#lwp_activate').fadeOut(500, function () {
+                $('.lwp_login_overlay').remove();
+            });
         return false;
     });
 
     // Show the login/signup popup on click
 
     $('body').on('input', 'input.lwp_scode[name="lwp_scode"]', function (e) {
-        console.log('e',e?.target?.value?.length);
-        if(e?.target?.value?.length==6){
+        console.log('e', e?.target?.value?.length);
+        if (e?.target?.value?.length == 6) {
             $('input.lwp_scode[name="lwp_scode"]').blur();
             $('.auth_secCode').click();
         }
@@ -78,11 +79,11 @@ jQuery(document).ready(function ($) {
 
         $('#lwp_activate').fadeIn(500);
         console.log('nonce', lwp_nonce);
-        if(username){
-            lwp_phone_number=username;
+        if (username) {
+            lwp_phone_number = username;
         }
-        if(email){
-            lwp_email=email;
+        if (email) {
+            lwp_email = email;
         }
         window.lwp_runTimer();
         $.ajax({
@@ -170,7 +171,7 @@ jQuery(document).ready(function ($) {
         // console.log('lwp_country_codes', lwp_country_codes);
 
         username = lwp_country_codes + username;
-        lwp_phone_number=username;
+        lwp_phone_number = username;
         var ctrl = $(this);
 
         $.ajax({
@@ -239,7 +240,7 @@ jQuery(document).ready(function ($) {
         var email = $('.lwp_email').val();
 
         // security = $('form#lwp_login .lwp_scode').val();
-        lwp_email=email;
+        lwp_email = email;
 
         var ctrl = $(this);
         $.ajax({
@@ -249,7 +250,7 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': action,
                 'email': email,
-                'nonce':lwp_nonce
+                'nonce': lwp_nonce
             },
             success: function (data) {
 
@@ -299,7 +300,7 @@ jQuery(document).ready(function ($) {
 
         // security = $('form#lwp_login .lwp_scode').val();
 
-        lwp_email=email;
+        lwp_email = email;
         var ctrl = $(this);
         $.ajax({
             // type: 'GET',
@@ -308,7 +309,7 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': action,
                 'email': email,
-                'nonce':lwp_nonce
+                'nonce': lwp_nonce
             },
             success: function (data) {
 
@@ -373,13 +374,13 @@ jQuery(document).ready(function ($) {
             phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
-            lwp_phone_number=phone_number;
+            lwp_phone_number = phone_number;
 
         }
         var email = $('.lwp_email').val();
         if (email) {
             obj['email'] = email;
-            lwp_email=email;
+            lwp_email = email;
         }
 
         var ctrl = $(this);
@@ -391,8 +392,8 @@ jQuery(document).ready(function ($) {
             url: idehweb_lwp.ajaxurl,
             data: obj,
             success: function (data) {
-                if(data.nonce){
-                    lwp_nonce=data.nonce;
+                if (data.nonce) {
+                    lwp_nonce = data.nonce;
                 }
                 if (data.authWithPass) {
 
@@ -440,12 +441,12 @@ jQuery(document).ready(function ($) {
             phone_number = phone_number.replace(/^[0\+]+/, '');
             phone_number = lwp_country_codes + phone_number;
             obj['phone_number'] = phone_number;
-            lwp_phone_number=phone_number;
+            lwp_phone_number = phone_number;
         }
         var email = $('.lwp_email').val();
         if (email) {
             obj['email'] = email;
-            lwp_email=email;
+            lwp_email = email;
         }
 
         var ctrl = $(this);
@@ -493,13 +494,13 @@ jQuery(document).ready(function ($) {
         var obj = {
             'action': action,
             'password': lwp_up_password,
-            'nonce':lwp_nonce
+            'nonce': lwp_nonce
         };
-        if(lwp_phone_number){
-            obj['phone_number']=lwp_phone_number;
+        if (lwp_phone_number) {
+            obj['phone_number'] = lwp_phone_number;
         }
-        if(lwp_email){
-            obj['email']=lwp_email;
+        if (lwp_email) {
+            obj['email'] = lwp_email;
         }
         var ctrl = $(this);
 
@@ -532,8 +533,8 @@ jQuery(document).ready(function ($) {
         var lwp_country_codes = $('#lwp_country_codes').val();
         lwp_username = lwp_country_codes + lwp_username;
 
-        if(lwp_username){
-            lwp_phone_number=lwp_username;
+        if (lwp_username) {
+            lwp_phone_number = lwp_username;
         }
 
         var obj = {

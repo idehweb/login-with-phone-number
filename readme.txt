@@ -80,6 +80,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.6.98
+* add "disable (X) button to form"
+* add force user to login on popup
+
 ###1.6.96
 * update author_uri link
 

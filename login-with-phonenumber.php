@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.6.97
+Version: 1.6.98
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -182,6 +182,8 @@ class idehwebLwp
         add_settings_section('idehweb-lwp-localization', '', array(&$this, 'section_intro'), 'idehweb-lwp-localization');
         add_settings_section('idehweb-lwp-gateways', '', array(&$this, 'section_intro'), 'idehweb-lwp-gateways');
         add_settings_field('idehweb_styles_status', __('Enable custom styles', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_enable_custom_style'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_position_form', __('Enable fix position', 'login-with-phone-number'), array(&$this, 'idehweb_position_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_close_form', __('Disable close (X) button', 'login-with-phone-number'), array(&$this, 'idehweb_close_button'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
         if ($style_options['idehweb_styles_status']) {
 //            add_settings_field('idehweb_styles_title1', 'tyuiuy', array(&$this, 'section_title'), 'idehweb-lwp-styles');
@@ -214,7 +216,6 @@ class idehwebLwp
 
             add_settings_field('idehweb_styles_title4', __('Box', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_box_background_color', __('box background color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_box_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
-            add_settings_field('idehweb_position_form', __('Enable fix position', 'login-with-phone-number'), array(&$this, 'idehweb_position_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
 
             add_settings_field('idehweb_styles_title5', __('Labels', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -1676,6 +1677,15 @@ class idehwebLwp
 		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_position_form]" value="1"' . (($options['idehweb_position_form']) ? ' checked="checked"' : '') . ' />' . __('I want form shows on page in fix position', 'login-with-phone-number') . '</label>';
 
     }
+    function idehweb_close_button()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
+
+        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_close_button]" value="0" />
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_close_button]" value="1"' . (($options['idehweb_close_button']) ? ' checked="checked"' : '') . ' />' . __('I want disable closing action and (x) button on pop up and force user to login', 'login-with-phone-number') . '</label>';
+
+    }
 
     function idehweb_online_support()
     {
@@ -2543,6 +2553,8 @@ class idehwebLwp
         if (!isset($options['idehweb_firebase_config'])) $options['idehweb_firebase_config'] = '';
         if (!isset($options['idehweb_enable_timer_on_sending_sms'])) $options['idehweb_enable_timer_on_sending_sms'] = '1';
         if (!isset($options['idehweb_timer_count'])) $options['idehweb_timer_count'] = '60';
+        if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
+
 //        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = '';
         if (!is_array($options['idehweb_default_gateways'])) {
             $options['idehweb_default_gateways'] = [];
@@ -2572,6 +2584,8 @@ class idehwebLwp
 
             $localize['firebase_api'] = $options['idehweb_firebase_api'];
         }
+
+        $localize['close_button'] = $options['idehweb_close_button'];
         $localize['nonce'] = wp_create_nonce('lwp_login');
         wp_localize_script('idehweb-lwp', 'idehweb_lwp', $localize);
         if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways'])) {
@@ -2676,7 +2690,7 @@ class idehwebLwp
         if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = [];
         if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
         if (!isset($options['idehweb_email_force_after_phonenumber'])) $options['idehweb_email_force_after_phonenumber'] = true;
-
+        if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
         if (!is_array($options['idehweb_default_gateways'])) {
             $options['idehweb_default_gateways'] = [];
@@ -2782,7 +2796,9 @@ class idehwebLwp
                             }
                             ?>
                         </div>
+                        <?php if($options['idehweb_close_button']=="0"){ ?>
                         <a class="close" href="">(x)</a>
+                        <?php } ?>
                     </form>
                 <?php } ?>
                 <?php
@@ -2824,7 +2840,9 @@ class idehwebLwp
                                 <?php echo __('Login with phone number', 'login-with-phone-number'); ?>
                             </button>
                         <?php } ?>
-                        <a class="close" href="">(x)</a>
+                        <?php if($options['idehweb_close_button']=="0"){ ?>
+                            <a class="close" href="">(x)</a>
+                        <?php } ?>
                     </form>
                 <?php } ?>
 
@@ -2858,7 +2876,9 @@ class idehwebLwp
                             <?php echo __('Change email?', 'login-with-phone-number'); ?>
                         </a>
                     </div>
-                    <a class="close" href="">(x)</a>
+                    <?php if($options['idehweb_close_button']=="0"){ ?>
+                        <a class="close" href="">(x)</a>
+                    <?php } ?>
                 </form>
 
                 <?php
@@ -2877,7 +2897,9 @@ class idehwebLwp
                         <button class="submit_button auth_email" type="submit">
                             <?php echo __('Update', 'login-with-phone-number'); ?>
                         </button>
-                        <a class="close" href="">(x)</a>
+                        <?php if($options['idehweb_close_button']=="0"){ ?>
+                            <a class="close" href="">(x)</a>
+                        <?php } ?>
                     </form>
                     <form id="lwp_enter_password" class="ajax-auth" action="enter_password" method="post">
 
@@ -2905,8 +2927,9 @@ class idehwebLwp
                                 <?php echo __('Change email?', 'login-with-phone-number'); ?>
                             </a>
                         </div>
-
-                        <a class="close" href="">(x)</a>
+                        <?php if($options['idehweb_close_button']=="0"){ ?>
+                            <a class="close" href="">(x)</a>
+                        <?php } ?>
                     </form>
                 <?php } ?>
             </div>
@@ -2972,7 +2995,10 @@ class idehwebLwp
                                 <?php echo __('Change email?', 'login-with-phone-number'); ?>
                             </a>
                         </div>
-                        <a class="close" href="">(x)</a>
+                        <?php if($options['idehweb_close_button']=="0"){ ?>
+                            <a class="close" href="">(x)</a>
+                        <?php } ?>
+
                     </form>
                 <?php } else {
                     echo $user->user_email;

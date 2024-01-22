@@ -284,7 +284,7 @@ class idehwebLwp
         add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
-
+        add_settings_field('idehweb_localization_disable_placeholder', __('Disable automatic placeholder', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_disable_automatic_placeholder'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_status', __('Enable localization', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_enable_custom_localization'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_title_of_login_form', __('Title of login form (with phone number)', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_of_login_form'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_title_of_login_form1', __('Title of login form (with email)', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_of_login_form_email'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -1597,7 +1597,15 @@ class idehwebLwp
 		<label><input type="checkbox" id="idehweb_lwp_settings_localization_status" name="idehweb_lwp_settings_localization[idehweb_localization_status]" value="1"' . (($options['idehweb_localization_status']) ? ' checked="checked"' : '') . ' />' . __('enable localization', 'login-with-phone-number') . '</label>';
 
     }
+    function setting_idehweb_localization_disable_automatic_placeholder()
+    {
+        $options = get_option('idehweb_lwp_settings_localization');
+        if (!isset($options['idehweb_localization_disable_placeholder'])) $options['idehweb_localization_disable_placeholder'] = '0';
+        echo '<input  type="hidden" name="idehweb_lwp_settings_localization[idehweb_localization_disable_placeholder]" value="0" />
+		<label><input type="checkbox" id="idehweb_lwp_settings_localization_disable_placeholder" name="idehweb_lwp_settings_localization[idehweb_localization_disable_placeholder]" value="1"' . (($options['idehweb_localization_disable_placeholder']) ? ' checked="checked"' : '') . ' />' . __('Turn off automatic placeholder based on country', 'login-with-phone-number') . '</label>';
 
+    }
+    
     function setting_idehweb_localization_of_login_form()
     {
         $options = get_option('idehweb_lwp_settings_localization');
@@ -2609,7 +2617,10 @@ class idehwebLwp
         $initialCountry = $options['idehweb_country_codes_default'];
         $initialCountry = in_array($initialCountry, $onlyCountries) ? $initialCountry : '';
 
-
+        $lwp_settings_localization = get_option('idehweb_lwp_settings_localization');
+        if (!isset($lwp_settings_localization['idehweb_localization_disable_placeholder'])) $lwp_settings_localization['idehweb_localization_disable_placeholder'] = "0";
+        $idehweb_localization_disable_placeholder=($lwp_settings_localization['idehweb_localization_disable_placeholder']=="1");
+   
         wp_enqueue_style('lwp-intltelinput-style', plugins_url('/styles/intlTelInput.min.css', __FILE__));
         wp_add_inline_style('lwp-intltelinput-style', '.iti { width: 100%; }#phone{font-size: 20px;}');
         wp_enqueue_script('lwp-intltelinput-script', plugins_url('/scripts/intlTelInput.min.js', __FILE__), array(), false, true);
@@ -2619,6 +2630,7 @@ class idehwebLwp
                         window.intlTelInput(input, {
                             utilsScript: "' . esc_url(plugins_url('/scripts/utils.js', __FILE__)) . '",
                             hiddenInput: "lwp_username",
+                            autoPlaceholder:"'.($idehweb_localization_disable_placeholder ? "off" : "polite").'",
                             onlyCountries: ' . (wp_json_encode($onlyCountries)) . ',
                             initialCountry: "' . esc_html($initialCountry) . '",
                         });

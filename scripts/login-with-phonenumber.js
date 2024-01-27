@@ -48,8 +48,9 @@ jQuery(document).ready(function ($) {
         //     $('form#register').fadeIn(500);
         e.preventDefault();
     });
-    $('body').on('click', '.forgot_password:not(.firebase) , .lwp_didnt_r_c:not(.firebase)', function (e) {
+    $('body').on('click', '.forgot_password:not(.firebase,.forgot_email_password) , .lwp_didnt_r_c:not(.firebase)', function (e) {
         e.preventDefault();
+        console.log('e sport');
         if (!$(this).valid()) return false;
         // if (typeof firebaseConfig !== 'undefined') return false;
         let method = $('input[name="otp-method"]:checked').val();
@@ -103,6 +104,70 @@ jQuery(document).ready(function ($) {
 
             }
         });
+    });
+    $('body').on('click', 'button.forgot_email_password', function (e) {
+        e.preventDefault();
+        $(this).removeClass('forgot_email_password');
+        $('#lwp_enter_password').fadeOut(10);
+        $('#lwp_login_email').fadeIn(500);
+
+        if (!$(this).valid()) {
+            var reason = '';
+            if ($('[name="lwp_accept_terms_email"]').length && !$('[name="lwp_accept_terms_email"]').valid()) {
+                reason = 'You must agree to the terms of service!'
+            } else {
+                reason = 'Email is required';
+            }
+            $('p.status', this).show().text(reason);
+            return false;
+        }
+        $('p.status', this).show().text(idehweb_lwp.loadingmessage);
+        var action = 'lwp_forgot_password';
+        var email = $('.lwp_email').val();
+
+        // security = $('form#lwp_login .lwp_scode').val();
+        lwp_email = email;
+
+        var ctrl = $(this);
+        $.ajax({
+            // type: 'GET',
+            dataType: 'json',
+            url: idehweb_lwp.ajaxurl,
+            data: {
+                'action': action,
+                'email': email,
+                'nonce': lwp_nonce
+            },
+            success: function (data) {
+
+                $('p.status', ctrl).text(data.message);
+                if (data.success == true) {
+                    $('#lwp_login_email').fadeOut(10);
+                    $('#lwp_login').fadeOut(10);
+                    idehweb_lwp.UserId = data.ID;
+                    $('.lwp_line').css('display', 'none');
+                    $('.lwp_bottom_activation').css('display', 'block');
+                    $('.lwp_bottom_activation .lwp_change_pn').css('display', 'none');
+                    $('.lwp_bottom_activation .lwp_change_el').css('display', 'block');
+                    if (data.authWithPass) {
+
+                        if (data.showPass) {
+                            $('#lwp_enter_password').fadeIn(500);
+                            $('.submit_button.forgot_password').addClass('forgot_email_password');
+
+                        } else {
+                            $('#lwp_activate').fadeIn(500);
+
+                        }
+                    } else {
+                        $('#lwp_activate').fadeIn(500);
+
+                    }
+                    //     document.location.href = idehweb_lwp.redirecturl;
+                }
+            }
+        });
+        e.preventDefault();
     });
     $('body').on('click', '.auth_with_email', function (e) {
 
@@ -223,6 +288,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+    
     $('body').on('submit', 'form#lwp_login_email', function (e) {
         // if (!$(this).valid()) return false;
         if (!$(this).valid()) {
@@ -267,6 +333,7 @@ jQuery(document).ready(function ($) {
 
                         if (data.showPass) {
                             $('#lwp_enter_password').fadeIn(500);
+                            $('.submit_button.forgot_password').addClass('forgot_email_password');
 
                         } else {
                             $('#lwp_activate').fadeIn(500);

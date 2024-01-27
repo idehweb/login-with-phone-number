@@ -228,7 +228,7 @@ var fb_lwp_nonce=idehweb_lwp.nonce,fb_lwp_phone_number='',fb_lwp_email='';
         });
     });
 
-    $('body').on('click', '.forgot_password.firebase , .lwp_didnt_r_c.firebase', function (e) {
+    $('body').on('click', '.forgot_password.firebase:not(.forgot_email_password) , .lwp_didnt_r_c.firebase:not(.forgot_email_password)', function (e) {
         console.log('forgot_password with method firebase');
 
         if (!$(this).valid()) return false;

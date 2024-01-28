@@ -80,6 +80,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.02
+* remove bugs in iphone
+
 ###1.7.0
 * add disable/enable autoPlaceholder for phone numbers based on country
 

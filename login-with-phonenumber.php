@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.01
+Version: 1.7.02
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -188,12 +188,18 @@ class idehwebLwp
         if ($style_options['idehweb_styles_status']) {
 //            add_settings_field('idehweb_styles_title1', 'tyuiuy', array(&$this, 'section_title'), 'idehweb-lwp-styles');
             add_settings_field('idehweb_styles_logo', __('Logo', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_logo'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_background', __('Fix background', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_background'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_background_opacity', __('fix background opacity', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_background_opacity'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_background_size', __('fix background size', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_background_size'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+
+
             add_settings_field('idehweb_styles_title', __('Primary button', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_button_background', __('button background color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_background_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_button_border_color', __('button border color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_button_border_radius', __('button border radius', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_radius'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_button_border_width', __('button border width', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_border_width'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_button_text_color', __('button text color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_button_padding', __('button padding', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_button_padding'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
 //            add_settings_section('idehweb_styles_title2', '', array(&$this, 'section_title'), 'idehweb-lwp-styles');
             add_settings_field('idehweb_styles_title2', __('Secondary button', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -212,6 +218,7 @@ class idehwebLwp
             add_settings_field('idehweb_styles_input_border_radius', __('input border radius', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_border_radius'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_input_border_width', __('input border width', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_border_width'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_input_text_color', __('input text color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_text_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
+            add_settings_field('idehweb_styles_input_padding', __('input padding', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_padding'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
             add_settings_field('idehweb_styles_input_placeholder_color', __('input placeholder color', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_input_placeholder_color'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
 
             add_settings_field('idehweb_styles_title4', __('Box', 'login-with-phone-number'), array(&$this, 'section_title'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -1374,7 +1381,24 @@ class idehwebLwp
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_background]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_background']) . '" />
 		<p class="description">' . __('button background color', 'login-with-phone-number') . '</p>';
     }
+    function setting_idehweb_style_background_opacity()
+    {
+        $options = get_option('idehweb_lwp_settings_styles');
+        if (!isset($options['idehweb_styles_background_opacity'])) $options['idehweb_styles_background_opacity'] = '';
+        else $options['idehweb_styles_background_opacity'] = sanitize_text_field($options['idehweb_styles_background_opacity']);
 
+        echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_background_opacity]" class="regular-text" value="' . esc_attr($options['idehweb_styles_background_opacity']) . '" />
+		<p class="description">' . __('value between 0 - 1', 'login-with-phone-number') . '</p>';
+    }
+    function setting_idehweb_style_background_size()
+    {
+        $options = get_option('idehweb_lwp_settings_styles');
+        if (!isset($options['idehweb_styles_background_size'])) $options['idehweb_styles_background_size'] = '';
+        else $options['idehweb_styles_background_size'] = sanitize_text_field($options['idehweb_styles_background_size']);
+
+        echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_background_size]" class="regular-text" value="' . esc_attr($options['idehweb_styles_background_size']) . '" />
+		<p class="description">' . __('ex: cover, contain, 100%, 100px ...', 'login-with-phone-number') . '</p>';
+    }
     function setting_idehweb_style_button_border_color()
     {
         $options = get_option('idehweb_lwp_settings_styles');
@@ -1384,6 +1408,7 @@ class idehwebLwp
         echo '<input type="color" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_color]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_color']) . '" />
 		<p class="description">' . __('button border color', 'login-with-phone-number') . '</p>';
     }
+
 
     function setting_idehweb_style_button_border_radius()
     {
@@ -1402,6 +1427,15 @@ class idehwebLwp
         else $options['idehweb_styles_button_border_width'] = sanitize_text_field($options['idehweb_styles_button_border_width']);
 
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_button_border_width]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_border_width']) . '" />
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
+    }
+    function setting_idehweb_style_button_padding()
+    {
+        $options = get_option('idehweb_lwp_settings_styles');
+        if (!isset($options['idehweb_styles_button_padding'])) $options['idehweb_styles_button_padding'] = '';
+        else $options['idehweb_styles_button_padding'] = sanitize_text_field($options['idehweb_styles_button_padding']);
+
+        echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_button_padding]" class="regular-text" value="' . esc_attr($options['idehweb_styles_button_padding']) . '" />
 		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
 
@@ -1502,6 +1536,15 @@ class idehwebLwp
         echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_input_border_width]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_border_width']) . '" />
 		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
     }
+    function setting_idehweb_style_input_padding()
+    {
+        $options = get_option('idehweb_lwp_settings_styles');
+        if (!isset($options['idehweb_styles_input_padding'])) $options['idehweb_styles_input_padding'] = '';
+        else $options['idehweb_styles_input_padding'] = sanitize_text_field($options['idehweb_styles_input_padding']);
+
+        echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_input_padding]" class="regular-text" value="' . esc_attr($options['idehweb_styles_input_padding']) . '" />
+		<p class="description">' . __('0px 0px 0px 0px', 'login-with-phone-number') . '</p>';
+    }
 
     function setting_idehweb_style_input_text_color()
     {
@@ -1569,6 +1612,29 @@ class idehwebLwp
                id="lwp_media_media_manager"/> <?php
 //        echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_logo]" class="regular-text" value="' . esc_attr($options['idehweb_styles_logo']) . '" />
 //		<p class="description">' . __('logo', 'login-with-phone-number') . '</p>';
+    }
+    function setting_idehweb_style_background()
+    {
+        $options = get_option('idehweb_lwp_settings_styles');
+        if (!isset($options['idehweb_styles_background'])) $options['idehweb_styles_background'] = '';
+        else $options['idehweb_styles_background'] = sanitize_text_field($options['idehweb_styles_background']);
+        $image_id = $options['idehweb_styles_background'];
+        if (intval($image_id) > 0) {
+            // Change with the image size you want to use
+            $image = wp_get_attachment_image($image_id, 'medium', false, array('id' => 'lwp_media-preview-background-image'));
+        } else {
+            // Some default image
+//            $image='';
+            $image = '<img id="lwp_media-preview-background-image" src="' . plugins_url('/images/default-background.png', __FILE__) . '" />';
+        }
+        echo $image; ?>
+        <input type="hidden" name="idehweb_lwp_settings_styles[idehweb_styles_background]" id="lwp_media_background_id"
+               value="<?php echo esc_attr($image_id); ?>" class="regular-text"/>
+        <input type='button' class="button-primary"
+               value="<?php esc_attr_e('Select an image', 'login-with-phone-number'); ?>"
+               id="lwp_media_background_manager"/> <?php
+//        echo '<input type="text" name="idehweb_lwp_settings_styles[idehweb_styles_background]" class="regular-text" value="' . esc_attr($options['idehweb_styles_background']) . '" />
+//		<p class="description">' . __('background', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_style_title_color()

@@ -149,7 +149,7 @@
     display: none !important;
 }
 
-#lwp_media-preview-image {
+#lwp_media-preview-image,#lwp_media-preview-background-image {
     max-width: 150px;
 }
 

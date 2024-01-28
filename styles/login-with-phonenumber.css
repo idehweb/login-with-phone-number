@@ -288,6 +288,8 @@ input.lwp_username::placeholder {
     margin-left: 0;
     margin-right: 0;
     text-align: left;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .lwp_top_activation {

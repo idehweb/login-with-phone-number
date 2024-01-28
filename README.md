@@ -2,7 +2,7 @@
 Contributors: idehweb, hamid alinia
 Requires at least: 3.4
 Tested up to: 6.4
-Stable tag: 1.7.01
+Stable tag: 1.7.03
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS, multi factor authentication, WooCommerce, Learnpress
@@ -80,8 +80,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.03
+* change style parts
+
 ###1.7.02
-* remove bugs in iphone
+* forgot password button also works for email 
+* optimize inputs in old iphones
 
 ###1.7.0
 * add disable/enable autoPlaceholder for phone numbers based on country

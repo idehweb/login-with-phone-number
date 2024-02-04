@@ -271,7 +271,9 @@ input.lwp_username {
     align-items: center;
     justify-content: space-between;
 }
-
+.lwp-inside-form-input{
+    margin-bottom: 20px;
+}
 input.lwp_username::placeholder {
     color: #b1b1b1 !important;
 }

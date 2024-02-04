@@ -80,6 +80,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.04
+* add extra fields for PRO only
+
 ###1.7.03
 * change style parts
 

@@ -80,6 +80,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.05
+* optimize phone input style
+
 ###1.7.04
 * add extra fields for PRO only
 

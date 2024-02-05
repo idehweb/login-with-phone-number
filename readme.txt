@@ -15,7 +15,7 @@ Added country flags to login with phone number form
 
 You can add almost every SMS gateways (if you have) yourself for free, or you can ask us to develop your sms gateway with paying extra.
 
-you can change style and appearance of forms
+you can change style and appearance of forms 
 
 You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
 
@@ -54,11 +54,11 @@ You can use your custom gateway. you can also use other ready sms gateways from 
 
 Supported gateways for now:
 
-* Twilio
-* BlueSoft
-* IQSMS
-* Ippanel
-* Whatsapp
+* Twilio 
+* BlueSoft 
+* IQSMS 
+* Ippanel 
+* Whatsapp 
 
 [youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
@@ -80,6 +80,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.05
+* optimize phone input style
+
 ###1.7.04
 * add extra fields for PRO only
 
@@ -87,7 +90,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * change style parts
 
 ###1.7.02
-* forgot password button also works for email
+* forgot password button also works for email 
 * optimize inputs in old iphones
 
 ###1.7.0

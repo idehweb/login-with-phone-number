@@ -26,14 +26,34 @@ jQuery(document).ready(function ($) {
         if (sticky && sticky === '1')
             $('body').append('<div class="lwp_login_overlay"></div>');
         // if ($(this).attr('id') == 'show_login')
-        if ($('form#lwp_login').length > 0) {
+        if ($('form#lwp_login').length > 0 && $('form#lwp_login_email').length > 0) {
+            console.log('click on here 1');
+
             $('form#lwp_login').fadeIn(0);
+            $('form#lwp_login_email').fadeIn(0);
+
         }
-        if ($('form#lwp_login_email').length > 0) {
+        if ($('form#lwp_login').length > 0 && !($('form#lwp_login_email').length > 0)) {
+            console.log('click on here 2');
+
+            $('form#lwp_login').fadeIn(0);
+            $('form#lwp_login_email').fadeIn(0);
+
+        }
+        if ($('form#lwp_login_email').length > 0 && !($('form#lwp_login').length > 0)) {
+            console.log('click on here 3');
+
             $('form#lwp_login_email').fadeIn(0);
             $('form#lwp_login').fadeOut(0);
 
         }
+        // if ($('form#lwp_login_email').length > 0) {
+        //     console.log('click on here 4');
+        //
+        //     $('form#lwp_login_email').fadeIn(0);
+        //     $('form#lwp_login').fadeOut(0);
+        //
+        // }
         // else
         //     $('form#register').fadeIn(500);
         e.preventDefault();

@@ -80,6 +80,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.06
+* make phone number form to appear first
+
 ###1.7.05
 * optimize phone input style
 

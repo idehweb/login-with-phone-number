@@ -30,14 +30,14 @@ jQuery(document).ready(function ($) {
             console.log('click on here 1');
 
             $('form#lwp_login').fadeIn(0);
-            $('form#lwp_login_email').fadeIn(0);
+            $('form#lwp_login_email').fadeOut(0);
 
         }
         if ($('form#lwp_login').length > 0 && !($('form#lwp_login_email').length > 0)) {
             console.log('click on here 2');
 
             $('form#lwp_login').fadeIn(0);
-            $('form#lwp_login_email').fadeIn(0);
+            $('form#lwp_login_email').fadeOut(0);
 
         }
         if ($('form#lwp_login_email').length > 0 && !($('form#lwp_login').length > 0)) {

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.08
+Version: 1.7.09
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -183,6 +183,7 @@ class idehwebLwp
         add_settings_section('idehweb-lwp-gateways', '', array(&$this, 'section_intro'), 'idehweb-lwp-gateways');
         add_settings_field('idehweb_styles_status', __('Enable custom styles', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_enable_custom_style'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_position_form', __('Enable fix position', 'login-with-phone-number'), array(&$this, 'idehweb_position_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_auto_show_form', __('Enable auto pop up form', 'login-with-phone-number'), array(&$this, 'idehweb_auto_show_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related-to-position-fixed']);
         add_settings_field('idehweb_close_form', __('Disable close (X) button', 'login-with-phone-number'), array(&$this, 'idehweb_close_button'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
         if ($style_options['idehweb_styles_status']) {
@@ -594,6 +595,7 @@ class idehwebLwp
                     var edf3 = $('#idehweb_lwp_settings_use_custom_gateway');
                     var edf4 = $('#idehweb_default_gateways');
                     var edf5 = $('#idehweb_lwp_settings_enable_timer_on_sending_sms');
+
                     var idehweb_body = $('body');
                     var related_to_login = $('.related_to_login');
                     var related_to_upnfu = $('.related_to_upnfu');
@@ -618,6 +620,14 @@ class idehwebLwp
                     } else {
 
                         related_to_login.css('display', 'none');
+                    }
+                    if ($('.idehweb_lwp_position_form').is(':checked')) {
+                        console.log('edf6 is checked.')
+                        $('.related-to-position-fixed').css('display', 'table-row');
+
+                    } else {
+                        console.log('edf6 is not checked.')
+                        $('.related-to-position-fixed').css('display', 'none');
                     }
 
 
@@ -697,6 +707,21 @@ class idehwebLwp
 
 
                     }
+                    $('body').on('change','.idehweb_lwp_position_form',
+                        function () {
+                            console.log('hi');
+                            if (this.checked && this.value == '1') {
+                                // console.log('change is checked!');
+
+                                $('.related-to-position-fixed').css('display', 'table-row');
+                                // $("#idehweb_phone_number_ccode").chosen();
+
+                            } else {
+                                // console.log('change is not checked!');
+
+                                $('.related-to-position-fixed').css('display', 'none');
+                            }
+                        });
                     $('#idehweb_lwp_settings_idehweb_sms_login').change(
                         function () {
                             if (this.checked && this.value == '1') {
@@ -1263,7 +1288,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه ملی پیامک</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    رایگان
+                                    100 هزار تومان
                                 </div>
                             </a>
                         </div>
@@ -1279,7 +1304,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه کاوه نگار</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    رایگان
+                                    100 هزار تومان
                                 </div>
                             </a>
                         </div>
@@ -1295,7 +1320,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه فراز اس ام اس و آی پی پنل</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    رایگان
+                                    100 هزار تومان
                                 </div>
                             </a>
                         </div>
@@ -1754,8 +1779,18 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
 
-        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_position_form]" value="0" />
-		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_position_form]" value="1"' . (($options['idehweb_position_form']) ? ' checked="checked"' : '') . ' />' . __('I want form shows on page in fix position', 'login-with-phone-number') . '</label>';
+        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_position_form]" class="idehweb_lwp_position_form" value="0" />
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_position_form]" class="idehweb_lwp_position_form" value="1"' . (($options['idehweb_position_form']) ? ' checked="checked"' : '') . ' />' . __('I want form shows on page in fix position', 'login-with-phone-number') . '</label>';
+
+    }
+
+    function idehweb_auto_show_form()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_auto_show_form'])) $options['idehweb_auto_show_form'] = '1';
+
+        echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_auto_show_form]" class="idehweb_lwp_auto_show_form"  value="0" />
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_auto_show_form]" class="idehweb_lwp_auto_show_form"  value="1"' . (($options['idehweb_auto_show_form']) ? ' checked="checked"' : '') . ' />' . __('I want the form shows automatically with out clicking any button, if disabled you can use class "lwp-open-form"', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -2636,6 +2671,7 @@ class idehwebLwp
         if (!isset($options['idehweb_enable_timer_on_sending_sms'])) $options['idehweb_enable_timer_on_sending_sms'] = '1';
         if (!isset($options['idehweb_timer_count'])) $options['idehweb_timer_count'] = '60';
         if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
+        if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
 
 //        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = '';
         if (!is_array($options['idehweb_default_gateways'])) {
@@ -2649,6 +2685,7 @@ class idehwebLwp
             'loadingmessage' => __('please wait...', 'login-with-phone-number'),
             'timer' => $options['idehweb_enable_timer_on_sending_sms'],
             'timer_count' => $options['idehweb_timer_count'],
+            'sticky'=>$options['idehweb_position_form']
         );
 
         wp_enqueue_style('idehweb-lwp', plugins_url('/styles/login-with-phonenumber.css', __FILE__));
@@ -2775,6 +2812,7 @@ class idehwebLwp
         if (!isset($options['idehweb_login_message'])) $options['idehweb_login_message'] = 'Welcome, You are logged in...';
         if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = [];
         if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
+        if (!isset($options['idehweb_auto_show_form'])) $options['idehweb_auto_show_form'] = '1';
         if (!isset($options['idehweb_email_force_after_phonenumber'])) $options['idehweb_email_force_after_phonenumber'] = true;
         if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
@@ -2797,9 +2835,21 @@ class idehwebLwp
         $is_user_logged_in = is_user_logged_in();
         if (!$is_user_logged_in) {
             ?>
-            <a id="show_login" class="show_login"
-               style="display: none"
-               data-sticky="<?php echo esc_attr($options['idehweb_position_form']); ?>"><?php echo __('login', 'login-with-phone-number'); ?></a>
+            <?php
+//            echo 'idehweb_position_form:';
+
+//            print_r($options['idehweb_position_form']);
+//            echo 'idehweb_auto_show_form:';
+//            print_r($options['idehweb_auto_show_form']);
+            if(($options['idehweb_position_form']=='0' && $options['idehweb_auto_show_form']=='0') || ($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='1')){
+                ?>
+                <a id="show_login" class="show_login"
+                   style="display: none"
+                   data-sticky="<?php echo esc_attr($options['idehweb_position_form']); ?>"><?php echo __('login', 'login-with-phone-number'); ?></a>
+                    <?php
+            }
+            ?>
+
             <div class="lwp_forms_login <?php echo esc_attr($class); ?>">
                 <?php
                 if ($options['idehweb_sms_login']) {
@@ -2890,6 +2940,9 @@ class idehwebLwp
                 <?php
                 if ($options['idehweb_email_login']) {
                     $ecclass = 'display:block';
+                    if($options['idehweb_position_form']=='0' || ($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='0')){
+                        $ecclass = 'display:none';
+                    }
                     ?>
                     <form id="lwp_login_email" class="ajax-auth" action="loginemail" style="<?php echo $ecclass; ?>"
                           method="post">

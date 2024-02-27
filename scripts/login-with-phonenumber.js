@@ -3,7 +3,7 @@ jQuery(document).ready(function ($) {
     var lwp_nonce = idehweb_lwp.nonce, close_button = idehweb_lwp.close_button, lwp_phone_number = '', lwp_email = '';
     $(document).on('click', '.lwp_login_overlay, .close', function (e) {
         e.preventDefault();
-        if (close_button=="0")
+        if (close_button == "0")
             $('form#lwp_login, form#lwp_login_email, form#lwp_activate').fadeOut(500, function () {
                 $('.lwp_login_overlay').remove();
             });
@@ -20,9 +20,14 @@ jQuery(document).ready(function ($) {
         }
 
     })
-    $('body').on('click', '#show_login , .show_login', function (e) {
+    $('body').on('click', '#show_login , .show_login, .lwp-open-form', function (e) {
+        console.log('show_login clicked');
         e.preventDefault();
-        var sticky = $(this).attr('data-sticky');
+        var sticky = idehweb_lwp.sticky;
+        let temp_sticky = $(this).attr('data-sticky');
+        if (temp_sticky) {
+            sticky = temp_sticky;
+        }
         if (sticky && sticky === '1')
             $('body').append('<div class="lwp_login_overlay"></div>');
         // if ($(this).attr('id') == 'show_login')

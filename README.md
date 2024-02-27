@@ -80,6 +80,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.11
+* remove bugs
+
 ###1.7.09
 * now we can open box on click action, you can use it in your menus, on button, you can add trigger to links and buttons
 

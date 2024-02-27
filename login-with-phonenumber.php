@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.09
+Version: 1.7.10
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -1790,7 +1790,7 @@ class idehwebLwp
         if (!isset($options['idehweb_auto_show_form'])) $options['idehweb_auto_show_form'] = '1';
 
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_auto_show_form]" class="idehweb_lwp_auto_show_form"  value="0" />
-		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_auto_show_form]" class="idehweb_lwp_auto_show_form"  value="1"' . (($options['idehweb_auto_show_form']) ? ' checked="checked"' : '') . ' />' . __('I want the form shows automatically with out clicking any button, if disabled you can use class "lwp-open-form"', 'login-with-phone-number') . '</label>';
+		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_auto_show_form]" class="idehweb_lwp_auto_show_form"  value="1"' . (($options['idehweb_auto_show_form']) ? ' checked="checked"' : '') . ' />' . __('I want the form shows automatically with out clicking any button, also you can use class "lwp-open-form"', 'login-with-phone-number') . '</label>';
 
     }
 
@@ -2837,7 +2837,7 @@ class idehwebLwp
             ?>
             <?php
 //            echo 'idehweb_position_form:';
-
+//
 //            print_r($options['idehweb_position_form']);
 //            echo 'idehweb_auto_show_form:';
 //            print_r($options['idehweb_auto_show_form']);
@@ -2858,7 +2858,9 @@ class idehwebLwp
                     } else if (!$options['idehweb_email_login'] && $options['idehweb_sms_login']) {
                         $cclass = 'display:block';
                     }
-
+                    if($options['idehweb_position_form']=='0' || ($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='0')){
+                        $cclass = 'display:none';
+                    }
                     ?>
                     <form id="lwp_login" class="ajax-auth lwp-login-form-i <?php echo $theClasses; ?>"
                           data-method="<?php echo $theClasses; ?>" action="login" style="<?php echo $cclass; ?>"

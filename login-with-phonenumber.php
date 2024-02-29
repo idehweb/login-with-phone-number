@@ -287,6 +287,7 @@ class idehwebLwp
         add_settings_field('idehweb_term_and_conditions_text', __('Text of term & conditions part', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_text'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
         add_settings_field('idehweb_term_and_conditions_link', __('Link of term & conditions', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_link'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
         add_settings_field('idehweb_term_and_conditions_default_checked', __('Check term & conditions by default?', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_default_checked'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
+        add_settings_field('idehweb_default_role', __('Default Role', 'login-with-phone-number'), array(&$this, 'setting_default_role'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
 
         add_settings_field('idehweb_lwp_space3', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -2214,6 +2215,10 @@ class idehwebLwp
 
     }
 
+    function get_roles(){
+
+    }
+
     function get_country_code_options()
     {
 
@@ -2536,6 +2541,32 @@ class idehwebLwp
                     if (in_array($country["code"], $options['idehweb_country_codes'])) {
                         $rr = ($country["code"] == $options['idehweb_country_codes_default']);
                         echo '<option value="' . esc_attr($country["code"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($country['label']) . '</option>';
+                    } else {
+
+                    }
+                }
+            ?>
+        </select>
+        <!--        <p class="description">note: if you change accepted countries, you update this after save.</p>-->
+        <?php
+
+    }
+    function setting_default_role()
+    {
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_default_role'])) $options['idehweb_default_role'] = "";
+        $roles = $this->get_roles();
+//        print_r($country_codes);
+
+        ?>
+        <select name="idehweb_lwp_settings[idehweb_default_role]" id="idehweb_default_role">
+            <option selected="selected" value="">select default role</option>
+            <?php
+            if ($options['idehweb_default_role'])
+                foreach ($roles as $role) {
+                    if (in_array($role["code"], $options['idehweb_default_role'])) {
+                        $rr = ($role["code"] == $options['idehweb_default_role']);
+                        echo '<option value="' . esc_attr($role["code"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($role['label']) . '</option>';
                     } else {
 
                     }

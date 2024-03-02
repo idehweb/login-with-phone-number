@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.12
+Version: 1.7.14
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -83,6 +83,7 @@ class idehwebLwp
 
         add_shortcode('idehweb_lwp', array(&$this, 'shortcode'));
         add_shortcode('idehweb_lwp_metas', array(&$this, 'idehweb_lwp_metas'));
+        add_shortcode('idehweb_lwp_verify_email', array(&$this, 'idehweb_lwp_verify_email'));
         add_action('set_logged_in_cookie', array(&$this, 'my_update_cookie'));
 
     }
@@ -2216,7 +2217,13 @@ class idehwebLwp
     }
 
     function get_roles(){
-
+        $editable_roles = get_editable_roles();
+        foreach ($editable_roles as $role => $details) {
+            $sub['role'] = esc_attr($role);
+            $sub['name'] = translate_user_role($details['name']);
+            $roles[] = $sub;
+        }
+        return $roles;
     }
 
     function get_country_code_options()
@@ -2556,20 +2563,21 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_role'])) $options['idehweb_default_role'] = "";
         $roles = $this->get_roles();
-//        print_r($country_codes);
-
+//echo $options['idehweb_default_role'];
         ?>
         <select name="idehweb_lwp_settings[idehweb_default_role]" id="idehweb_default_role">
-            <option selected="selected" value="">select default role</option>
+            <option selected="selected" value=""><?php _e('select default role', 'login-with-phone-number'); ?></option>
             <?php
-            if ($options['idehweb_default_role'])
-                foreach ($roles as $role) {
-                    if (in_array($role["code"], $options['idehweb_default_role'])) {
-                        $rr = ($role["code"] == $options['idehweb_default_role']);
-                        echo '<option value="' . esc_attr($role["code"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($role['label']) . '</option>';
-                    } else {
 
-                    }
+                foreach ($roles as $role) {
+
+//                    if ($role["role"]==$options['idehweb_default_role']) {
+                        $rr = ($role["role"] == $options['idehweb_default_role']);
+                        echo '<option value="' . esc_attr($role["role"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($role['name']) . '</option>';
+//                    } else {
+//                        echo '<option value="' . esc_attr($role["role"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($role['name']) . '</option>';
+//
+//                    }
                 }
             ?>
         </select>
@@ -3161,7 +3169,62 @@ class idehwebLwp
             else if ($options['idehweb_login_message'])
                 echo esc_html($options['idehweb_login_message']);
             ?>
+
             <?php
+        }
+        return ob_get_clean();
+    }
+    function idehweb_lwp_verify_email($atts)
+    {
+
+        extract(shortcode_atts(array(
+            'redirect_url' => ''
+        ), $atts));
+        ob_start();
+        $options = get_option('idehweb_lwp_settings');
+        $localizationoptions = get_option('idehweb_lwp_settings_localization');
+
+        if (class_exists(LWP_PRO::class)) {
+//            $LWP_PRO = new LWP_PRO;
+            global $LWP_PRO;
+            $image_id = $LWP_PRO->lwp_logo();
+        }
+        if (!isset($image_id)) $image_id = 0;
+        if (!isset($options['idehweb_sms_login'])) $options['idehweb_sms_login'] = '1';
+        if (!isset($options['idehweb_enable_accept_terms_and_condition'])) $options['idehweb_enable_accept_terms_and_condition'] = '1';
+        if (!isset($options['idehweb_term_and_conditions_link'])) $options['idehweb_term_and_conditions_link'] = '#';
+        if (!isset($options['idehweb_term_and_conditions_text'])) $options['idehweb_term_and_conditions_text'] = __('By submitting, you agree to the Terms and Privacy Policy', 'login-with-phone-number');
+        else $options['idehweb_term_and_conditions_text'] = ($options['idehweb_term_and_conditions_text']);
+        if (!isset($options['idehweb_term_and_conditions_default_checked'])) $options['idehweb_term_and_conditions_default_checked'] = '0';
+        if (!isset($options['idehweb_email_login'])) $options['idehweb_email_login'] = '1';
+        if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
+        if (!isset($options['idehweb_redirect_url'])) $options['idehweb_redirect_url'] = '';
+        if (!isset($options['idehweb_login_message'])) $options['idehweb_login_message'] = 'Welcome, You are logged in...';
+        if (!isset($options['idehweb_country_codes'])) $options['idehweb_country_codes'] = [];
+        if (!isset($options['idehweb_position_form'])) $options['idehweb_position_form'] = '0';
+        if (!isset($options['idehweb_auto_show_form'])) $options['idehweb_auto_show_form'] = '1';
+        if (!isset($options['idehweb_email_force_after_phonenumber'])) $options['idehweb_email_force_after_phonenumber'] = true;
+        if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!is_array($options['idehweb_default_gateways'])) {
+            $options['idehweb_default_gateways'] = [];
+        }
+
+        if (!isset($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'])) $localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'] = '';
+        if (!isset($localizationoptions['idehweb_localization_title_of_login_form'])) $localizationoptions['idehweb_localization_title_of_login_form'] = '';
+        if (!isset($localizationoptions['idehweb_localization_title_of_login_form_email'])) $localizationoptions['idehweb_localization_title_of_login_form_email'] = '';
+
+        $class = '';
+        if ($options['idehweb_position_form'] == '1') {
+            $class = 'lw-sticky';
+        }
+        $theClasses = '';
+        if ($options['idehweb_default_gateways'][0])
+            $theClasses = $options['idehweb_default_gateways'][0];
+
+        $is_user_logged_in = is_user_logged_in();
+        if ($is_user_logged_in) {
+
             if ($options['idehweb_email_force_after_phonenumber']) {
                 $ecclass = 'display:block';
                 $user = wp_get_current_user();
@@ -3260,6 +3323,7 @@ class idehwebLwp
         $usesrname = sanitize_text_field($_GET['username']);
         $method = sanitize_text_field($_GET['method']);
         $options = get_option('idehweb_lwp_settings');
+
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
@@ -3278,6 +3342,9 @@ class idehwebLwp
             }
             $username_exists = $this->phone_number_exist($phone_number);
 //            $registration = get_site_option('registration');
+            if (!isset($options['idehweb_default_role'])) $options['idehweb_default_role'] = "";
+//            echo $options['idehweb_default_role'];
+
             if (!isset($options['idehweb_user_registration'])) $options['idehweb_user_registration'] = '1';
             $registration = $options['idehweb_user_registration'];
             $is_multisite = is_multisite();
@@ -3315,6 +3382,10 @@ class idehwebLwp
                 $info['user_login'] = $this->generate_username($phone_number);
                 $info['user_nicename'] = $info['nickname'] = $info['display_name'] = $this->generate_nickname();
                 $info['user_url'] = sanitize_text_field($_GET['website']);
+                if($options['idehweb_default_role'] && $options['idehweb_default_role']!==""){
+
+                    $info['role']=$options['idehweb_default_role'];
+                }
                 $user_register = wp_insert_user($info);
                 if (is_wp_error($user_register)) {
                     $error = $user_register->get_error_codes();
@@ -3726,6 +3797,7 @@ class idehwebLwp
         $userRegisteredNow = false;
 
         $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_default_role'])) $options['idehweb_default_role'] = "";
 
         if (!isset($options['idehweb_user_registration'])) $options['idehweb_user_registration'] = '1';
         $registration = $options['idehweb_user_registration'];
@@ -3749,6 +3821,9 @@ class idehwebLwp
                 $info['user_nicename'] = $info['nickname'] = $info['display_name'] = $this->generate_nickname();
                 $info['user_url'] = sanitize_text_field($_GET['website']);
                 $info['user_login'] = $this->generate_username($email);
+                if($options['idehweb_default_role'] && $options['idehweb_default_role']!==""){
+                    $info['role']=$options['idehweb_default_role'];
+                }
                 $user_register = wp_insert_user($info);
                 if (is_wp_error($user_register)) {
                     $error = $user_register->get_error_codes();
@@ -3913,6 +3988,7 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_user_registration'])) $options['idehweb_user_registration'] = '1';
         $registration = $options['idehweb_user_registration'];
+        if (!isset($options['idehweb_default_role'])) $options['idehweb_default_role'] = "";
 
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $email_exists = email_exists($email);
@@ -3932,6 +4008,9 @@ class idehwebLwp
                 $info['user_nicename'] = $info['nickname'] = $info['display_name'] = $this->generate_nickname();
                 $info['user_url'] = sanitize_text_field($_GET['website']);
                 $info['user_login'] = $this->generate_username($email);
+                if($options['idehweb_default_role'] && $options['idehweb_default_role']!==""){
+                    $info['role']=$options['idehweb_default_role'];
+                }
                 $user_register = wp_insert_user($info);
                 if (is_wp_error($user_register)) {
                     $error = $user_register->get_error_codes();

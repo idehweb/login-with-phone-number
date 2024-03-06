@@ -12,7 +12,9 @@
 .lwp-setting-page-main {
 
 }
-
+.lwp-red{
+    color:#ff0000;
+}
 .lwp-gateway-item-title-f {
     font-size: 15px;
     font-weight: bold;

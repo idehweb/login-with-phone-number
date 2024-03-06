@@ -2507,10 +2507,13 @@ class idehwebLwp
         }
         echo '<div> <p>' . __('make a page and name it login, put the shortcode inside it, now you have a login page!', 'login-with-phone-number') . '</p>
 		<p><code>[idehweb_lwp]</code></p>';
+        echo '<p class="lwp-red">'.__('if you are logged in, we do not show you any form, so after using shortcode in a page, just check it where you are not logged in, like other browsers!', 'login-with-phone-number').'</p>';
         echo '<div> <p>' . __('For showing metas of user for example in profile page, like: showing phone number, username, email, nicename', 'login-with-phone-number') . '</p>
-		<p><code>[idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"]</code></p>
-		<p><a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>
-		</div>';
+		<p><code>[idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"]</code></p>';
+		echo '<div> <p>' . __('For verifying your customer email, after login/register with email, you can use this shortcode: ', 'login-with-phone-number') . '</p>
+		<p><code>[idehweb_lwp_verify_email]</code></p>';
+		echo '<p><a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>';
+		echo '</div>';
     }
 
     function setting_country_code()
@@ -2565,7 +2568,7 @@ class idehwebLwp
         $roles = $this->get_roles();
 //echo $options['idehweb_default_role'];
         ?>
-        <select name="idehweb_lwp_settings[idehweb_default_role]" id="idehweb_default_role">
+        <select name="<?php echo class_exists(LWP_PRO::class) ? 'idehweb_lwp_settings[idehweb_default_role]' : ''; ?>" id="idehweb_default_role">
             <option selected="selected" value=""><?php _e('select default role', 'login-with-phone-number'); ?></option>
             <?php
 
@@ -2581,9 +2584,10 @@ class idehwebLwp
                 }
             ?>
         </select>
+
         <!--        <p class="description">note: if you change accepted countries, you update this after save.</p>-->
         <?php
-
+        echo $this->setting_idehweb_pro_label();
     }
 
     function setting_default_username()
@@ -2892,9 +2896,9 @@ class idehwebLwp
             <div class="lwp_forms_login <?php echo esc_attr($class); ?>">
                 <?php
                 if ($options['idehweb_sms_login']) {
-                    if ($options['idehweb_email_login'] && $options['idehweb_sms_login']) {
-                        $cclass = 'display:none';
-                    } else if (!$options['idehweb_email_login'] && $options['idehweb_sms_login']) {
+                    if ($options['idehweb_email_login']) {
+                        $cclass = 'display:block';
+                    } else if (!$options['idehweb_email_login']) {
                         $cclass = 'display:block';
                     }
                     if(($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='0')){
@@ -2980,7 +2984,7 @@ class idehwebLwp
                 <?php } ?>
                 <?php
                 if ($options['idehweb_email_login']) {
-                    $ecclass = 'display:block';
+                    $ecclass = 'display:none';
                     if(($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='0')){
                         $ecclass = 'display:none';
                     }

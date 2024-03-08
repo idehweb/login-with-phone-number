@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.18
+Version: 1.7.19
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -4434,29 +4434,29 @@ class idehwebLwp
     function idehweb_lwp_update_billing_phones()
     {
 
-        $url = sanitize_text_field($_GET['url']);
-
-        $users = get_users(array('fields' => array('ID')));
-        $arr = [];
-        foreach ($users as $user) {
-            $_billing_phone = get_user_meta($user->ID, '_billing_phone');
-            if (empty($_billing_phone)) {
-                $_billing_phone = get_user_meta($user->ID, 'billing_phone');
-
-            }
-            if ($_billing_phone) {
-                $_billing_phone = str_replace('+', '', $_billing_phone);
-                update_user_meta($user->ID, 'phone_number', $_billing_phone);
-
-            }
-//                array_push($arr, get_user_meta($user->ID, '_billing_phone'));
-        }
-        //get all users billing phone, normalize
-        //update users phone number
-//        print_r($arr);
-        echo json_encode([
-            'success' => true
-        ], true);
+//        $url = sanitize_text_field($_GET['url']);
+//
+//        $users = get_users(array('fields' => array('ID')));
+//        $arr = [];
+//        foreach ($users as $user) {
+//            $_billing_phone = get_user_meta($user->ID, '_billing_phone');
+//            if (empty($_billing_phone)) {
+//                $_billing_phone = get_user_meta($user->ID, 'billing_phone');
+//
+//            }
+//            if ($_billing_phone) {
+//                $_billing_phone = str_replace('+', '', $_billing_phone);
+//                update_user_meta($user->ID, 'phone_number', $_billing_phone);
+//
+//            }
+////                array_push($arr, get_user_meta($user->ID, '_billing_phone'));
+//        }
+//        //get all users billing phone, normalize
+//        //update users phone number
+////        print_r($arr);
+//        echo json_encode([
+//            'success' => true
+//        ], true);
         die();
     }
 

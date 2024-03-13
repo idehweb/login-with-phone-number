@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.19
+Version: 1.7.20
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -30,7 +30,6 @@ class idehwebLwp
         add_action('wp_ajax_idehweb_lwp_auth_customer', array(&$this, 'idehweb_lwp_auth_customer'));
         add_action('wp_ajax_idehweb_lwp_auth_customer_with_website', array(&$this, 'idehweb_lwp_auth_customer_with_website'));
         add_action('wp_ajax_idehweb_lwp_activate_customer', array(&$this, 'idehweb_lwp_activate_customer'));
-        add_action('wp_ajax_idehweb_lwp_update_billing_phones', array(&$this, 'idehweb_lwp_update_billing_phones'));
         add_action('wp_ajax_idehweb_lwp_check_credit', array(&$this, 'idehweb_lwp_check_credit'));
         add_action('wp_ajax_idehweb_lwp_get_shop', array(&$this, 'idehweb_lwp_get_shop'));
         add_action('wp_ajax_lwp_ajax_login', array(&$this, 'lwp_ajax_login'));
@@ -1021,25 +1020,7 @@ class idehwebLwp
 
                             }
                         });
-                    idehweb_body.on('click', '.idehweb_lwp_update_billing_phones',
-                        function () {
 
-                            $.ajax({
-                                type: "GET",
-                                url: ajaxurl,
-                                data: {
-                                    action: 'idehweb_lwp_update_billing_phones'
-
-                                }
-                            }).done(function (msg) {
-                                if (msg) {
-                                    console.log('msg', msg)
-                                    var arr = JSON.parse(msg);
-
-
-                                }
-                            });
-                        });
                     var ldwtutshow = localStorage.getItem('ldwtutshow');
                     if (ldwtutshow === null) {
                         // localStorage.setItem('ldwtutshow', 1);
@@ -1814,8 +1795,8 @@ class idehwebLwp
         echo '<input type="hidden" name="idehweb_lwp_settings[idehweb_online_support]" value="0" />
 		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_online_support]" value="1"' . (($options['idehweb_online_support']) ? ' checked="checked"' : '') . ' />' . __('I want online support be active', 'login-with-phone-number') . '</label>';
         echo '<div></div>';
-        echo '<button style="margin-top: 20px" type="button" class="idehweb_lwp_update_billing_phones">' . __('update users billing phone for woocommerce', 'login-with-phone-number') . '</button>';
-    }
+
+     }
 
     function setting_use_custom_gateway()
     {
@@ -4431,34 +4412,6 @@ class idehwebLwp
         die();
     }
 
-    function idehweb_lwp_update_billing_phones()
-    {
-
-//        $url = sanitize_text_field($_GET['url']);
-//
-//        $users = get_users(array('fields' => array('ID')));
-//        $arr = [];
-//        foreach ($users as $user) {
-//            $_billing_phone = get_user_meta($user->ID, '_billing_phone');
-//            if (empty($_billing_phone)) {
-//                $_billing_phone = get_user_meta($user->ID, 'billing_phone');
-//
-//            }
-//            if ($_billing_phone) {
-//                $_billing_phone = str_replace('+', '', $_billing_phone);
-//                update_user_meta($user->ID, 'phone_number', $_billing_phone);
-//
-//            }
-////                array_push($arr, get_user_meta($user->ID, '_billing_phone'));
-//        }
-//        //get all users billing phone, normalize
-//        //update users phone number
-////        print_r($arr);
-//        echo json_encode([
-//            'success' => true
-//        ], true);
-        die();
-    }
 
     function idehweb_lwp_activate_through_firebase($sessionInfo, $code)
     {

@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Login with phone number
-Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
+Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.21
+Version: 1.7.22
 Author: Hamid Alinia - idehweb
-Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
+Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
 Domain Path: /languages
 */
@@ -351,20 +351,21 @@ class idehwebLwp
                 </div>
                 <div class="lwp_modal_body">
                     <ul>
-                        <li>1. create a page and name it login or register or what ever</li>
-                        <li>2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step
-                            1
+                        <li><?php _e("1. create a page and name it login or register or what ever", 'login-with-phone-number'); ?></li>
+                        <li>
+                            <?php _e("2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you created at step 1", 'login-with-phone-number'); ?>
                         </li>
-                        <li>3. now, that is your login page. check your login page with other device or browser that you
-                            are not logged in!
+                        <li><?php
+                            _e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", 'login-with-phone-number');
+                            ?>
                         </li>
-                        <li>for more information visit: <a target="_blank"
-                                                           href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?lang=en">Idehweb</a>
+                        <li><?php _e("for more information visit: ", 'login-with-phone-number'); ?><a target="_blank"
+                                                           href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//"><?php _e('Login with phone number','login-with-phone-number'); ?></a>
                         </li>
                     </ul>
                 </div>
                 <div class="lwp_modal_footer">
-                    <button class="lwp_button">got it</button>
+                    <button class="lwp_button"><?php _e('got it','login-with-phone-number'); ?></button>
                 </div>
             </div>
             <div class="lwp_modal_overlay lwp-d-none"></div>
@@ -493,7 +494,7 @@ class idehwebLwp
 
                 ?>
                 <div class="lwp-wrap-right">
-                    <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?utm_source=lwp-plugin&utm_medium=banner-lwp&utm_campaign=plugin-install"
+                    <a href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//?utm_source=lwp-plugin&utm_medium=banner-lwp&utm_campaign=plugin-install"
                        target="_blank">
                         <img style="width: 100%;max-width: 100%"
                              src="<?php echo plugins_url('/images/login-with-phone-number-wordpress-buy-pro-version.png', __FILE__) ?>"/>
@@ -1047,7 +1048,7 @@ class idehwebLwp
                                 '<li>' + '<?php _e("3. now, that is your login page. check your login page with other device or browser that you are not logged in!", 'login-with-phone-number') ?>' +
                                 '</li>' +
                                 '<li>' +
-                                '<?php _e("for more information visit: ", 'login-with-phone-number') ?>' + '<a target="_blank" href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?lang=en">Idehweb</a>' +
+                                '<?php _e("for more information visit: ", 'login-with-phone-number') ?>' + '<a target="_blank" href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//">Login with phone number</a>' +
                                 '</li>' +
                                 '</ul>' +
                                 '</div>' +
@@ -2493,7 +2494,7 @@ class idehwebLwp
 		<p><code>[idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"]</code></p>';
 		echo '<div> <p>' . __('For verifying your customer email, after login/register with email, you can use this shortcode: ', 'login-with-phone-number') . '</p>
 		<p><code>[idehweb_lwp_verify_email]</code></p>';
-		echo '<p><a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>';
+		echo '<p><a href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>';
 		echo '</div>';
     }
 

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.23
+Version: 1.7.24
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -1185,9 +1185,9 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside">
 
-                            <a href="https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/"
+                            <a href="https://loginwithphonenumber.site/product/twilio-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2023/09/twilio-logo-300x300.webp"/>
+                                <img src="https://loginwithphonenumber.site/wp-content/uploads/2024/05/twilio-logo-300x300-1.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Twilio gateway</div>
                                     <div class="lwp-gateway-item-title-s">Internationals</div>
@@ -1201,9 +1201,9 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside">
 
-                            <a href="https://idehweb.com/product/textlocal-gateway-for-login-with-phone-number/"
+                            <a href="https://loginwithphonenumber.site/product/textlocal-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2023/10/textlocal-300x300.jpg"/>
+                                <img src="https://loginwithphonenumber.site/wp-content/uploads/2024/05/textlocal-300x300.jpg"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Textlocal gateway</div>
                                     <div class="lwp-gateway-item-title-s">Indians</div>
@@ -1217,9 +1217,9 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside">
 
-                            <a href="https://idehweb.com/product/asqs-gateway-for-login-with-phone-number/"
+                            <a href="https://loginwithphonenumber.site/product/aq-sms-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2023/09/ASQS-gateway-1-300x300.webp"/>
+                                <img src="https://loginwithphonenumber.site/wp-content/uploads/2024/05/Asqs.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">AQSMS gateway</div>
                                     <div class="lwp-gateway-item-title-s">For Russians?</div>
@@ -1233,8 +1233,8 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside">
 
-                            <a href="https://idehweb.com/product/mshastra-gateway/" target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2023/11/login-with-phone-number-mshastra-300x300.webp"/>
+                            <a href="https://loginwithphonenumber.site/product/mshastra-gateway/" target="_blank">
+                                <img src="https://loginwithphonenumber.site/wp-content/uploads/2024/05/login-with-phone-number-mshastra-300x300-1.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Mshastra gateway</div>
                                     <div class="lwp-gateway-item-title-s">For Indians?</div>
@@ -1248,9 +1248,9 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside">
 
-                            <a href="https://idehweb.com/product/whatsap-gateway-for-login-with-phone-number/"
+                            <a href="https://loginwithphonenumber.site/product/whatsapp-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2023/09/Whatsapp-gateway-for-login-with-phone-number.webp"/>
+                                <img src="https://loginwithphonenumber.site/wp-content/uploads/2024/05/Whatsapp-gateway-for-login-with-phone-number.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Ultramsg (WhatsApp) gateway</div>
                                     <div class="lwp-gateway-item-title-s">Sending OTP at WhatsApp</div>
@@ -1262,11 +1262,27 @@ class idehwebLwp
                         </div>
                     </div>
                     <div class="lwp-gateway-item">
+                        <div class="lwp-gateway-item-inside">
+
+                            <a href="https://loginwithphonenumber.site/product/bluesoft-gateway-for-login-with-phone-number/"
+                               target="_blank">
+                                <img src="https://loginwithphonenumber.site/wp-content/uploads/2024/05/bluesoft.webp"/>
+                                <div class="lwp-gateway-item-title">
+                                    <div class="lwp-gateway-item-title-f">Ultramsg (WhatsApp) gateway</div>
+                                    <div class="lwp-gateway-item-title-s">Sending OTP at WhatsApp</div>
+                                </div>
+                                <div class="lwp-gateway-item-price">
+                                    5$
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside" style="direction: rtl">
 
                             <a href="https://fa.idehweb.com/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%85%d9%84%db%8c-%d9%be%db%8c%d8%a7%d9%85%da%a9-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7-%d8%b4%d9%85%d8%a7/"
                                target="_blank">
-                                <img src="https://fa.idehweb.com/wp-content/uploads/2023/09/meli-payamak-plugin-300x300.webp"/>
+                                <img src="https://idehweb.ir/wp-content/uploads/2023/09/meli-payamak-plugin-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Melli payamak gateway</div>
                                     <div class="lwp-gateway-item-title-s">درگاه ملی پیامک</div>
@@ -1282,7 +1298,7 @@ class idehwebLwp
 
                             <a href="https://fa.idehweb.com/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%be%db%8c%d8%a7%d9%85%da%a9-%da%a9%d8%a7%d9%88%d9%87-%d9%86%da%af%d8%a7%d8%b1-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af/"
                                target="_blank">
-                                <img src="https://fa.idehweb.com/wp-content/uploads/2023/09/login-with-phone-number-300x300.jpg"/>
+                                <img src="https://idehweb.ir/wp-content/uploads/2023/09/login-with-phone-number-300x300.jpg"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Kavehnegar gateway</div>
                                     <div class="lwp-gateway-item-title-s">درگاه کاوه نگار</div>
@@ -1298,7 +1314,7 @@ class idehwebLwp
 
                             <a href="https://fa.idehweb.com/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%81%d8%b1%d8%a7%d8%b2-%d8%a7%d8%b3-%d8%a7%d9%85-%d8%a7%d8%b3-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7/"
                                target="_blank">
-                                <img src="https://fa.idehweb.com/wp-content/uploads/2023/09/ippanel-gateway-300x300.webp"/>
+                                <img src="https://idehweb.ir/wp-content/uploads/2023/09/ippanel-gateway-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">FarazSMS & ippanel gateway</div>
                                     <div class="lwp-gateway-item-title-s">درگاه فراز اس ام اس و آی پی پنل</div>
@@ -1932,7 +1948,7 @@ class idehwebLwp
         if (!isset($options['idehweb_firebase_api'])) $options['idehweb_firebase_api'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_firebase_api]" class="regular-text" value="' . esc_attr($options['idehweb_firebase_api']) . '" />
-		<p class="description">' . __('enter Firebase api', 'login-with-phone-number') . ' - <a  href="https://idehweb.com/send-10000-free-otp-sms-with-firebase-in-login-with-phone-number-wordpress-plugin/" target="_blank">' . __('Firebase config help - documentation', 'login-with-phone-number') . '</a></p>';
+		<p class="description">' . __('enter Firebase api', 'login-with-phone-number') . ' - <a  href="https://loginwithphonenumber.site/send-10000-free-otp-sms-with-firebase-in-login-with-phone-number-wordpress-plugin/" target="_blank">' . __('Firebase config help - documentation', 'login-with-phone-number') . '</a></p>';
     }
 
     function setting_firebase_config()
@@ -1953,7 +1969,7 @@ class idehwebLwp
         if (!isset($options['idehweb_custom_api_url'])) $options['idehweb_custom_api_url'] = '';
 
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_custom_api_url]" class="regular-text" value="' . esc_attr($options['idehweb_custom_api_url']) . '" />
-		<p class="description">' . __('enter custom url', 'login-with-phone-number') . ' - <a  href="https://idehweb.com/blog/how-to-set-up-a-custom-gateway/" target="_blank">' . __('Custom config help - documentation', 'login-with-phone-number') . '</a></p>';
+		<p class="description">' . __('enter custom url', 'login-with-phone-number') . ' - <a  href="https://loginwithphonenumber.site/how-to-set-up-a-custom-gateway/" target="_blank">' . __('Custom config help - documentation', 'login-with-phone-number') . '</a></p>';
     }
 
     function setting_custom_api_method()

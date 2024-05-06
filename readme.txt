@@ -80,6 +80,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.24
+* Change from the old site to the new one, https://loginwithphonenumber.site
+* optimize setting 
+
 ###1.7.22
 * translate some part
 * change docs and author website

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.26
+Version: 1.7.27
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -360,12 +360,12 @@ class idehwebLwp
                             ?>
                         </li>
                         <li><?php _e("for more information visit: ", 'login-with-phone-number'); ?><a target="_blank"
-                                                           href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//"><?php _e('Login with phone number','login-with-phone-number'); ?></a>
+                                                                                                      href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//"><?php _e('Login with phone number', 'login-with-phone-number'); ?></a>
                         </li>
                     </ul>
                 </div>
                 <div class="lwp_modal_footer">
-                    <button class="lwp_button"><?php _e('got it','login-with-phone-number'); ?></button>
+                    <button class="lwp_button"><?php _e('got it', 'login-with-phone-number'); ?></button>
                 </div>
             </div>
             <div class="lwp_modal_overlay lwp-d-none"></div>
@@ -709,7 +709,7 @@ class idehwebLwp
 
 
                     }
-                    $('body').on('change','.idehweb_lwp_position_form',
+                    $('body').on('change', '.idehweb_lwp_position_form',
                         function () {
                             console.log('hi');
                             if (this.checked && this.value == '1') {
@@ -1813,7 +1813,7 @@ class idehwebLwp
 		<label><input type="checkbox" name="idehweb_lwp_settings[idehweb_online_support]" value="1"' . (($options['idehweb_online_support']) ? ' checked="checked"' : '') . ' />' . __('I want online support be active', 'login-with-phone-number') . '</label>';
         echo '<div></div>';
 
-     }
+    }
 
     function setting_use_custom_gateway()
     {
@@ -2214,7 +2214,8 @@ class idehwebLwp
 
     }
 
-    function get_roles(){
+    function get_roles()
+    {
         $editable_roles = get_editable_roles();
         foreach ($editable_roles as $role => $details) {
             $sub['role'] = esc_attr($role);
@@ -2505,13 +2506,13 @@ class idehwebLwp
         }
         echo '<div> <p>' . __('make a page and name it login, put the shortcode inside it, now you have a login page!', 'login-with-phone-number') . '</p>
 		<p><code>[idehweb_lwp]</code></p>';
-        echo '<p class="lwp-red">'.__('if you are logged in, we do not show you any form, so after using shortcode in a page, just check it where you are not logged in, like other browsers!', 'login-with-phone-number').'</p>';
+        echo '<p class="lwp-red">' . __('if you are logged in, we do not show you any form, so after using shortcode in a page, just check it where you are not logged in, like other browsers!', 'login-with-phone-number') . '</p>';
         echo '<div> <p>' . __('For showing metas of user for example in profile page, like: showing phone number, username, email, nicename', 'login-with-phone-number') . '</p>
 		<p><code>[idehweb_lwp_metas nicename="false" username="false" phone_number="true" email="false"]</code></p>';
-		echo '<div> <p>' . __('For verifying your customer email, after login/register with email, you can use this shortcode: ', 'login-with-phone-number') . '</p>
+        echo '<div> <p>' . __('For verifying your customer email, after login/register with email, you can use this shortcode: ', 'login-with-phone-number') . '</p>
 		<p><code>[idehweb_lwp_verify_email]</code></p>';
-		echo '<p><a href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>';
-		echo '</div>';
+        echo '<p><a href="https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro//" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>';
+        echo '</div>';
     }
 
     function setting_country_code()
@@ -2559,6 +2560,7 @@ class idehwebLwp
         <?php
 
     }
+
     function setting_default_role()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -2566,20 +2568,21 @@ class idehwebLwp
         $roles = $this->get_roles();
 //echo $options['idehweb_default_role'];
         ?>
-        <select name="<?php echo class_exists(LWP_PRO::class) ? 'idehweb_lwp_settings[idehweb_default_role]' : ''; ?>" id="idehweb_default_role">
+        <select name="<?php echo class_exists(LWP_PRO::class) ? 'idehweb_lwp_settings[idehweb_default_role]' : ''; ?>"
+                id="idehweb_default_role">
             <option selected="selected" value=""><?php _e('select default role', 'login-with-phone-number'); ?></option>
             <?php
 
-                foreach ($roles as $role) {
+            foreach ($roles as $role) {
 
 //                    if ($role["role"]==$options['idehweb_default_role']) {
-                        $rr = ($role["role"] == $options['idehweb_default_role']);
-                        echo '<option value="' . esc_attr($role["role"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($role['name']) . '</option>';
+                $rr = ($role["role"] == $options['idehweb_default_role']);
+                echo '<option value="' . esc_attr($role["role"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($role['name']) . '</option>';
 //                    } else {
 //                        echo '<option value="' . esc_attr($role["role"]) . '" ' . ($rr ? ' selected="selected"' : '') . '>' . esc_html($role['name']) . '</option>';
 //
 //                    }
-                }
+            }
             ?>
         </select>
 
@@ -2726,7 +2729,7 @@ class idehwebLwp
             'loadingmessage' => __('please wait...', 'login-with-phone-number'),
             'timer' => $options['idehweb_enable_timer_on_sending_sms'],
             'timer_count' => $options['idehweb_timer_count'],
-            'sticky'=>$options['idehweb_position_form']
+            'sticky' => $options['idehweb_position_form']
         );
 
         wp_enqueue_style('idehweb-lwp', plugins_url('/styles/login-with-phonenumber.css', __FILE__));
@@ -2882,12 +2885,12 @@ class idehwebLwp
 //            print_r($options['idehweb_position_form']);
 //            echo 'idehweb_auto_show_form:';
 //            print_r($options['idehweb_auto_show_form']);
-            if(($options['idehweb_position_form']=='0' && $options['idehweb_auto_show_form']=='0') || ($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='1')){
+            if (($options['idehweb_position_form'] == '0' && $options['idehweb_auto_show_form'] == '0') || ($options['idehweb_position_form'] == '1' && $options['idehweb_auto_show_form'] == '1')) {
                 ?>
                 <a id="show_login" class="show_login"
                    style="display: none"
                    data-sticky="<?php echo esc_attr($options['idehweb_position_form']); ?>"><?php echo __('login', 'login-with-phone-number'); ?></a>
-                    <?php
+                <?php
             }
             ?>
 
@@ -2899,7 +2902,7 @@ class idehwebLwp
                     } else if (!$options['idehweb_email_login']) {
                         $cclass = 'display:block';
                     }
-                    if(($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='0')){
+                    if (($options['idehweb_position_form'] == '1' && $options['idehweb_auto_show_form'] == '0')) {
                         $cclass = 'display:none';
                     }
                     ?>
@@ -2983,7 +2986,7 @@ class idehwebLwp
                 <?php
                 if ($options['idehweb_email_login']) {
                     $ecclass = 'display:none';
-                    if(($options['idehweb_position_form']=='1' && $options['idehweb_auto_show_form']=='0')){
+                    if (($options['idehweb_position_form'] == '1' && $options['idehweb_auto_show_form'] == '0')) {
                         $ecclass = 'display:none';
                     }
                     ?>
@@ -3176,6 +3179,7 @@ class idehwebLwp
         }
         return ob_get_clean();
     }
+
     function idehweb_lwp_verify_email($atts)
     {
 
@@ -3384,9 +3388,9 @@ class idehwebLwp
                 $info['user_login'] = $this->generate_username($phone_number);
                 $info['user_nicename'] = $info['nickname'] = $info['display_name'] = $this->generate_nickname();
                 $info['user_url'] = sanitize_text_field($_GET['website']);
-                if($options['idehweb_default_role'] && $options['idehweb_default_role']!==""){
+                if ($options['idehweb_default_role'] && $options['idehweb_default_role'] !== "") {
 
-                    $info['role']=$options['idehweb_default_role'];
+                    $info['role'] = $options['idehweb_default_role'];
                 }
                 $user_register = wp_insert_user($info);
                 if (is_wp_error($user_register)) {
@@ -3735,7 +3739,7 @@ class idehwebLwp
             die();
         }
         $current_user_id = get_current_user_id();
-        if($current_user_id!==$ID){
+        if ($current_user_id !== $ID) {
             die ('user id not same!');
 
         }
@@ -3831,8 +3835,8 @@ class idehwebLwp
                 $info['user_nicename'] = $info['nickname'] = $info['display_name'] = $this->generate_nickname();
                 $info['user_url'] = sanitize_text_field($_GET['website']);
                 $info['user_login'] = $this->generate_username($email);
-                if($options['idehweb_default_role'] && $options['idehweb_default_role']!==""){
-                    $info['role']=$options['idehweb_default_role'];
+                if ($options['idehweb_default_role'] && $options['idehweb_default_role'] !== "") {
+                    $info['role'] = $options['idehweb_default_role'];
                 }
                 $user_register = wp_insert_user($info);
                 if (is_wp_error($user_register)) {
@@ -4018,8 +4022,8 @@ class idehwebLwp
                 $info['user_nicename'] = $info['nickname'] = $info['display_name'] = $this->generate_nickname();
                 $info['user_url'] = sanitize_text_field($_GET['website']);
                 $info['user_login'] = $this->generate_username($email);
-                if($options['idehweb_default_role'] && $options['idehweb_default_role']!==""){
-                    $info['role']=$options['idehweb_default_role'];
+                if ($options['idehweb_default_role'] && $options['idehweb_default_role'] !== "") {
+                    $info['role'] = $options['idehweb_default_role'];
                 }
                 $user_register = wp_insert_user($info);
                 if (is_wp_error($user_register)) {
@@ -4149,10 +4153,10 @@ class idehwebLwp
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
-        if(!isset($secod)){
+        if (!isset($_GET['secod'])) {
             echo json_encode([
                 'success' => false,
-                'message' => __('secod is required!', 'login-with-phone-number')
+                'message' => __('secod is required!', 'login-with-phone-number'),
             ]);
             die();
         }
@@ -4225,7 +4229,7 @@ class idehwebLwp
                     die();
                 }
             } else {
-                if(empty($activation_code)){
+                if (empty($activation_code)) {
                     echo json_encode([
                         'success' => false,
                         'message' => __('activation_code is empty!', 'login-with-phone-number')

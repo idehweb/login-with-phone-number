@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.5
-Stable tag: 1.7.27
+Stable tag: 1.7.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -20,7 +20,7 @@ you can change style and appearance of forms
 You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
 
 For checking docs and getting more help please visit:
-[Login with phone number documentations](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login & register with phone number")
+[Login with phone number documentations](https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro/ "login & register with phone number")
 
 * Login/Register with E-mail
 

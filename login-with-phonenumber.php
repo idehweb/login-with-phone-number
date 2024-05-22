@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.25
+Version: 1.7.26
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -4149,6 +4149,15 @@ class idehwebLwp
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
+        if(!isset($secod)){
+            echo json_encode([
+                'success' => false,
+                'message' => __('secod is required!', 'login-with-phone-number')
+            ]);
+            die();
+        }
+        $secod = sanitize_text_field($_GET['secod']);
+
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
         if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
@@ -4181,7 +4190,7 @@ class idehwebLwp
         }
         if ($username_exists) {
             $activation_code = get_user_meta($username_exists, 'activation_code', true);
-            $secod = sanitize_text_field($_GET['secod']);
+
             $verificationId = sanitize_text_field($_GET['verificationId']);
             if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways']) && isset($_GET['phone_number']) && isset($_GET['method']) && $_GET['method'] == 'firebase') {
                 if (!isset($verificationId)) $verificationId = '';
@@ -4216,7 +4225,13 @@ class idehwebLwp
                     die();
                 }
             } else {
-
+                if(empty($activation_code)){
+                    echo json_encode([
+                        'success' => false,
+                        'message' => __('activation_code is empty!', 'login-with-phone-number')
+                    ]);
+                    die();
+                }
                 if ($activation_code == $secod) {
                     // First get the user details
                     $user = get_user_by('ID', $username_exists);

@@ -4153,14 +4153,14 @@ class idehwebLwp
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
-        if (!isset($_GET['secod'])) {
-            echo json_encode([
+        $secod = sanitize_text_field( $_GET['secod'] );
+        if ( empty( $secod ) ) {
+            echo json_encode( [
                 'success' => false,
-                'message' => __('secod is required!', 'login-with-phone-number'),
-            ]);
+                'message' => __( 'secod is required!', 'login-with-phone-number' ),
+            ] );
             die();
         }
-        $secod = sanitize_text_field($_GET['secod']);
 
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];

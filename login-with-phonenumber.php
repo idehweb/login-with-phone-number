@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.28
+Version: 1.7.29
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -3085,14 +3085,49 @@ class idehwebLwp
                                 foreach ($ROptions['idehweb_registration_fields'] as $key => $fi) {
 //                                    print_r($fi);
                                     ?>
-                                    <div class="lwp-inside-form-input">
-                                        <label class="lwp_labels"
-                                               for="<?php echo $fi['value']; ?>"><?php echo $fi['label']; ?>:</label>
-                                        <input type="text" class="required lwp_auth_<?php echo $fi['value']; ?>"
-                                               name="<?php echo $fi['value']; ?>"
-                                               placeholder="<?php echo $fi['label']; ?>">
-                                    </div>
                                     <?php
+
+                                    if ($fi['value'] == "role") {
+                                        ?>
+                                        <div class="lwp-inside-form-input">
+                                            <div class="accept_terms_and_conditions" style="
+    display: flex;
+    justify-content: space-around;
+">
+                                                <div class="choos-rol" style="
+    display: flex;
+">
+                                                    <input class="required lwp_check_box" type="radio" name="role"
+                                                           value="subscriber">
+                                                    <label for="subscriber" class="role_text"
+                                                           style="margin-left:0px; margin-right: 5px">Subscriber</label>
+
+                                                </div>
+                                                <div class="choos-rol" style="
+    display: flex;
+">
+
+                                                    <input class="required lwp_check_box" type="radio" name="role"
+                                                           value="partner">
+                                                    <label for="partner" class="role_text" style="margin-left:0px">Partner</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <?php
+                                    } else {
+
+                                        ?>
+                                        <div class="lwp-inside-form-input">
+                                            <label class="lwp_labels"
+                                                   for="<?php echo $fi['value']; ?>"><?php echo $fi['label']; ?>
+                                                :</label>
+                                            <input type="text" class="required lwp_auth_<?php echo $fi['value']; ?>"
+                                                   name="<?php echo $fi['value']; ?>"
+                                                   placeholder="<?php echo $fi['label']; ?>">
+                                        </div>
+                                        <?php
+                                    }
                                 }
                             }
                             ?>
@@ -3701,6 +3736,13 @@ class idehwebLwp
         if ($email == "") {
             $email = null;
         }
+
+
+        if (!isset($_GET['role'])) $_GET['role'] = '';
+        $role = sanitize_text_field($_GET['role']);
+        if ($role == "") {
+            $role = null;
+        }
         if (!isset($_GET['phone_number'])) $_GET['phone_number'] = '';
         $phone_number = sanitize_text_field($_GET['phone_number']);
         if ($phone_number == "") {
@@ -3748,10 +3790,14 @@ class idehwebLwp
 
         $password = sanitize_text_field($_GET['password']);
         if ($user) {
-            wp_update_user([
+            $update_array=[
                 'ID' => $user->ID,
                 'user_pass' => $password
-            ]);
+            ];
+            if(isset($role)){
+                $update_array['role']=$role;
+            }
+            wp_update_user($update_array);
             update_user_meta($user->ID, 'updatedPass', 1);
             echo json_encode([
                 'success' => true,
@@ -4153,12 +4199,12 @@ class idehwebLwp
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
-        $secod = sanitize_text_field( $_GET['secod'] );
-        if ( empty( $secod ) ) {
-            echo json_encode( [
+        $secod = sanitize_text_field($_GET['secod']);
+        if (empty($secod)) {
+            echo json_encode([
                 'success' => false,
-                'message' => __( 'secod is required!', 'login-with-phone-number' ),
-            ] );
+                'message' => __('secod is required!', 'login-with-phone-number'),
+            ]);
             die();
         }
 

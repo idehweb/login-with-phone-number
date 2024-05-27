@@ -511,15 +511,36 @@ jQuery(document).ready(function ($) {
 
     $('body').on('submit', 'form#lwp_update_password:not(.firebase)', function (e) {
         e.preventDefault();
-
+// console.log('hi')
         if (!$(this).valid()) return false;
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
+//        console.log('by')
+
         var action = 'lwp_update_password_action';
         var lwp_up_password = $('.lwp_up_password').val();
+        var update_object={};
+        $("#lwp_update_password :input").each(function(){
+            var input = $(this);
+            let name=input.attr('name'),
+                type=input.attr('type');
+
+            if(name=="security" || name=="_wp_http_referer" || name=="lwp_up_password")
+                return
+
+            if(type=="text")
+                update_object[name]=input.val()
+
+            if(type=="radio")
+                update_object[name]=$("input[name='"+name+"']:checked").val();
+
+
+
+        });
         var obj = {
             'action': action,
             'password': lwp_up_password,
-            'nonce': lwp_nonce
+            'nonce': lwp_nonce,
+            ...update_object
         };
         if (lwp_phone_number) {
             obj['phone_number'] = lwp_phone_number;

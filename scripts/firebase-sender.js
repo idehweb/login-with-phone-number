@@ -201,10 +201,30 @@ var fb_lwp_nonce=idehweb_lwp.nonce,fb_lwp_phone_number='',fb_lwp_email='';
         $('p.status', this).show().text(idehweb_lwp.loadingmessage);
         var action = 'lwp_update_password_action';
         var lwp_up_password = $('.lwp_up_password').val();
+        var update_object={};
+        $("#lwp_update_password :input").each(function(){
+            var input = $(this);
+            let name=input.attr('name'),
+                type=input.attr('type');
+
+            if(name=="security" || name=="_wp_http_referer" || name=="lwp_up_password")
+                return
+
+            if(type=="text")
+                update_object[name]=input.val()
+
+            if(type=="radio")
+                update_object[name]=$("input[name='"+name+"']:checked").val();
+
+
+
+        });
+        // console.log("update_object:",update_object)
         var obj = {
             'action': action,
             'password': lwp_up_password,
-            'nonce':fb_lwp_nonce
+            'nonce':fb_lwp_nonce,
+            ...update_object
         };
         if(fb_lwp_phone_number){
             obj['phone_number']=fb_lwp_phone_number;

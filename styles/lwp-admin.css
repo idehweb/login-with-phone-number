@@ -319,6 +319,7 @@
 
 .ilwplabel th {
     padding-left: 10px;
+    border-right: 1px solid;
 }
 
 .idehweb_phone_number_ccode_wrap,
@@ -351,6 +352,7 @@
 
 .ilwplabel {
     background-color: #fff;
+    
 }
 
 .toplevel_page_idehweb-lwp .select2-container--default .select2-search--dropdown .select2-search__field {
@@ -399,7 +401,7 @@
 .idehweb_lwp_mgt100 {
     margin-top: 50px;
     clear: both;
-    display: block;
+    display: none;
     width: 100%;
     background-color: #f0f0f1;
 }

@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.5
-Stable tag: 1.7.33
+Stable tag: 1.7.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -19,7 +19,7 @@ Added country flags to login with phone number form
 
 You can add almost every SMS gateways (if you have) yourself for free, or you can ask us to develop your sms gateway with paying extra.
 
-you can change style and appearance of forms 
+you can change style and appearance of forms
 
 You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
 
@@ -58,11 +58,11 @@ You can use your custom gateway. you can also use other ready sms gateways from 
 
 Supported gateways for now:
 
-* Twilio 
-* BlueSoft 
-* IQSMS 
-* Ippanel 
-* Whatsapp 
+* Twilio
+* BlueSoft
+* IQSMS
+* Ippanel
+* Whatsapp
 
 [youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
@@ -83,6 +83,9 @@ Supported gateways for now:
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/login-with-phone-number)
 
 ##Changelog
+
+###1.7.34
+* updatable username and nickname
 
 ###1.7.30
 * change login setting title

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.33
+Version: 1.7.34
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -3743,6 +3743,17 @@ class idehwebLwp
         if ($role == "") {
             $role = null;
         }
+        if (!isset($_GET['username'])) $_GET['username'] = '';
+        $username = sanitize_text_field($_GET['username']);
+        if ($username == "") {
+            $username = null;
+        }
+
+        if (!isset($_GET['nickname'])) $_GET['nickname'] = '';
+        $nickname = sanitize_text_field($_GET['nickname']);
+        if ($nickname == "") {
+            $nickname = null;
+        }
         if (!isset($_GET['phone_number'])) $_GET['phone_number'] = '';
         $phone_number = sanitize_text_field($_GET['phone_number']);
         if ($phone_number == "") {
@@ -3796,6 +3807,18 @@ class idehwebLwp
             ];
             if(isset($role)){
                 $update_array['role']=$role;
+            }
+            if(isset($nickname)){
+                $update_array['nickname']=$nickname;
+                $update_array['display_name']=$nickname;
+            }
+            if(isset($username)){
+                global $wpdb;
+                $wpdb->update(
+                    $wpdb->users,
+                    ['user_login' => $username],
+                    ['ID' => $user->ID]
+                );
             }
             wp_update_user($update_array);
             update_user_meta($user->ID, 'updatedPass', 1);

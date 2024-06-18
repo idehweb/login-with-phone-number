@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.34
+Version: 1.7.35
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -3154,23 +3154,23 @@ class idehwebLwp
                         <?php wp_nonce_field('lwp-ajax-enter-password-nonce', 'security'); ?>
                         <div class="lwp-inside-form">
                             <?php
-
-                            if (class_exists(LWP_PRO::class)) {
-                                $ROptions = get_option('idehweb_lwp_settings_registration_fields');
-                                if (!isset($ROptions['idehweb_registration_fields'])) $ROptions['idehweb_registration_fields'] = [];
-                                foreach ($ROptions['idehweb_registration_fields'] as $key => $fi) {
-//                                    print_r($fi);
-                                    ?>
-                                    <div class="lwp-inside-form-input">
-                                        <label class="lwp_labels"
-                                               for="<?php echo $fi['value']; ?>"><?php echo $fi['label']; ?>:</label>
-                                        <input type="text" class="required lwp_auth_<?php echo $fi['value']; ?>"
-                                               name="<?php echo $fi['value']; ?>"
-                                               placeholder="<?php echo $fi['label']; ?>">
-                                    </div>
-                                    <?php
-                                }
-                            }
+//
+//                            if (class_exists(LWP_PRO::class)) {
+//                                $ROptions = get_option('idehweb_lwp_settings_registration_fields');
+//                                if (!isset($ROptions['idehweb_registration_fields'])) $ROptions['idehweb_registration_fields'] = [];
+//                                foreach ($ROptions['idehweb_registration_fields'] as $key => $fi) {
+////                                    print_r($fi);
+//                                    ?>
+<!--                                    <div class="lwp-inside-form-input">-->
+<!--                                        <label class="lwp_labels"-->
+<!--                                               for="--><?php //echo $fi['value']; ?><!--">--><?php //echo $fi['label']; ?><!--:</label>-->
+<!--                                        <input type="text" class="required lwp_auth_--><?php //echo $fi['value']; ?><!--"-->
+<!--                                               name="--><?php //echo $fi['value']; ?><!--"-->
+<!--                                               placeholder="--><?php //echo $fi['label']; ?><!--">-->
+<!--                                    </div>-->
+<!--                                    --><?php
+//                                }
+//                            }
                             ?>
                             <div class="lwp-inside-form-input">
                                 <label class="lwp_labels"
@@ -4056,8 +4056,9 @@ class idehwebLwp
 
     function lwp_generate_token($user_id, $contact, $send_email = false, $method = '')
     {
-        $six_digit_random_number = mt_rand(100000, 999999);
+        $six_digit_random_number = wp_rand(100000, 999999);
         update_user_meta($user_id, 'activation_code', $six_digit_random_number);
+        update_user_meta($user_id, 'activation_code_timestamp', time());
         if ($send_email) {
             $wp_mail = wp_mail($contact, 'activation code', __('your activation code: ', 'login-with-phone-number') . $six_digit_random_number);
             return $wp_mail;
@@ -4263,7 +4264,24 @@ class idehwebLwp
         }
         if ($username_exists) {
             $activation_code = get_user_meta($username_exists, 'activation_code', true);
+            $activation_code_timestamp = get_user_meta($username_exists, 'activation_code_timestamp', true);
+            $now = time();
+            $passed=round(($now - $activation_code_timestamp) / 60,2);
 
+
+            if ($passed >= 10){
+//                update_user_meta($username_exists, 'activation_code', '');
+//                update_user_meta($username_exists, 'activation_code_timestamp', '');
+
+                echo json_encode([
+                    'success' => false,
+                    'phone_number' => $phone_number,
+//                    'time_passed' => $passed,
+                    'message' => __('activation code is expired!', 'login-with-phone-number')
+                ]);
+                die();
+            }
+//die();
             $verificationId = sanitize_text_field($_GET['verificationId']);
             if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways']) && isset($_GET['phone_number']) && isset($_GET['method']) && $_GET['method'] == 'firebase') {
                 if (!isset($verificationId)) $verificationId = '';

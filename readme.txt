@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.5
-Stable tag: 1.7.34
+Stable tag: 1.7.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -84,8 +84,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.35
+* change mt_rand to wp_rand for security concerns
+* level up security with checking time spend after setting activation code
+* check activation code expire condition
+
+
 ###1.7.34
-* updatable username and nickname
+* updatable username, nickname and display_name
 
 ###1.7.30
 * change login setting title
@@ -102,7 +108,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ###1.7.24
 * Change from the old site to the new one, https://loginwithphonenumber.site
-* optimize setting 
+* optimize setting
 
 ###1.7.22
 * translate some part
@@ -148,7 +154,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * change style parts
 
 ###1.7.02
-* forgot password button also works for email 
+* forgot password button also works for email
 * optimize inputs in old iphones
 
 ###1.7.0
@@ -225,7 +231,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ###1.5.5
 * fix fatal error
-  
+
 ###1.5.4
 * add modular structure in whole plugin (for developers)
 * handle multiple gateways at a time, user can choose OTP gateway on authentication
@@ -270,22 +276,22 @@ esc outputs
 
 ###1.4.6
 esc and sanitize inputs, set text domain in string
- 
+
 ###1.4.3
 remove security bugs
- 
+
 ###1.4.2
 tested with wordpress 6.1.2
 
 ###1.4.1
-add login message for logged-in users    
+add login message for logged-in users
 
 ###1.4.0
 remove bugs of registered users
 
 ###1.3.9
 you can add your custom sms gateway yourself
- 
+
 ###1.3.7
 security bug: delete.php file deleted
 add sanitize to inputs
@@ -311,7 +317,7 @@ fix class name sticky > lw-sticky
 add documentations in readme
 
 ###1.3.1
-fix bugs 
+fix bugs
 
 ###1.3.0
 add timer for sending sms again
@@ -319,7 +325,7 @@ fix bugs of email: code entered wrong
 add text localization, ability to change text of labels, fields, errors and...
 
 ###1.2.23
-remove default option idehweb_use_custom_gateway 
+remove default option idehweb_use_custom_gateway
 
 ###1.2.22
 enable option of only login and not register users for network and multi site
@@ -341,7 +347,7 @@ add Woocommerce form auto change
 set Firebase to default
 
 ###1.2.17
-remove bugs 
+remove bugs
 
 ###1.2.16
 remove smsbharti gateway :-( :-x :-|

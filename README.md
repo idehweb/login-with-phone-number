@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.5
-Stable tag: 1.7.35
+Stable tag: 1.7.36
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -83,6 +83,11 @@ Supported gateways for now:
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/login-with-phone-number)
 
 ##Changelog
+
+###1.7.36
+* fix security issue if firebaseConfig field
+* optimize entry of firebaseConfig
+* automatically create json script of firebaseConfig entry 
 
 ###1.7.35
 * change mt_rand to wp_rand for security concerns

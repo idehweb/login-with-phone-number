@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.35
+Version: 1.7.36
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -373,7 +373,7 @@ class idehwebLwp
 
 
                 <div id="icon-themes" class="icon32"></div>
-                <h2 style = "margin-bottom: 10px;"><?php _e('Login with phone number settings', 'login-with-phone-number'); ?></h2>
+                <h2 style="margin-bottom: 10px;"><?php _e('Login with phone number settings', 'login-with-phone-number'); ?></h2>
                 <?php if (isset($_GET['settings-updated']) && $_GET['settings-updated']) {
 
                     ?>
@@ -1956,10 +1956,83 @@ class idehwebLwp
 
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_firebase_config'])) $options['idehweb_firebase_config'] = '';
-        else $options['idehweb_firebase_config'] = sanitize_textarea_field($options['idehweb_firebase_config']);
+        else {
+            $options['idehweb_firebase_config'] = sanitize_textarea_field($options['idehweb_firebase_config']);
+            $options['idehweb_firebase_config'] = $this->setting_clean_firebase_config_code($options['idehweb_firebase_config']);
+//            print_r($exploded[$array_length-1]);
+        }
 
         echo '<textarea name="idehweb_lwp_settings[idehweb_firebase_config]" class="regular-text">' . esc_attr($options['idehweb_firebase_config']) . '</textarea>
 		<p class="description">' . __('enter Firebase config', 'login-with-phone-number') . '</p>';
+    }
+
+    function setting_clean_firebase_config_code($str)
+    {
+//        print_r($str);
+        if(!isset($str))
+            return false;
+        $exploded = explode("const firebaseConfig", $str);
+        $array_length = count($exploded);
+        $otem = str_replace('javascript', '', $exploded[$array_length - 1]);
+        $otem = str_replace('alert', '', $otem);
+        $otem = str_replace('document', '', $otem);
+        $otem = str_replace('cookie', '', $otem);
+        $otem = str_replace('script', '', $otem);
+//        print_r('$otem1');
+//        print_r($exploded);
+        $explodedLast = explode("};", $otem);
+        $otem = $explodedLast[0] . "}";
+        $otem = str_replace('{ ', '{', $otem);
+        $otem = str_replace(' }', '}', $otem);
+        $searches = array("\r", "\n", "\r\n");
+        $otem = str_replace($searches, " ", $otem);
+        $otem = preg_replace('!\s+!', ' ', $otem);
+        $explodedwithoteq = explode("=", $otem);
+        $beObj = trim($explodedwithoteq[count($explodedwithoteq) - 1]);
+        $beObj = $this->return_json($beObj);
+        return "const firebaseConfig = " . $beObj . ";";
+    }
+
+    function return_json($str)
+    {
+        if(!$str){
+            return null;
+        }
+        if(isset($str)){
+            $r_data = json_decode($str);
+
+            if(($r_data != $str) && $r_data)
+                return $str;
+
+        }
+        $obj = [];
+//        print_r('income');
+//        print_r($str);
+        preg_match('/apiKey: "([^"]+)"/', $str, $m0);
+        if(isset($m0) && isset($m0[1]))
+            $obj["apiKey"] = $m0[1];
+
+        preg_match('/authDomain: "([^"]+)"/', $str, $j0);
+        if(isset($j0) && isset($j0[1]))
+            $obj["authDomain"] = $j0[1];
+
+        preg_match('/projectId: "([^"]+)"/', $str, $h0);
+        if(isset($h0) && isset($h0[1]))
+            $obj["projectId"] = $h0[1];
+
+        preg_match('/storageBucket: "([^"]+)"/', $str, $d0);
+        if(isset($d0) && isset($d0[1]))
+            $obj["storageBucket"] = $d0[1];
+
+        preg_match('/messagingSenderId: "([^"]+)"/', $str, $x0);
+        if(isset($x0) && isset($x0[1]))
+            $obj["messagingSenderId"] = $x0[1];
+
+        preg_match('/appId: "([^"]+)"/', $str, $a0);
+        if(isset($a0) && isset($a0[1]))
+            $obj["appId"] = $a0[1];
+
+        return json_encode($obj, true);
     }
 
     function setting_custom_api_url()
@@ -2752,7 +2825,7 @@ class idehwebLwp
         $localize['nonce'] = wp_create_nonce('lwp_login');
         wp_localize_script('idehweb-lwp', 'idehweb_lwp', $localize);
         if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways'])) {
-
+            $options['idehweb_firebase_config'] = $this->setting_clean_firebase_config_code($options['idehweb_firebase_config']);
             wp_add_inline_script('idehweb-lwp', '' . htmlspecialchars_decode($options['idehweb_firebase_config']));
         }
 
@@ -3154,23 +3227,27 @@ class idehwebLwp
                         <?php wp_nonce_field('lwp-ajax-enter-password-nonce', 'security'); ?>
                         <div class="lwp-inside-form">
                             <?php
-//
-//                            if (class_exists(LWP_PRO::class)) {
-//                                $ROptions = get_option('idehweb_lwp_settings_registration_fields');
-//                                if (!isset($ROptions['idehweb_registration_fields'])) $ROptions['idehweb_registration_fields'] = [];
-//                                foreach ($ROptions['idehweb_registration_fields'] as $key => $fi) {
-////                                    print_r($fi);
-//                                    ?>
-<!--                                    <div class="lwp-inside-form-input">-->
-<!--                                        <label class="lwp_labels"-->
-<!--                                               for="--><?php //echo $fi['value']; ?><!--">--><?php //echo $fi['label']; ?><!--:</label>-->
-<!--                                        <input type="text" class="required lwp_auth_--><?php //echo $fi['value']; ?><!--"-->
-<!--                                               name="--><?php //echo $fi['value']; ?><!--"-->
-<!--                                               placeholder="--><?php //echo $fi['label']; ?><!--">-->
-<!--                                    </div>-->
-<!--                                    --><?php
-//                                }
-//                            }
+                            //
+                            //                            if (class_exists(LWP_PRO::class)) {
+                            //                                $ROptions = get_option('idehweb_lwp_settings_registration_fields');
+                            //                                if (!isset($ROptions['idehweb_registration_fields'])) $ROptions['idehweb_registration_fields'] = [];
+                            //                                foreach ($ROptions['idehweb_registration_fields'] as $key => $fi) {
+                            ////                                    print_r($fi);
+                            //                                    ?>
+                            <!--                                    <div class="lwp-inside-form-input">-->
+                            <!--                                        <label class="lwp_labels"-->
+                            <!--                                               for="-->
+                            <?php //echo $fi['value']; ?><!--">--><?php //echo $fi['label']; ?><!--:</label>-->
+                            <!--                                        <input type="text" class="required lwp_auth_-->
+                            <?php //echo $fi['value']; ?><!--"-->
+                            <!--                                               name="-->
+                            <?php //echo $fi['value']; ?><!--"-->
+                            <!--                                               placeholder="-->
+                            <?php //echo $fi['label']; ?><!--">-->
+                            <!--                                    </div>-->
+                            <!--                                    --><?php
+                            //                                }
+                            //                            }
                             ?>
                             <div class="lwp-inside-form-input">
                                 <label class="lwp_labels"
@@ -3801,18 +3878,18 @@ class idehwebLwp
 
         $password = sanitize_text_field($_GET['password']);
         if ($user) {
-            $update_array=[
+            $update_array = [
                 'ID' => $user->ID,
                 'user_pass' => $password
             ];
-            if(isset($role)){
-                $update_array['role']=$role;
+            if (isset($role)) {
+                $update_array['role'] = $role;
             }
-            if(isset($nickname)){
-                $update_array['nickname']=$nickname;
-                $update_array['display_name']=$nickname;
+            if (isset($nickname)) {
+                $update_array['nickname'] = $nickname;
+                $update_array['display_name'] = $nickname;
             }
-            if(isset($username)){
+            if (isset($username)) {
                 global $wpdb;
                 $wpdb->update(
                     $wpdb->users,
@@ -4266,10 +4343,10 @@ class idehwebLwp
             $activation_code = get_user_meta($username_exists, 'activation_code', true);
             $activation_code_timestamp = get_user_meta($username_exists, 'activation_code_timestamp', true);
             $now = time();
-            $passed=round(($now - $activation_code_timestamp) / 60,2);
+            $passed = round(($now - $activation_code_timestamp) / 60, 2);
 
 
-            if ($passed >= 10){
+            if ($passed >= 10) {
 //                update_user_meta($username_exists, 'activation_code', '');
 //                update_user_meta($username_exists, 'activation_code_timestamp', '');
 

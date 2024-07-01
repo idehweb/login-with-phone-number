@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://loginwithphonenumber.site
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.36
+Version: 1.7.37
 Author: Hamid Alinia - idehweb
 Author URI: https://loginwithphonenumber.site
 Text Domain: login-with-phone-number
@@ -67,6 +67,7 @@ class idehwebLwp
 //        add_action('login_enqueue_scripts', array(&$this, 'admin_custom_css'));
 
 
+        add_action('pre_user_query', array(&$this, 'lwp_pre_user_query_for_phone_number'));
         add_action('rest_api_init', array(&$this, 'lwp_register_rest_route'));
         add_filter('manage_users_columns', array(&$this, 'lwp_modify_user_table'));
         add_filter('manage_users_custom_column', array(&$this, 'lwp_modify_user_table_row'), 10, 3);
@@ -4112,6 +4113,31 @@ class idehwebLwp
         }
 
 
+    }
+
+    function lwp_pre_user_query_for_phone_number($uqi)
+    {
+        global $wpdb;
+        $search = '';
+        if ( isset( $uqi->query_vars['search'] ) )
+            $search = trim( $uqi->query_vars['search'] );
+
+        if ( $search ) {
+            $search = trim($search, '*');
+            $the_search = '%'.$search.'%';
+
+            $search_meta = $wpdb->prepare("
+        ID IN ( SELECT user_id FROM {$wpdb->usermeta}
+        WHERE ( ( meta_key='phone_number')
+            AND {$wpdb->usermeta}.meta_value LIKE '%s' )
+        )", $the_search);
+
+            $uqi->query_where = str_replace(
+                'WHERE 1=1 AND (',
+                "WHERE 1=1 AND (" . $search_meta . " OR ",
+                $uqi->query_where );
+
+        }
     }
 
     function lwp_register_rest_route()

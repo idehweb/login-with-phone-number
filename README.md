@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.5
-Stable tag: 1.7.38
+Stable tag: 1.7.40
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -24,7 +24,7 @@ you can change style and appearance of forms
 You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
 
 For checking docs and getting more help please visit:
-[Login with phone number documentations](https://loginwithphonenumber.site/product/login-with-phone-number-in-wordpres-pro/ "login & register with phone number")
+[Login with phone number in WordPress documentations](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login with phone number in WordPress")
 
 * Login/Register with E-mail
 
@@ -84,6 +84,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.40
+* solve security issue at 'lwp_update_password_action'
+* change docs links
+
 ###1.7.37
 * now you can search with phone number at default WordPress users list
 
@@ -115,7 +119,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * update security issue, activation code should not be empty, thank you Vulnerability Researcher: István Márton
 
 ###1.7.24
-* Change from the old site to the new one, https://loginwithphonenumber.site
+* Change from the old site to the new one, https://idehweb.com
 * optimize setting 
 
 ###1.7.22

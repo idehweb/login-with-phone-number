@@ -69,6 +69,11 @@ jQuery(document).ready(function ($) {
         // if ($(this).attr('id') == 'show_login')
         $('#lwp_login_email').fadeOut(10);
         $('#lwp_login').fadeIn(500);
+        if ($('#lwp_enter_password')?.length > 0) {
+            // console.log('dfd',$('.submit_button.forgot_password'))
+            let method=$('#lwp_login').attr('data-method');
+            $('.submit_button.forgot_password').removeClass('email').addClass(method);
+        }
         // else
         //     $('form#register').fadeIn(500);
         e.preventDefault();
@@ -135,6 +140,13 @@ jQuery(document).ready(function ($) {
         $('#lwp_login').fadeOut(10);
         $('#lwp_login_email').fadeIn(500);
         // else
+        if ($('#lwp_enter_password')?.length > 0) {
+            // console.log('dfd',$('.submit_button.forgot_password'))
+            let method=$('#lwp_login').attr('data-method');
+
+            $('.submit_button.forgot_password').removeClass(method).addClass('email');
+        }
+
         //     $('form#register').fadeIn(500);
         e.preventDefault();
     });
@@ -143,10 +155,11 @@ jQuery(document).ready(function ($) {
     $('body').on('click', 'input[name="otp-method"]', function (e) {
         if (e.target.value) {
             let value = e.target.value;
-            $('.ajax-auth.lwp-login-form-i').attr('class', 'ajax-auth lwp-login-form-i ' + value);
-            $('.submit_button.forgot_password').attr('class', 'submit_button forgot_password ' + value);
-            $('.submit_button.lwp_didnt_r_c').attr('class', 'submit_button lwp_didnt_r_c ' + value);
-            $('.ajax-auth.lwp-register-form-i').attr('class', 'ajax-auth lwp-register-form-i ' + value);
+            $('.ajax-auth.lwp-login-form-i').attr('class', 'ajax-auth lwp-login-form-i ' + value).attr('data-method',value);
+            $('.submit_button.forgot_password').attr('class', 'submit_button forgot_password ' + value).attr('data-method',value);
+            $('.submit_button.lwp_didnt_r_c').attr('class', 'submit_button lwp_didnt_r_c ' + value).attr('data-method',value);
+            $('.ajax-auth.lwp-register-form-i').attr('class', 'ajax-auth lwp-register-form-i ' + value).attr('data-method',value);
+            // $('.ajax-auth.lwp-login-form-i');
         }
     })
     $('body').on('submit', 'form.ajax-auth.lwp-login-form-i:not(.firebase)', function (e) {
@@ -518,21 +531,20 @@ jQuery(document).ready(function ($) {
 
         var action = 'lwp_update_password_action';
         var lwp_up_password = $('.lwp_up_password').val();
-        var update_object={};
-        $("#lwp_update_password :input").each(function(){
+        var update_object = {};
+        $("#lwp_update_password :input").each(function () {
             var input = $(this);
-            let name=input.attr('name'),
-                type=input.attr('type');
+            let name = input.attr('name'),
+                type = input.attr('type');
 
-            if(name=="security" || name=="_wp_http_referer" || name=="lwp_up_password")
+            if (name == "security" || name == "_wp_http_referer" || name == "lwp_up_password")
                 return
 
-            if(type=="text")
-                update_object[name]=input.val()
+            if (type == "text")
+                update_object[name] = input.val()
 
-            if(type=="radio")
-                update_object[name]=$("input[name='"+name+"']:checked").val();
-
+            if (type == "radio")
+                update_object[name] = $("input[name='" + name + "']:checked").val();
 
 
         });

@@ -3,17 +3,17 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Login with phone number\n"
-"POT-Creation-Date: 2021-01-11 19:43+0330\n"
-"PO-Revision-Date: 2020-08-18 12:23+0430\n"
+"POT-Creation-Date: 2024-07-10 09:39+0330\n"
+"PO-Revision-Date: 2024-07-10 09:38+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4\n"
+"X-Generator: Poedit 2.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: files-manager.php\n"
+"X-Poedit-WPHeader: login-with-phonenumber.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -21,345 +21,979 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: login-with-phonenumber.php:75
-msgid "Enable phone number login"
+#: gateways/class-lwp-custom-api.php:125
+msgid "Phone number is invalid"
 msgstr ""
 
-#: login-with-phonenumber.php:82
-msgid "Enter your phone number"
+#: gateways/class-lwp-custom-api.php:128
+msgid "Invalid API key"
 msgstr ""
 
-#: login-with-phonenumber.php:84
-msgid "Enter api key"
+#: gateways/class-lwp-custom-api.php:131
+msgid "Cannot send SMS to landline phone numbers"
 msgstr ""
 
-#: login-with-phonenumber.php:87
-msgid "Country code accepted in front"
+#: gateways/class-lwp-custom-api.php:134
+msgid "Api error"
 msgstr ""
 
-#: login-with-phonenumber.php:88
-msgid "Buy credit here"
+#: login-with-phonenumber.php:121
+msgid "Personal Information"
 msgstr ""
 
-#: login-with-phonenumber.php:94
-msgid "Enable email login"
+#: login-with-phonenumber.php:125
+msgid "phone_number"
 msgstr ""
 
-#: login-with-phonenumber.php:95
-msgid "Enable password login"
+#: login-with-phonenumber.php:185
+msgid "Enable custom styles"
 msgstr ""
 
-#: login-with-phonenumber.php:96
-msgid "Enter redirect url"
-msgstr ""
-
-#: login-with-phonenumber.php:97
+#: login-with-phonenumber.php:186
 msgid "Enable fix position"
 msgstr ""
 
-#: login-with-phonenumber.php:98 login-with-phonenumber.php:642
-msgid "Default username"
+#: login-with-phonenumber.php:187
+msgid "Enable auto pop up form"
 msgstr ""
 
-#: login-with-phonenumber.php:99 login-with-phonenumber.php:654
-msgid "Default nickname"
+#: login-with-phonenumber.php:188
+msgid "Disable close (X) button"
 msgstr ""
 
-#: login-with-phonenumber.php:100
-msgid "Shortcode and Template Tag"
+#: login-with-phonenumber.php:192
+msgid "Logo"
 msgstr ""
 
-#: login-with-phonenumber.php:111 login-with-phonenumber.php:112
-msgid "login setting"
+#: login-with-phonenumber.php:193
+msgid "Fix background"
 msgstr ""
 
-#: login-with-phonenumber.php:139
-msgid "idehwebLwp Settings"
+#: login-with-phonenumber.php:194
+msgid "fix background opacity"
 msgstr ""
 
-#: login-with-phonenumber.php:144
-msgid "Settings saved."
+#: login-with-phonenumber.php:195
+msgid "fix background size"
 msgstr ""
 
-#: login-with-phonenumber.php:169
-msgid "Save Changes"
+#: login-with-phonenumber.php:198
+msgid "Primary button"
 msgstr ""
 
-#: login-with-phonenumber.php:241
-msgid "Your Credit:"
+#: login-with-phonenumber.php:199 login-with-phonenumber.php:1408
+msgid "button background color"
+msgstr ""
+
+#: login-with-phonenumber.php:200 login-with-phonenumber.php:1438
+msgid "button border color"
+msgstr ""
+
+#: login-with-phonenumber.php:201
+msgid "button border radius"
+msgstr ""
+
+#: login-with-phonenumber.php:202
+msgid "button border width"
+msgstr ""
+
+#: login-with-phonenumber.php:203 login-with-phonenumber.php:1479
+msgid "button text color"
+msgstr ""
+
+#: login-with-phonenumber.php:204
+msgid "button padding"
+msgstr ""
+
+#: login-with-phonenumber.php:207
+msgid "Secondary button"
+msgstr ""
+
+#: login-with-phonenumber.php:209 login-with-phonenumber.php:1490
+msgid "secondary button background color"
+msgstr ""
+
+#: login-with-phonenumber.php:210 login-with-phonenumber.php:1500
+msgid "secondary button border color"
+msgstr ""
+
+#: login-with-phonenumber.php:211
+msgid "secondary button border radius"
+msgstr ""
+
+#: login-with-phonenumber.php:212
+msgid "secondary button border width"
+msgstr ""
+
+#: login-with-phonenumber.php:213 login-with-phonenumber.php:1528
+msgid "secondary button text color"
+msgstr ""
+
+#: login-with-phonenumber.php:216
+msgid "Inputs"
+msgstr ""
+
+#: login-with-phonenumber.php:218 login-with-phonenumber.php:1538
+msgid "input background color"
+msgstr ""
+
+#: login-with-phonenumber.php:219 login-with-phonenumber.php:1548
+msgid "input border color"
+msgstr ""
+
+#: login-with-phonenumber.php:220
+msgid "input border radius"
+msgstr ""
+
+#: login-with-phonenumber.php:221
+msgid "input border width"
+msgstr ""
+
+#: login-with-phonenumber.php:222 login-with-phonenumber.php:1585
+msgid "input text color"
+msgstr ""
+
+#: login-with-phonenumber.php:223
+msgid "input padding"
+msgstr ""
+
+#: login-with-phonenumber.php:224 login-with-phonenumber.php:1593
+msgid "input placeholder color"
+msgstr ""
+
+#: login-with-phonenumber.php:226
+msgid "Box"
+msgstr ""
+
+#: login-with-phonenumber.php:227 login-with-phonenumber.php:1602
+msgid "box background color"
+msgstr ""
+
+#: login-with-phonenumber.php:230
+msgid "Labels"
+msgstr ""
+
+#: login-with-phonenumber.php:231 login-with-phonenumber.php:1622
+#: login-with-phonenumber.php:1678
+msgid "label text color"
+msgstr ""
+
+#: login-with-phonenumber.php:232
+msgid "label font size"
+msgstr ""
+
+#: login-with-phonenumber.php:235
+msgid "Titles"
+msgstr ""
+
+#: login-with-phonenumber.php:236
+msgid "title color"
+msgstr ""
+
+#: login-with-phonenumber.php:237
+msgid "title font size"
+msgstr ""
+
+#: login-with-phonenumber.php:244
+msgid "Enable phone number login"
+msgstr ""
+
+#: login-with-phonenumber.php:252
+msgid "Enter your website url"
+msgstr ""
+
+#: login-with-phonenumber.php:254
+msgid "Enter api key"
+msgstr ""
+
+#: login-with-phonenumber.php:255
+msgid "Country code accepted in front"
+msgstr ""
+
+#: login-with-phonenumber.php:256
+msgid "Default Country"
+msgstr ""
+
+#: login-with-phonenumber.php:259
+msgid "Buy credit here"
+msgstr ""
+
+#: login-with-phonenumber.php:261
+msgid "use custom sms gateway"
+msgstr ""
+
+#: login-with-phonenumber.php:262
+msgid "sms default gateway"
+msgstr ""
+
+#: login-with-phonenumber.php:264
+msgid "Firebase api"
+msgstr ""
+
+#: login-with-phonenumber.php:265
+msgid "Firebase config"
+msgstr ""
+
+#: login-with-phonenumber.php:267
+msgid "Custom api url"
+msgstr ""
+
+#: login-with-phonenumber.php:268
+msgid "Custom api method"
+msgstr ""
+
+#: login-with-phonenumber.php:269
+msgid "Custom api header"
 msgstr ""
 
 #: login-with-phonenumber.php:270
-msgid "Buy"
+msgid "Custom api body"
 msgstr ""
 
-#: login-with-phonenumber.php:394
+#: login-with-phonenumber.php:271
+msgid "Custom api sms text"
+msgstr ""
+
+#: login-with-phonenumber.php:274
+msgid "Enable email login"
+msgstr ""
+
+#: login-with-phonenumber.php:275
+msgid "Force to get email after phone number"
+msgstr ""
+
+#: login-with-phonenumber.php:278
+msgid "Enable user registration"
+msgstr ""
+
+#: login-with-phonenumber.php:279
+msgid "Enable password login"
+msgstr ""
+
+#: login-with-phonenumber.php:280
+msgid "Enter redirect url"
+msgstr ""
+
+#: login-with-phonenumber.php:281
+msgid "Enter login message"
+msgstr ""
+
+#: login-with-phonenumber.php:282
+msgid "use phone number for username"
+msgstr ""
+
+#: login-with-phonenumber.php:283 login-with-phonenumber.php:2674
+msgid "Default username"
+msgstr ""
+
+#: login-with-phonenumber.php:284 login-with-phonenumber.php:2685
+msgid "Default nickname"
+msgstr ""
+
+#: login-with-phonenumber.php:285
+msgid "Enable timer"
+msgstr ""
+
+#: login-with-phonenumber.php:286 login-with-phonenumber.php:2136
+msgid "Timer count"
+msgstr ""
+
+#: login-with-phonenumber.php:287
+msgid "Enable accept term & conditions"
+msgstr ""
+
+#: login-with-phonenumber.php:288
+msgid "Text of term & conditions part"
+msgstr ""
+
+#: login-with-phonenumber.php:289
+msgid "Link of term & conditions"
+msgstr ""
+
+#: login-with-phonenumber.php:290
+msgid "Check term & conditions by default?"
+msgstr ""
+
+#: login-with-phonenumber.php:291
+msgid "Default Role"
+msgstr ""
+
+#: login-with-phonenumber.php:294
+msgid "Shortcode and Template Tag"
+msgstr ""
+
+#: login-with-phonenumber.php:295
+msgid "Enable online support"
+msgstr ""
+
+#: login-with-phonenumber.php:297
+msgid "Disable automatic placeholder"
+msgstr ""
+
+#: login-with-phonenumber.php:298
+msgid "Enable localization"
+msgstr ""
+
+#: login-with-phonenumber.php:299
+msgid "Title of login form (with phone number)"
+msgstr ""
+
+#: login-with-phonenumber.php:300
+msgid "Title of login form (with email)"
+msgstr ""
+
+#: login-with-phonenumber.php:301
+msgid "Placeholder of phone number field"
+msgstr ""
+
+#: login-with-phonenumber.php:310 login-with-phonenumber.php:311
+msgid "login setting"
+msgstr ""
+
+#: login-with-phonenumber.php:317 login-with-phonenumber.php:1088
+msgid "Style settings"
+msgstr ""
+
+#: login-with-phonenumber.php:317
+msgid "Style Settings"
+msgstr ""
+
+#: login-with-phonenumber.php:318
+msgid "Text & localization"
+msgstr ""
+
+#: login-with-phonenumber.php:319
+msgid "Add-ons"
+msgstr ""
+
+#: login-with-phonenumber.php:355 login-with-phonenumber.php:1047
 msgid "1. create a page and name it login or register or what ever"
 msgstr ""
 
-#: login-with-phonenumber.php:395
+#: login-with-phonenumber.php:357 login-with-phonenumber.php:1048
 msgid ""
 "2. copy this shortcode <code>[idehweb_lwp]</code> and paste in the page you "
 "created at step 1"
 msgstr ""
 
-#: login-with-phonenumber.php:396
+#: login-with-phonenumber.php:360 login-with-phonenumber.php:1049
 msgid ""
 "3. now, that is your login page. check your login page with other device or "
 "browser that you are not logged in!"
 msgstr ""
 
-#: login-with-phonenumber.php:399
+#: login-with-phonenumber.php:363 login-with-phonenumber.php:1052
 msgid "for more information visit: "
 msgstr ""
 
-#: login-with-phonenumber.php:404
+#. Plugin Name of the plugin/theme
+#: login-with-phonenumber.php:364 login-with-phonenumber.php:3100
+msgid "Login with phone number"
+msgstr ""
+
+#: login-with-phonenumber.php:369
+msgid "got it"
+msgstr ""
+
+#: login-with-phonenumber.php:377
+msgid "Login with phone number settings"
+msgstr ""
+
+#: login-with-phonenumber.php:382 login-with-phonenumber.php:1093
+#: login-with-phonenumber.php:1134 login-with-phonenumber.php:1175
+msgid "Settings saved."
+msgstr ""
+
+#: login-with-phonenumber.php:398 login-with-phonenumber.php:1109
+#: login-with-phonenumber.php:1150
+msgid "Save Changes"
+msgstr ""
+
+#: login-with-phonenumber.php:416
+msgid "Please, Answer us to help you setup this plugin:"
+msgstr ""
+
+#: login-with-phonenumber.php:422
+msgid "My website users come from special countries"
+msgstr ""
+
+#: login-with-phonenumber.php:426
+msgid "My website users come from one country"
+msgstr ""
+
+#: login-with-phonenumber.php:431
+msgid "I am working internationally, my website users come from many countries"
+msgstr ""
+
+#: login-with-phonenumber.php:438 login-with-phonenumber.php:460
+#: login-with-phonenumber.php:477
+msgid "Back"
+msgstr ""
+
+#: login-with-phonenumber.php:441
+msgid "Please, Choose the countries your users come from:"
+msgstr ""
+
+#: login-with-phonenumber.php:480
+msgid "Use international gateways like Firebase, Twilio or..."
+msgstr ""
+
+#: login-with-phonenumber.php:482
+msgid ""
+"You can even use multiple gateways at once. So you let your customers to "
+"choose the gateway they want to get sms from."
+msgstr ""
+
+#: login-with-phonenumber.php:484
+msgid "Firebase is free."
+msgstr ""
+
+#: login-with-phonenumber.php:486
+msgid "Also you can buy other sms gateways from add-ons part."
+msgstr ""
+
+#: login-with-phonenumber.php:831
+msgid "Your Credit:"
+msgstr ""
+
+#: login-with-phonenumber.php:860
+msgid "Buy"
+msgstr ""
+
+#: login-with-phonenumber.php:1057
 msgid "got it "
 msgstr ""
 
-#: login-with-phonenumber.php:435
+#: login-with-phonenumber.php:1129
+msgid "Localization settings"
+msgstr ""
+
+#: login-with-phonenumber.php:1170
+msgid "Gateways"
+msgstr ""
+
+#: login-with-phonenumber.php:1181
+msgid ""
+"This plugin is working with firebase by default. but you can use other SMS "
+"gateways. below you can download gateways and install beside \"Login with "
+"phone number\" plugin. You should install both plugins."
+msgstr ""
+
+#: login-with-phonenumber.php:1367
 msgid "I want user login with email"
 msgstr ""
 
-#: login-with-phonenumber.php:449
+#: login-with-phonenumber.php:1377
+msgid "I want user enter email after verifying phone number"
+msgstr ""
+
+#: login-with-phonenumber.php:1395
+msgid "enable custom styles"
+msgstr ""
+
+#: login-with-phonenumber.php:1418
+msgid "value between 0 - 1"
+msgstr ""
+
+#: login-with-phonenumber.php:1428
+msgid "ex: cover, contain, 100%, 100px ..."
+msgstr ""
+
+#: login-with-phonenumber.php:1449 login-with-phonenumber.php:1459
+#: login-with-phonenumber.php:1469 login-with-phonenumber.php:1510
+#: login-with-phonenumber.php:1519 login-with-phonenumber.php:1557
+#: login-with-phonenumber.php:1567 login-with-phonenumber.php:1577
+msgid "0px 0px 0px 0px"
+msgstr ""
+
+#: login-with-phonenumber.php:1612
+msgid "13px"
+msgstr ""
+
+#: login-with-phonenumber.php:1642 login-with-phonenumber.php:1666
+msgid "Select an image"
+msgstr ""
+
+#: login-with-phonenumber.php:1687
+msgid "20px"
+msgstr ""
+
+#: login-with-phonenumber.php:1695
+msgid "enable localization"
+msgstr ""
+
+#: login-with-phonenumber.php:1704
+msgid "Turn off automatic placeholder based on country"
+msgstr ""
+
+#: login-with-phonenumber.php:1716 login-with-phonenumber.php:1727
+#: login-with-phonenumber.php:2993 login-with-phonenumber.php:3076
+msgid "Login / register"
+msgstr ""
+
+#: login-with-phonenumber.php:1737
+msgid "If empty, a valid example number for the selected country will be shown"
+msgstr ""
+
+#: login-with-phonenumber.php:1750
 msgid "I want user login with phone number"
 msgstr ""
 
-#: login-with-phonenumber.php:463
+#: login-with-phonenumber.php:1760
+msgid "I want to enable registration"
+msgstr ""
+
+#: login-with-phonenumber.php:1774
 msgid "I want user login with password too"
 msgstr ""
 
-#: login-with-phonenumber.php:473
+#: login-with-phonenumber.php:1784
 msgid "I want form shows on page in fix position"
 msgstr ""
 
-#: login-with-phonenumber.php:526
+#: login-with-phonenumber.php:1794
+msgid ""
+"I want the form shows automatically with out clicking any button, also you "
+"can use class \"lwp-open-form\""
+msgstr ""
+
+#: login-with-phonenumber.php:1804
+msgid ""
+"I want disable closing action and (x) button on pop up and force user to "
+"login"
+msgstr ""
+
+#: login-with-phonenumber.php:1814
+msgid "I want online support be active"
+msgstr ""
+
+#: login-with-phonenumber.php:1825
+msgid "I want to use custom gateways"
+msgstr ""
+
+#: login-with-phonenumber.php:1836
+msgid "Firebase (Google)"
+msgstr ""
+
+#: login-with-phonenumber.php:1837
+msgid "Custom (Config Your Gateway)"
+msgstr ""
+
+#: login-with-phonenumber.php:1870
+msgid "enter your Twilio account SID"
+msgstr ""
+
+#: login-with-phonenumber.php:1880
+msgid "enter your Twilio auth token"
+msgstr ""
+
+#: login-with-phonenumber.php:1890
+msgid "enter your Twilio phone number"
+msgstr ""
+
+#: login-with-phonenumber.php:1900
+msgid "enter your Zenziva user key"
+msgstr ""
+
+#: login-with-phonenumber.php:1910
+msgid "enter your Zenziva pass key"
+msgstr ""
+
+#: login-with-phonenumber.php:1920 login-with-phonenumber.php:1931
+msgid "enter your Infobip pass key"
+msgstr ""
+
+#: login-with-phonenumber.php:1941
+msgid "enter your Infobip sender"
+msgstr ""
+
+#: login-with-phonenumber.php:1952
+msgid "enter Firebase api"
+msgstr ""
+
+#: login-with-phonenumber.php:1952
+msgid "Firebase config help - documentation"
+msgstr ""
+
+#: login-with-phonenumber.php:1967
+msgid "enter Firebase config"
+msgstr ""
+
+#: login-with-phonenumber.php:2046
+msgid "enter custom url"
+msgstr ""
+
+#: login-with-phonenumber.php:2046
+msgid "Custom config help - documentation"
+msgstr ""
+
+#: login-with-phonenumber.php:2070
+msgid "enter request method"
+msgstr ""
+
+#: login-with-phonenumber.php:2081
+msgid "enter header of request in json"
+msgstr ""
+
+#: login-with-phonenumber.php:2093
+msgid "enter body of request in json"
+msgstr ""
+
+#: login-with-phonenumber.php:2104
+msgid "enter smstext , you can use ${code}"
+msgstr ""
+
+#: login-with-phonenumber.php:2114
+msgid "I want to set phone number as username and nickname"
+msgstr ""
+
+#: login-with-phonenumber.php:2124
+msgid ""
+"I want to enable timer after user entered phone number and clicked on submit"
+msgstr ""
+
+#: login-with-phonenumber.php:2146
+msgid ""
+"I want to show some terms & conditions for user to accept it, when he/she "
+"wants to register "
+msgstr ""
+
+#: login-with-phonenumber.php:2154 login-with-phonenumber.php:2925
+#: login-with-phonenumber.php:3316
+msgid "By submitting, you agree to the Terms and Privacy Policy"
+msgstr ""
+
+#: login-with-phonenumber.php:2157
+msgid "enter term and condition accepting text"
+msgstr ""
+
+#: login-with-phonenumber.php:2164
+msgid "#"
+msgstr ""
+
+#: login-with-phonenumber.php:2167
+msgid "enter term and condition link"
+msgstr ""
+
+#: login-with-phonenumber.php:2176
+msgid "Accept/Check by default. "
+msgstr ""
+
+#: login-with-phonenumber.php:2199
 msgid "Choose a country..."
 msgstr ""
 
-#: login-with-phonenumber.php:543
+#: login-with-phonenumber.php:2216 login-with-phonenumber.php:2235
 msgid "Authenticate"
 msgstr ""
 
-#: login-with-phonenumber.php:543
+#: login-with-phonenumber.php:2216 login-with-phonenumber.php:2235
 msgid "activate sms login"
 msgstr ""
 
-#: login-with-phonenumber.php:545 login-with-phonenumber.php:812
+#: login-with-phonenumber.php:2218 login-with-phonenumber.php:3126
+#: login-with-phonenumber.php:3390
 msgid "Activate"
 msgstr ""
 
-#: login-with-phonenumber.php:545
+#: login-with-phonenumber.php:2218
 msgid "activate account"
 msgstr ""
 
-#: login-with-phonenumber.php:560
+#: login-with-phonenumber.php:2250
 msgid "enter api key"
 msgstr ""
 
-#: login-with-phonenumber.php:574
+#: login-with-phonenumber.php:2277
 msgid "enter redirect url"
 msgstr ""
 
-#: login-with-phonenumber.php:606
+#: login-with-phonenumber.php:2287
+msgid "enter login message"
+msgstr ""
+
+#: login-with-phonenumber.php:2581
 msgid ""
 "make a page and name it login, put the shortcode inside it, now you have a "
 "login page!"
 msgstr ""
 
-#: login-with-phonenumber.php:608
+#: login-with-phonenumber.php:2583
 msgid ""
-"To use idehwebLwp manually in your theme template use the following PHP code:"
+"if you are logged in, we do not show you any form, so after using shortcode "
+"in a page, just check it where you are not logged in, like other browsers!"
 msgstr ""
 
-#: login-with-phonenumber.php:610
+#: login-with-phonenumber.php:2584
+msgid ""
+"For showing metas of user for example in profile page, like: showing phone "
+"number, username, email, nicename"
+msgstr ""
+
+#: login-with-phonenumber.php:2586
+msgid ""
+"For verifying your customer email, after login/register with email, you can "
+"use this shortcode: "
+msgstr ""
+
+#: login-with-phonenumber.php:2588
 msgid "Need more help?"
 msgstr ""
 
-#: login-with-phonenumber.php:671
+#: login-with-phonenumber.php:2647
+msgid "select default role"
+msgstr ""
+
+#: login-with-phonenumber.php:2704
 msgid "Check credit"
 msgstr ""
 
-#: login-with-phonenumber.php:675
+#: login-with-phonenumber.php:2708
 msgid "Refresh"
 msgstr ""
 
-#: login-with-phonenumber.php:677
-msgid "phone number:"
-msgstr ""
-
-#: login-with-phonenumber.php:679
-msgid "change"
-msgstr ""
-
-#: login-with-phonenumber.php:710
+#: login-with-phonenumber.php:2803
 msgid "please wait..."
 msgstr ""
 
-#: login-with-phonenumber.php:737
+#: login-with-phonenumber.php:2807
+msgid "running recaptcha..."
+msgstr ""
+
+#: login-with-phonenumber.php:2967
 msgid "login"
 msgstr ""
 
-#: login-with-phonenumber.php:744 login-with-phonenumber.php:782
-msgid "Login / register"
-msgstr ""
-
-#: login-with-phonenumber.php:747 login-with-phonenumber.php:1414
+#: login-with-phonenumber.php:2998 login-with-phonenumber.php:4747
 msgid "Phone number"
 msgstr ""
 
-#: login-with-phonenumber.php:762
-msgid "9*********"
-msgstr ""
-
-#: login-with-phonenumber.php:765 login-with-phonenumber.php:790
+#: login-with-phonenumber.php:3033 login-with-phonenumber.php:3094
+#: login-with-phonenumber.php:3371
 msgid "Submit"
 msgstr ""
 
-#: login-with-phonenumber.php:771
+#: login-with-phonenumber.php:3039
 msgid "Login with email"
 msgstr ""
 
-#: login-with-phonenumber.php:785
+#: login-with-phonenumber.php:3080 login-with-phonenumber.php:3366
 msgid "Your email:"
 msgstr ""
 
-#: login-with-phonenumber.php:787
+#: login-with-phonenumber.php:3082 login-with-phonenumber.php:3368
 msgid "Please enter your email"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-#: login-with-phonenumber.php:796
-msgid "Login with phone number"
-msgstr ""
-
-#: login-with-phonenumber.php:804
+#: login-with-phonenumber.php:3111 login-with-phonenumber.php:3377
 msgid "Activation"
 msgstr ""
 
-#: login-with-phonenumber.php:808
+#: login-with-phonenumber.php:3121 login-with-phonenumber.php:3386
 msgid "Security code"
 msgstr ""
 
-#: login-with-phonenumber.php:824 login-with-phonenumber.php:1001
-msgid "Update password"
+#: login-with-phonenumber.php:3129 login-with-phonenumber.php:3394
+msgid "Send code again"
 msgstr ""
 
-#: login-with-phonenumber.php:827
-msgid "Enter new password:"
-msgstr ""
-
-#: login-with-phonenumber.php:829
-msgid "Please choose a password"
-msgstr ""
-
-#: login-with-phonenumber.php:832
-msgid "Update"
-msgstr ""
-
-#: login-with-phonenumber.php:838
-msgid "Enter password"
-msgstr ""
-
-#: login-with-phonenumber.php:841
-msgid "Your password:"
-msgstr ""
-
-#: login-with-phonenumber.php:843
-msgid "Please enter your password"
-msgstr ""
-
-#: login-with-phonenumber.php:846
-msgid "Login"
-msgstr ""
-
-#: login-with-phonenumber.php:849
-msgid "Forgot password"
-msgstr ""
-
-#: login-with-phonenumber.php:902 login-with-phonenumber.php:978
-#: login-with-phonenumber.php:1228 login-with-phonenumber.php:1239
-msgid "phone number is wrong!"
-msgstr ""
-
-#: login-with-phonenumber.php:928
-msgid "This username is already registered."
-msgstr ""
-
-#: login-with-phonenumber.php:935 login-with-phonenumber.php:1101
-msgid "This email address is already registered."
-msgstr ""
-
-#: login-with-phonenumber.php:970
-msgid "Sms sent successfully!"
-msgstr ""
-
-#: login-with-phonenumber.php:1035
-msgid "Password is incorrect!"
-msgstr ""
-
-#: login-with-phonenumber.php:1043
-msgid "Redirecting..."
-msgstr ""
-
-#: login-with-phonenumber.php:1064
-msgid "Password set successfully! redirecting..."
-msgstr ""
-
-#: login-with-phonenumber.php:1072
-msgid "User not found"
-msgstr ""
-
-#: login-with-phonenumber.php:1138
-msgid "Email sent successfully!"
-msgstr ""
-
-#: login-with-phonenumber.php:1146
-msgid "email is wrong!"
-msgstr ""
-
-#: login-with-phonenumber.php:1157
-msgid "your activation code: "
-msgstr ""
-
-#: login-with-phonenumber.php:1260
-msgid "loading..."
-msgstr ""
-
-#: login-with-phonenumber.php:1263
-msgid "wrong"
-msgstr ""
-
-#: login-with-phonenumber.php:1273
-msgid "entered code is wrong!"
-msgstr ""
-
-#: login-with-phonenumber.php:1284
-msgid "user does not exist!"
-msgstr ""
-
-#: login-with-phonenumber.php:1309
-msgid "Wrong username or password."
-msgstr ""
-
-#: login-with-phonenumber.php:1312
-msgid " successful, redirecting..."
-msgstr ""
-
-#: login-with-phonenumber.php:1415
-msgid "Activation code"
-msgstr ""
-
-#: login-with-phonenumber.php:2613
+#: login-with-phonenumber.php:3134 login-with-phonenumber.php:3272
 msgid "Change phone number?"
 msgstr ""
 
-#: login-with-phonenumber.php:2616
+#: login-with-phonenumber.php:3137 login-with-phonenumber.php:3275
+#: login-with-phonenumber.php:3399
 msgid "Change email?"
 msgstr ""
 
+#: login-with-phonenumber.php:3151 login-with-phonenumber.php:3675
+#: login-with-phonenumber.php:3755
+msgid "Update password"
+msgstr ""
+
+#: login-with-phonenumber.php:3212
+msgid "Enter new password:"
+msgstr ""
+
+#: login-with-phonenumber.php:3214
+msgid "Please choose a password"
+msgstr ""
+
+#: login-with-phonenumber.php:3219
+msgid "Update"
+msgstr ""
+
+#: login-with-phonenumber.php:3227
+msgid "Enter password"
+msgstr ""
+
+#: login-with-phonenumber.php:3256
+msgid "Your password:"
+msgstr ""
+
+#: login-with-phonenumber.php:3258
+msgid "Please enter your password"
+msgstr ""
+
+#: login-with-phonenumber.php:3263
+msgid "Login"
+msgstr ""
+
+#: login-with-phonenumber.php:3266
+msgid "Forgot password"
+msgstr ""
+
+#: login-with-phonenumber.php:3459 login-with-phonenumber.php:3587
+#: login-with-phonenumber.php:4356 login-with-phonenumber.php:4368
+msgid "phone number is wrong!"
+msgstr ""
+
+#: login-with-phonenumber.php:3479 login-with-phonenumber.php:3493
+#: login-with-phonenumber.php:3980 login-with-phonenumber.php:4193
+msgid "users can not register!"
+msgstr ""
+
+#: login-with-phonenumber.php:3524
+msgid "This username is already registered."
+msgstr ""
+
+#: login-with-phonenumber.php:3531 login-with-phonenumber.php:4001
+#: login-with-phonenumber.php:4214
+msgid "This email address is already registered."
+msgstr ""
+
+#: login-with-phonenumber.php:3576
+msgid "Sms sent successfully!"
+msgstr ""
+
+#: login-with-phonenumber.php:3626 login-with-phonenumber.php:3720
+#: login-with-phonenumber.php:3847
+msgid "Please enter correct phone number"
+msgstr ""
+
+#: login-with-phonenumber.php:3633 login-with-phonenumber.php:3727
+#: login-with-phonenumber.php:3854
+msgid "Email is wrong!"
+msgstr ""
+
+#: login-with-phonenumber.php:3647 login-with-phonenumber.php:3712
+#: login-with-phonenumber.php:3869
+msgid "Please enter correct user ID"
+msgstr ""
+
+#: login-with-phonenumber.php:3656 login-with-phonenumber.php:3736
+msgid "User not found!"
+msgstr ""
+
+#: login-with-phonenumber.php:3789
+msgid "Password is incorrect!"
+msgstr ""
+
+#: login-with-phonenumber.php:3797
+msgid "Redirecting..."
+msgstr ""
+
+#: login-with-phonenumber.php:3909 login-with-phonenumber.php:3940
+msgid "Password set successfully! redirecting..."
+msgstr ""
+
+#: login-with-phonenumber.php:3917 login-with-phonenumber.php:3948
+msgid "User not found"
+msgstr ""
+
+#: login-with-phonenumber.php:4037 login-with-phonenumber.php:4083
+msgid "Email sent successfully!"
+msgstr ""
+
+#: login-with-phonenumber.php:4045 login-with-phonenumber.php:4097
+msgid "email is wrong!"
+msgstr ""
+
+#: login-with-phonenumber.php:4170
+msgid "your activation code: "
+msgstr ""
+
+#: login-with-phonenumber.php:4228 login-with-phonenumber.php:4243
+msgid "Logged in, redirecting..."
+msgstr ""
+
+#: login-with-phonenumber.php:4337
+msgid "secod is required!"
+msgstr ""
+
+#: login-with-phonenumber.php:4387
+msgid "activation code is expired!"
+msgstr ""
+
+#: login-with-phonenumber.php:4401 login-with-phonenumber.php:4473
+msgid "entered code is wrong!"
+msgstr ""
+
+#: login-with-phonenumber.php:4416 login-with-phonenumber.php:4460
+#: login-with-phonenumber.php:4539
+msgid "loading..."
+msgstr ""
+
+#: login-with-phonenumber.php:4419 login-with-phonenumber.php:4463
+msgid "wrong"
+msgstr ""
+
+#: login-with-phonenumber.php:4429
+msgid "activation_code is empty!"
+msgstr ""
+
+#: login-with-phonenumber.php:4484 login-with-phonenumber.php:4559
+msgid "user does not exist!"
+msgstr ""
+
+#: login-with-phonenumber.php:4505
+msgid "user is not logged in!"
+msgstr ""
+
+#: login-with-phonenumber.php:4514
+msgid "email is not entered!"
+msgstr ""
+
+#: login-with-phonenumber.php:4531
+msgid "There is problem with activating user."
+msgstr ""
+
+#: login-with-phonenumber.php:4549
+msgid "Activation code is not correct!"
+msgstr ""
+
+#: login-with-phonenumber.php:4589
+msgid "Wrong username or password."
+msgstr ""
+
+#: login-with-phonenumber.php:4592
+msgid " successful, redirecting..."
+msgstr ""
+
+#: login-with-phonenumber.php:4748
+msgid "Activation code"
+msgstr ""
+
+#: login-with-phonenumber.php:4749
+msgid "Registered date"
+msgstr ""
+
+#: templates/learnpress/checkout/account-logged-in.php:23
+#, php-format
+msgid "Logged in as <a href=\"%1$s\">%2$s</a>."
+msgstr ""
+
+#: templates/learnpress/checkout/account-logged-in.php:25
+msgid "Log out of this account"
+msgstr ""
+
+#: templates/learnpress/checkout/account-logged-in.php:26
+msgid "Log out &raquo;"
+msgstr ""
+
 #. Plugin URI of the plugin/theme
-msgid "http://idehweb.com/login-with-phone-number"
+#. Author URI of the plugin/theme
+msgid "https://idehweb.com"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -370,8 +1004,4 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "Hamid Alinia - idehweb"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "http://idehweb.com"
 msgstr ""

@@ -89,7 +89,7 @@ var fb_lwp_nonce=idehweb_lwp.nonce,fb_lwp_phone_number='',fb_lwp_email='';
                         $('#lwp_enter_password').fadeIn(500);
 
                     } else {
-                        $('p.status').html('running recaptcha...');
+                        $('p.status').html(idehweb_lwp?.message_running_recaptcha);
 
                         runFBase("+" + username);
 

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.41
+Version: 1.7.42
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -270,10 +270,10 @@ class idehwebLwp
         add_settings_field('idehweb_custom_api_body', __('Custom api body', 'login-with-phone-number'), array(&$this, 'setting_custom_api_body'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
         add_settings_field('idehweb_custom_api_smstext', __('Custom api sms text', 'login-with-phone-number'), array(&$this, 'setting_custom_api_smstext'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
 
-        add_settings_field('idehweb_lwp_space', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+        add_settings_field('idehweb_lwp_space','', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('idehweb_email_login', __('Enable email login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_email_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_email_force_after_phonenumber', __('Force to get email after phone number', 'login-with-phone-number'), array(&$this, 'setting_idehweb_email_force'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_lwp_space2', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+        add_settings_field('idehweb_lwp_space2', '', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
 
         add_settings_field('idehweb_user_registration', __('Enable user registration', 'login-with-phone-number'), array(&$this, 'setting_idehweb_user_registration'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_password_login', __('Enable password login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_password_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -290,7 +290,7 @@ class idehwebLwp
         add_settings_field('idehweb_term_and_conditions_default_checked', __('Check term & conditions by default?', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_default_checked'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
         add_settings_field('idehweb_default_role', __('Default Role', 'login-with-phone-number'), array(&$this, 'setting_default_role'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
 
-        add_settings_field('idehweb_lwp_space3', __('', 'login-with-phone-number'), array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+        add_settings_field('idehweb_lwp_space3','', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
@@ -2803,7 +2803,8 @@ class idehwebLwp
             'loadingmessage' => __('please wait...', 'login-with-phone-number'),
             'timer' => $options['idehweb_enable_timer_on_sending_sms'],
             'timer_count' => $options['idehweb_timer_count'],
-            'sticky' => $options['idehweb_position_form']
+            'sticky' => $options['idehweb_position_form'],
+            'message_running_recaptcha' => __('running recaptcha...', 'login-with-phone-number')
         );
 
         wp_enqueue_style('idehweb-lwp', plugins_url('/styles/login-with-phonenumber.css', __FILE__));
@@ -3001,7 +3002,7 @@ class idehwebLwp
                             <div class="lwp-form-box-bottom">
                                 <input type="hidden" id="lwp_country_codes">
                                 <input type="tel" id="phone" class="required lwp_username the_lwp_input"
-                                       placeholder="<?php echo ($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? sanitize_text_field($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) : (__('', 'login-with-phone-number')); ?>">
+                                       placeholder="<?php echo ($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) ? sanitize_text_field($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field']) : (''); ?>">
                             </div>
                         </div>
                         <?php if ($options['idehweb_enable_accept_terms_and_condition'] == '1') { ?>

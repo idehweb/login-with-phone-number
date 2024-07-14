@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.44
+Version: 1.7.45
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -508,6 +508,12 @@ class idehwebLwp
                         <img style="width: 100%;max-width: 100%"
                              src="<?php echo plugins_url('/images/web-design.gif', __FILE__) ?>"/>
                     </a>
+                    <a style="margin-top: 10px;display:block"
+                       href="https://idehweb.com/product/nodeeweb-wordpress-theme/?utm_source=lwp-plugin&utm_medium=banner-nodeeweb&utm_campaign=plugin-install"
+                       target="_blank">
+                        <img style="width: 100%;max-width: 100%"
+                             src="<?php echo plugins_url('/images/nodeweb-theme-wordpress.gif', __FILE__) ?>"/>
+                    </a>
 <?php
 
               }else{
@@ -524,17 +530,16 @@ class idehwebLwp
                         <img style="width: 100%;max-width: 100%"
                              src="<?php echo plugins_url('/images/webdesign.webp', __FILE__) ?>"/>
                     </a>
-<?php
-              }
-              ?>
-                
-
                     <a style="margin-top: 10px;display:block"
                        href="https://idehweb.com/product/nodeeweb-wordpress-theme/?utm_source=lwp-plugin&utm_medium=banner-nodeeweb&utm_campaign=plugin-install"
                        target="_blank">
                         <img style="width: 100%;max-width: 100%"
                              src="<?php echo plugins_url('/images/nodeeweb-wordpress-theme.png', __FILE__) ?>"/>
                     </a>
+<?php
+              }
+              ?>
+            
                 </div>
             <?php } ?>
             <?php

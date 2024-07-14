@@ -397,7 +397,10 @@
     margin-top: 50px;
     float: right;
 }
-
+.lwp-wrap-right a:focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
 .idehweb_lwp_mgt100 {
     margin-top: 50px;
     clear: both;

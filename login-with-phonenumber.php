@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.45
+Version: 1.7.46
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -270,7 +270,7 @@ class idehwebLwp
         add_settings_field('idehweb_custom_api_body', __('Custom api body', 'login-with-phone-number'), array(&$this, 'setting_custom_api_body'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
         add_settings_field('idehweb_custom_api_smstext', __('Custom api sms text', 'login-with-phone-number'), array(&$this, 'setting_custom_api_smstext'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_custom']);
 
-        add_settings_field('idehweb_lwp_space','', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+        add_settings_field('idehweb_lwp_space', '', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('idehweb_email_login', __('Enable email login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_email_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_email_force_after_phonenumber', __('Force to get email after phone number', 'login-with-phone-number'), array(&$this, 'setting_idehweb_email_force'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_lwp_space2', '', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
@@ -290,7 +290,7 @@ class idehwebLwp
         add_settings_field('idehweb_term_and_conditions_default_checked', __('Check term & conditions by default?', 'login-with-phone-number'), array(&$this, 'setting_term_and_conditions_default_checked'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
         add_settings_field('idehweb_default_role', __('Default Role', 'login-with-phone-number'), array(&$this, 'setting_default_role'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel ']);
 
-        add_settings_field('idehweb_lwp_space3','', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
+        add_settings_field('idehweb_lwp_space3', '', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
 
@@ -299,6 +299,8 @@ class idehwebLwp
         add_settings_field('idehweb_localization_title_of_login_form', __('Title of login form (with phone number)', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_of_login_form'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_title_of_login_form1', __('Title of login form (with email)', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_of_login_form_email'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_placeholder_of_phonenumber_field', __('Placeholder of phone number field', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_placeholder_of_phonenumber_field'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_localization_firebase_option_title', __('Firebase option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_firebase_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_localization_custom_option_title', __('Custom option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_custom_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
 
     }
 
@@ -495,51 +497,53 @@ class idehwebLwp
                 ?>
 
                 <div class="lwp-wrap-right">
-                <?php     $locale = get_locale();
-              if($locale=='fa_IR'){
-?>
- <a style="display:block" href="https://idehweb.ir/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%86%D8%B5%D8%A8-%D8%A7%D9%81%D8%B2%D9%88%D9%86%D9%87-%D9%88%D8%B1%D9%88%D8%AF-%D8%A8%D8%A7-%D8%B4%D9%85%D8%A7%D8%B1%D9%87-%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84-%D8%AF"
-                       target="_blank">
-                        <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/login-with-phone number-for-iran.gif', __FILE__) ?>"/>
-                    </a>
- <a style="margin-top: 10px;display:block" href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"
-                       target="_blank">
-                        <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/web-design.gif', __FILE__) ?>"/>
-                    </a>
-                    <a style="margin-top: 10px;display:block"
-                       href="https://idehweb.com/product/nodeeweb-wordpress-theme/?utm_source=lwp-plugin&utm_medium=banner-nodeeweb&utm_campaign=plugin-install"
-                       target="_blank">
-                        <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/nodeweb-theme-wordpress.gif', __FILE__) ?>"/>
-                    </a>
-<?php
+                    <?php $locale = get_locale();
+                    if ($locale == 'fa_IR') {
+                        ?>
+                        <a style="display:block"
+                           href="https://idehweb.ir/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%86%D8%B5%D8%A8-%D8%A7%D9%81%D8%B2%D9%88%D9%86%D9%87-%D9%88%D8%B1%D9%88%D8%AF-%D8%A8%D8%A7-%D8%B4%D9%85%D8%A7%D8%B1%D9%87-%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84-%D8%AF"
+                           target="_blank">
+                            <img style="width: 100%;max-width: 100%"
+                                 src="<?php echo plugins_url('/images/login-with-phone number-for-iran.gif', __FILE__) ?>"/>
+                        </a>
+                        <a style="margin-top: 10px;display:block"
+                           href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"
+                           target="_blank">
+                            <img style="width: 100%;max-width: 100%"
+                                 src="<?php echo plugins_url('/images/web-design.gif', __FILE__) ?>"/>
+                        </a>
+                        <a style="margin-top: 10px;display:block"
+                           href="https://idehweb.ir/product/%D9%82%D8%A7%D9%84%D8%A8-%D9%88%D8%B1%D8%AF%D9%BE%D8%B1%D8%B3%DB%8C-%D9%86%D9%88%D8%AF%DB%8C-%D9%88%D8%A8/?utm_source=lwp-plugin&utm_medium=banner-nodeeweb&utm_campaign=plugin-install"
+                           target="_blank">
+                            <img style="width: 100%;max-width: 100%"
+                                 src="<?php echo plugins_url('/images/nodeweb-theme-wordpress.gif', __FILE__) ?>"/>
+                        </a>
+                        <?php
 
-              }else{
+                    } else {
 
-?>
- <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?utm_source=lwp-plugin&utm_medium=banner-lwp&utm_campaign=plugin-install"
-                       target="_blank">
-                        <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/login-with-phone-number-wordpress-buy-pro-version.png', __FILE__) ?>"/>
-                    </a>
-                    <a style="margin-top: 10px;display:block"
-                       href="https://idehweb.com/?utm_source=lwp-plugin&utm_medium=banner-webdesign&utm_campaign=plugin-install"
-                       target="_blank">
-                        <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/webdesign.webp', __FILE__) ?>"/>
-                    </a>
-                    <a style="margin-top: 10px;display:block"
-                       href="https://idehweb.com/product/nodeeweb-wordpress-theme/?utm_source=lwp-plugin&utm_medium=banner-nodeeweb&utm_campaign=plugin-install"
-                       target="_blank">
-                        <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/nodeeweb-wordpress-theme.png', __FILE__) ?>"/>
-                    </a>
-<?php
-              }
-              ?>
-            
+                        ?>
+                        <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?utm_source=lwp-plugin&utm_medium=banner-lwp&utm_campaign=plugin-install"
+                           target="_blank">
+                            <img style="width: 100%;max-width: 100%"
+                                 src="<?php echo plugins_url('/images/login-with-phone-number-wordpress-buy-pro-version.png', __FILE__) ?>"/>
+                        </a>
+                        <a style="margin-top: 10px;display:block"
+                           href="https://idehweb.com/?utm_source=lwp-plugin&utm_medium=banner-webdesign&utm_campaign=plugin-install"
+                           target="_blank">
+                            <img style="width: 100%;max-width: 100%"
+                                 src="<?php echo plugins_url('/images/webdesign.webp', __FILE__) ?>"/>
+                        </a>
+                        <a style="margin-top: 10px;display:block"
+                           href="https://idehweb.com/product/nodeeweb-wordpress-theme/?utm_source=lwp-plugin&utm_medium=banner-nodeeweb&utm_campaign=plugin-install"
+                           target="_blank">
+                            <img style="width: 100%;max-width: 100%"
+                                 src="<?php echo plugins_url('/images/nodeeweb-wordpress-theme.png', __FILE__) ?>"/>
+                        </a>
+                        <?php
+                    }
+                    ?>
+
                 </div>
             <?php } ?>
             <?php
@@ -1763,6 +1767,26 @@ class idehwebLwp
 		<p class="description">' . __('If empty, a valid example number for the selected country will be shown', 'login-with-phone-number') . '</p>';
     }
 
+    function setting_idehweb_localization_firebase_option_title()
+    {
+        $options = get_option('idehweb_lwp_settings_localization');
+        if (!isset($options['idehweb_localization_firebase_option_title'])) $options['idehweb_localization_firebase_option_title'] = '';
+        else $options['idehweb_localization_firebase_option_title'] = sanitize_text_field($options['idehweb_localization_firebase_option_title']);
+
+        echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_firebase_option_title]" class="regular-text" value="' . esc_attr($options['idehweb_localization_firebase_option_title']) . '" />
+		<p class="description">' . __('Show firebase title when use multiple gateway', 'login-with-phone-number') . '</p>';
+    }
+
+    function setting_idehweb_localization_custom_option_title()
+    {
+        $options = get_option('idehweb_lwp_settings_localization');
+        if (!isset($options['idehweb_localization_custom_option_title'])) $options['idehweb_localization_custom_option_title'] = '';
+        else $options['idehweb_localization_custom_option_title'] = sanitize_text_field($options['idehweb_localization_custom_option_title']);
+
+        echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_custom_option_title]" class="regular-text" value="' . esc_attr($options['idehweb_localization_custom_option_title']) . '" />
+		<p class="description">' . __('Show firebase title when use multiple gateway', 'login-with-phone-number') . '</p>';
+    }
+
     function setting_idehweb_sms_login()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -1996,7 +2020,7 @@ class idehwebLwp
     function setting_clean_firebase_config_code($str)
     {
 //        print_r($str);
-        if(!isset($str))
+        if (!isset($str))
             return false;
         $exploded = explode("const firebaseConfig", $str);
         $array_length = count($exploded);
@@ -2022,13 +2046,13 @@ class idehwebLwp
 
     function return_json($str)
     {
-        if(!$str){
+        if (!$str) {
             return null;
         }
-        if(isset($str)){
+        if (isset($str)) {
             $r_data = json_decode($str);
 
-            if(($r_data != $str) && $r_data)
+            if (($r_data != $str) && $r_data)
                 return $str;
 
         }
@@ -2036,27 +2060,27 @@ class idehwebLwp
 //        print_r('income');
 //        print_r($str);
         preg_match('/apiKey: "([^"]+)"/', $str, $m0);
-        if(isset($m0) && isset($m0[1]))
+        if (isset($m0) && isset($m0[1]))
             $obj["apiKey"] = $m0[1];
 
         preg_match('/authDomain: "([^"]+)"/', $str, $j0);
-        if(isset($j0) && isset($j0[1]))
+        if (isset($j0) && isset($j0[1]))
             $obj["authDomain"] = $j0[1];
 
         preg_match('/projectId: "([^"]+)"/', $str, $h0);
-        if(isset($h0) && isset($h0[1]))
+        if (isset($h0) && isset($h0[1]))
             $obj["projectId"] = $h0[1];
 
         preg_match('/storageBucket: "([^"]+)"/', $str, $d0);
-        if(isset($d0) && isset($d0[1]))
+        if (isset($d0) && isset($d0[1]))
             $obj["storageBucket"] = $d0[1];
 
         preg_match('/messagingSenderId: "([^"]+)"/', $str, $x0);
-        if(isset($x0) && isset($x0[1]))
+        if (isset($x0) && isset($x0[1]))
             $obj["messagingSenderId"] = $x0[1];
 
         preg_match('/appId: "([^"]+)"/', $str, $a0);
-        if(isset($a0) && isset($a0[1]))
+        if (isset($a0) && isset($a0[1]))
             $obj["appId"] = $a0[1];
 
         return json_encode($obj, true);
@@ -2966,6 +2990,8 @@ class idehwebLwp
         }
 
         if (!isset($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'])) $localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'] = '';
+        if (!isset($localizationoptions['idehweb_localization_firebase_option_title'])) $localizationoptions['idehweb_localization_firebase_option_title'] = '';
+        if (!isset($localizationoptions['idehweb_localization_custom_option_title'])) $localizationoptions['idehweb_localization_custom_option_title'] = '';
         if (!isset($localizationoptions['idehweb_localization_title_of_login_form'])) $localizationoptions['idehweb_localization_title_of_login_form'] = '';
         if (!isset($localizationoptions['idehweb_localization_title_of_login_form_email'])) $localizationoptions['idehweb_localization_title_of_login_form_email'] = '';
 
@@ -3184,34 +3210,35 @@ class idehwebLwp
                                 $ROptions = get_option('idehweb_lwp_settings_registration_fields');
                                 if (!isset($ROptions['idehweb_registration_fields'])) $ROptions['idehweb_registration_fields'] = [];
                                 foreach ($ROptions['idehweb_registration_fields'] as $key => $fi) {
-//                                    print_r($fi);
+//                                    print_r($fi['children']);
                                     ?>
                                     <?php
 
-                                    if ($fi['value'] == "role") {
+                                    if ($fi['name'] == "role") {
+                                        $children = $fi['children'];
+                                        $children = json_decode($children, true);
                                         ?>
                                         <div class="lwp-inside-form-input">
                                             <div class="accept_terms_and_conditions" style="
     display: flex;
     justify-content: space-around;
 ">
-                                                <div class="choos-rol" style="
-    display: flex;
-">
-                                                    <input class="required lwp_check_box" type="radio" name="role"
-                                                           value="subscriber">
-                                                    <label for="subscriber" class="role_text"
-                                                           style="margin-left:0px; margin-right: 5px">Subscriber</label>
+                                                <?php
 
-                                                </div>
-                                                <div class="choos-rol" style="
-    display: flex;
-">
+                                                foreach ($children as $key2 => $ch) {
 
-                                                    <input class="required lwp_check_box" type="radio" name="role"
-                                                           value="partner">
-                                                    <label for="partner" class="role_text" style="margin-left:0px">Partner</label>
-                                                </div>
+                                                    ?>
+                                                    <div class="choos-rol" style="display: flex;">
+                                                        <input class="required lwp_check_box" type="radio"
+                                                               checked="<?php echo esc_attr((!empty($fi['value']) && $fi['value']==$ch['value']) ? ("true") : "false"); ?>"
+                                                               name="<?php echo esc_attr($fi['name']); ?>"
+                                                               value="<?php echo esc_attr($ch['value']); ?>">
+                                                        <label for="<?php echo esc_attr($ch['value']); ?>"
+                                                               class="role_text"
+                                                               style="margin-left:0px; margin-right: 5px"><?php echo esc_attr($ch['label']); ?></label>
+
+                                                    </div>
+                                                <?php } ?>
                                             </div>
 
                                         </div>
@@ -4149,12 +4176,12 @@ class idehwebLwp
     {
         global $wpdb;
         $search = '';
-        if ( isset( $uqi->query_vars['search'] ) )
-            $search = trim( $uqi->query_vars['search'] );
+        if (isset($uqi->query_vars['search']))
+            $search = trim($uqi->query_vars['search']);
 
-        if ( $search ) {
+        if ($search) {
             $search = trim($search, '*');
-            $the_search = '%'.$search.'%';
+            $the_search = '%' . $search . '%';
 
             $search_meta = $wpdb->prepare("
         ID IN ( SELECT user_id FROM {$wpdb->usermeta}
@@ -4165,7 +4192,7 @@ class idehwebLwp
             $uqi->query_where = str_replace(
                 'WHERE 1=1 AND (',
                 "WHERE 1=1 AND (" . $search_meta . " OR ",
-                $uqi->query_where );
+                $uqi->query_where);
 
         }
     }

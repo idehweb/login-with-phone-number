@@ -12,6 +12,13 @@
 .lwp-setting-page-main {
 
 }
+.lwp_form_field span {
+    min-width: 100px;
+    display: block;
+}
+.lwp_form_field input{
+    display: none;
+}
 .lwp-red{
     color:#ff0000;
 }

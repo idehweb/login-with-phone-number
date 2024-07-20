@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.47
+Version: 1.7.48
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -168,9 +168,10 @@ class idehwebLwp
     function admin_init()
     {
         $options = get_option('idehweb_lwp_settings');
-//        print_r($options);
         $style_options = get_option('idehweb_lwp_settings_styles');
-//        print_r($style_options);
+        if(!$style_options){
+            $style_options=[];
+        }
 
         if (!isset($options['idehweb_token'])) $options['idehweb_token'] = '';
         if (!isset($style_options['idehweb_styles_status'])) $style_options['idehweb_styles_status'] = '0';
@@ -301,6 +302,7 @@ class idehwebLwp
         add_settings_field('idehweb_localization_placeholder_of_phonenumber_field', __('Placeholder of phone number field', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_placeholder_of_phonenumber_field'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_firebase_option_title', __('Firebase option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_firebase_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_custom_option_title', __('Custom option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_custom_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+        add_settings_field('idehweb_localization_ultramessage_option_title', __('Ultramessage option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_ultramessage_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
 
     }
 
@@ -1218,13 +1220,13 @@ class idehwebLwp
 
                             <a href="https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2024/05/twilio-logo-300x300-1.webp"/>
+                                <img src="https://idehweb.com/wp-content/uploads/2023/09/twilio-logo-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Twilio gateway</div>
                                     <div class="lwp-gateway-item-title-s">Internationals</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    10$
+                                    Free
                                 </div>
                             </a>
                         </div>
@@ -1234,13 +1236,13 @@ class idehwebLwp
 
                             <a href="https://idehweb.com/product/textlocal-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2024/05/textlocal-300x300.jpg"/>
+                                <img src="https://idehweb.com/wp-content/uploads/2023/10/textlocal-300x300.jpg"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Textlocal gateway</div>
                                     <div class="lwp-gateway-item-title-s">Indians</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    5$
+                                   Free
                                 </div>
                             </a>
                         </div>
@@ -1250,13 +1252,13 @@ class idehwebLwp
 
                             <a href="https://idehweb.com/product/aq-sms-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2024/05/Asqs.webp"/>
+                                <img src="https://idehweb.com/wp-content/uploads/2023/09/ASQS-gateway-1-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">AQSMS gateway</div>
                                     <div class="lwp-gateway-item-title-s">For Russians?</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    5$
+                                    Free
                                 </div>
                             </a>
                         </div>
@@ -1265,13 +1267,13 @@ class idehwebLwp
                         <div class="lwp-gateway-item-inside">
 
                             <a href="https://idehweb.com/product/mshastra-gateway/" target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2024/05/login-with-phone-number-mshastra-300x300-1.webp"/>
+                                <img src="https://idehweb.com/wp-content/uploads/2023/11/login-with-phone-number-mshastra-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Mshastra gateway</div>
                                     <div class="lwp-gateway-item-title-s">For Indians?</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    5$
+                                    Free
                                 </div>
                             </a>
                         </div>
@@ -1281,7 +1283,7 @@ class idehwebLwp
 
                             <a href="https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2024/05/Whatsapp-gateway-for-login-with-phone-number.webp"/>
+                                <img src="https://idehweb.com/wp-content/uploads/2023/09/Whatsapp-gateway-for-login-with-phone-number.webp"/>
                                 <div class="lwp-gateway-item-title">
                                     <div class="lwp-gateway-item-title-f">Ultramsg (WhatsApp) gateway</div>
                                     <div class="lwp-gateway-item-title-s">Sending OTP at WhatsApp</div>
@@ -1297,13 +1299,13 @@ class idehwebLwp
 
                             <a href="https://idehweb.com/product/bluesoft-gateway-for-login-with-phone-number/"
                                target="_blank">
-                                <img src="https://idehweb.com/wp-content/uploads/2024/05/bluesoft.webp"/>
+                                <img src="https://idehweb.com/wp-content/uploads/2023/09/Whatsapp-gateway-for-login-with-phone-number.webp"/>
                                 <div class="lwp-gateway-item-title">
-                                    <div class="lwp-gateway-item-title-f">Ultramsg (WhatsApp) gateway</div>
-                                    <div class="lwp-gateway-item-title-s">Sending OTP at WhatsApp</div>
+                                    <div class="lwp-gateway-item-title-f">Bluesoft gateway</div>
+                                    <div class="lwp-gateway-item-title-s">Sending OTP through Bluesoft</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    5$
+                                    Free
                                 </div>
                             </a>
                         </div>
@@ -1311,7 +1313,7 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside" style="direction: rtl">
 
-                            <a href="https://fa.idehweb.com/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%85%d9%84%db%8c-%d9%be%db%8c%d8%a7%d9%85%da%a9-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7-%d8%b4%d9%85%d8%a7/"
+                            <a href="https://idehweb.ir/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%85%d9%84%db%8c-%d9%be%db%8c%d8%a7%d9%85%da%a9-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7-%d8%b4%d9%85%d8%a7/"
                                target="_blank">
                                 <img src="https://idehweb.ir/wp-content/uploads/2023/09/meli-payamak-plugin-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
@@ -1319,7 +1321,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه ملی پیامک</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    100 هزار تومان
+                                    رایگان
                                 </div>
                             </a>
                         </div>
@@ -1327,7 +1329,7 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside" style="direction: rtl">
 
-                            <a href="https://fa.idehweb.com/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%be%db%8c%d8%a7%d9%85%da%a9-%da%a9%d8%a7%d9%88%d9%87-%d9%86%da%af%d8%a7%d8%b1-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af/"
+                            <a href="https://idehweb.ir/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%be%db%8c%d8%a7%d9%85%da%a9-%da%a9%d8%a7%d9%88%d9%87-%d9%86%da%af%d8%a7%d8%b1-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af/"
                                target="_blank">
                                 <img src="https://idehweb.ir/wp-content/uploads/2023/09/login-with-phone-number-300x300.jpg"/>
                                 <div class="lwp-gateway-item-title">
@@ -1335,7 +1337,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه کاوه نگار</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    100 هزار تومان
+                                    رایگان
                                 </div>
                             </a>
                         </div>
@@ -1343,7 +1345,7 @@ class idehwebLwp
                     <div class="lwp-gateway-item">
                         <div class="lwp-gateway-item-inside" style="direction: rtl">
 
-                            <a href="https://fa.idehweb.com/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%81%d8%b1%d8%a7%d8%b2-%d8%a7%d8%b3-%d8%a7%d9%85-%d8%a7%d8%b3-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7/"
+                            <a href="https://idehweb.ir/product/%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%81%d8%b1%d8%a7%d8%b2-%d8%a7%d8%b3-%d8%a7%d9%85-%d8%a7%d8%b3-%d8%a8%d8%b1%d8%a7%db%8c-%d8%a7%d9%81%d8%b2%d9%88%d9%86%d9%87-%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7/"
                                target="_blank">
                                 <img src="https://idehweb.ir/wp-content/uploads/2023/09/ippanel-gateway-300x300.webp"/>
                                 <div class="lwp-gateway-item-title">
@@ -1351,7 +1353,7 @@ class idehwebLwp
                                     <div class="lwp-gateway-item-title-s">درگاه فراز اس ام اس و آی پی پنل</div>
                                 </div>
                                 <div class="lwp-gateway-item-price">
-                                    100 هزار تومان
+                                   رایگان
                                 </div>
                             </a>
                         </div>
@@ -1784,6 +1786,15 @@ class idehwebLwp
         else $options['idehweb_localization_custom_option_title'] = sanitize_text_field($options['idehweb_localization_custom_option_title']);
 
         echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_custom_option_title]" class="regular-text" value="' . esc_attr($options['idehweb_localization_custom_option_title']) . '" />
+		<p class="description">' . __('Show firebase title when use multiple gateway', 'login-with-phone-number') . '</p>';
+    }
+    function setting_idehweb_localization_ultramessage_option_title()
+    {
+        $options = get_option('idehweb_lwp_settings_localization');
+        if (!isset($options['idehweb_localization_ultramessage_option_title'])) $options['idehweb_localization_ultramessage_option_title'] = '';
+        else $options['idehweb_localization_ultramessage_option_title'] = sanitize_text_field($options['idehweb_localization_ultramessage_option_title']);
+
+        echo '<input type="text" name="idehweb_lwp_settings_localization[idehweb_localization_ultramessage_option_title]" class="regular-text" value="' . esc_attr($options['idehweb_localization_ultramessage_option_title']) . '" />
 		<p class="description">' . __('Show firebase title when use multiple gateway', 'login-with-phone-number') . '</p>';
     }
 
@@ -2994,6 +3005,8 @@ class idehwebLwp
         if (!isset($localizationoptions['idehweb_localization_custom_option_title'])) $localizationoptions['idehweb_localization_custom_option_title'] = '';
         if (!isset($localizationoptions['idehweb_localization_title_of_login_form'])) $localizationoptions['idehweb_localization_title_of_login_form'] = '';
         if (!isset($localizationoptions['idehweb_localization_title_of_login_form_email'])) $localizationoptions['idehweb_localization_title_of_login_form_email'] = '';
+        if (!isset($localizationoptions['idehweb_localization_custom_option_title'])) $localizationoptions['idehweb_localization_custom_option_title'] = '';
+        if (!isset($localizationoptions['idehweb_localization_ultramessage_option_title'])) $localizationoptions['idehweb_localization_ultramessage_option_title'] = '';
 
         $class = '';
         if ($options['idehweb_position_form'] == '1') {
@@ -3074,7 +3087,20 @@ class idehwebLwp
                                     ?>
                                     <span class="lwp-radio-otp"><input type="radio" name="otp-method"
                                                                        value="<?php echo $gateway; ?>" <?php echo(($key == 0) ? "checked=\"checked\"" : "") ?>/><label
-                                                for="<?php echo $gateway; ?>"><?php echo $gateway; ?></label></span>
+                                                for="<?php echo $gateway; ?>">
+                                            <?php
+                                            if($gateway=="firebase" && (isset($localizationoptions['idehweb_localization_status']) && isset($localizationoptions['idehweb_localization_firebase_option_title']))){
+                                                echo $localizationoptions['idehweb_localization_firebase_option_title'];
+                                            }else if($gateway=="custom" && (isset($localizationoptions['idehweb_localization_status']) && isset($localizationoptions['idehweb_localization_custom_option_title']))){
+                                                echo $localizationoptions['idehweb_localization_custom_option_title'];
+                                            }else if($gateway=="ultramessage" && (isset($localizationoptions['idehweb_localization_status']) && isset($localizationoptions['idehweb_localization_ultramessage_option_title']))){
+                                                echo $localizationoptions['idehweb_localization_ultramessage_option_title'];
+                                            }else{
+                                                echo $gateway;
+                                            }
+
+                                    ?>
+                                        </label></span>
 
                                     <?php
                                 }

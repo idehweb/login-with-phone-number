@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.48
+Version: 1.7.49
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -86,8 +86,35 @@ class idehwebLwp
         add_shortcode('idehweb_lwp_verify_email', array(&$this, 'idehweb_lwp_verify_email'));
         add_action('set_logged_in_cookie', array(&$this, 'my_update_cookie'));
 
+        add_action( 'woodmart_before_wp_footer', array(&$this, 'remove_woodmart_default_sidebar'), 1 );
     }
 
+    function remove_woodmart_default_sidebar($page){
+        remove_action( 'woodmart_before_wp_footer','woodmart_sidebar_login_form', 160 );
+        add_action( 'woodmart_before_wp_footer', array(&$this, 'add_lwp_to_woodmart_sidebar'), 160 );
+
+    }
+    function add_lwp_to_woodmart_sidebar($page){
+        $position = is_rtl() ? 'left' : 'right';
+        $wrapper_classes = '';
+        global $wp;
+
+        $wrapper_classes .= ' wd-' . $position;
+        if( ! ( basename($wp->request) === 'my-account' && is_account_page() ) ) {
+            ?>
+            <div class="login-form-side wd-side-hidden woocommerce<?php echo esc_attr( $wrapper_classes ); ?>">
+                <div class="wd-heading">
+                    <span class="title"><?php esc_html_e( 'Sign in', 'woodmart' ); ?></span>
+                    <div class="close-side-widget wd-action-btn wd-style-text wd-cross-icon">
+                        <a href="#" rel="nofollow"><?php esc_html_e( 'Close', 'woodmart' ); ?></a>
+                    </div>
+                </div>
+                <?php echo do_shortcode('[idehweb_lwp]'); ?>
+            </div>
+            <?php
+        }
+
+    }
     function lwp_load_wp_media_files($page)
     {
 //        echo $page;
@@ -4849,13 +4876,20 @@ class idehwebLwp
     function lwp_addon_woocommerce_login($template, $template_name, $template_path)
     {
         global $woocommerce;
+
         $_template = $template;
-        if (!$template_path) $template_path = $woocommerce->template_url;
+        if (!$template_path)
+            $template_path = $woocommerce->template_url;
         $plugin_path = untrailingslashit(plugin_dir_path(__FILE__)) . '/templates/woocommerce/';
         // Look within passed path within the theme - this is priority
-        $template = locate_template(array($template_path . $template_name, $template_name));
-        if (!$template && file_exists($plugin_path . $template_name)) $template = $plugin_path . $template_name;
+        $template = locate_template(array($plugin_path . $template_name, $template_name),true);
+
+
+        if (!$template && file_exists($plugin_path . $template_name))
+            $template = $plugin_path . $template_name;
+
         if (!$template) $template = $_template;
+//        global $wp_filter;
         return $template;
     }
 

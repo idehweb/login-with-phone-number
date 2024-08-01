@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.49
+Version: 1.7.50
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -3923,11 +3923,11 @@ class idehwebLwp
         }
 
 
-        if (!isset($_GET['role'])) $_GET['role'] = '';
-        $role = sanitize_text_field($_GET['role']);
-        if ($role == "") {
-            $role = null;
-        }
+//        if (!isset($_GET['role'])) $_GET['role'] = '';
+//        $role = sanitize_text_field($_GET['role']);
+//        if ($role == "") {
+//            $role = null;
+//        }
         if (!isset($_GET['username'])) $_GET['username'] = '';
         $username = sanitize_text_field($_GET['username']);
         if ($username == "") {
@@ -3990,12 +3990,12 @@ class idehwebLwp
                 'ID' => $user->ID,
                 'user_pass' => $password
             ];
-            if (class_exists(LWP_PRO::class)) {
-
-                if (isset($role)) {
-                    $update_array['role'] = $role;
-                }
-            }
+//            if (class_exists(LWP_PRO::class)) {
+//
+//                if (isset($role)) {
+//                    $update_array['role'] = $role;
+//                }
+//            }
             if (isset($nickname)) {
                 $update_array['nickname'] = $nickname;
                 $update_array['display_name'] = $nickname;

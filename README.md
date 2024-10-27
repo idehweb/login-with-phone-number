@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.5
-Stable tag: 1.7.50
+Stable tag: 1.7.52
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -21,7 +21,7 @@ You can add almost every SMS gateways (if you have) yourself for free, or you ca
 
 you can change style and appearance of forms 
 
-You can use Firebase for sending SMS (10,000 free OTP SMS from Firebase)
+You can use Firebase, textlocal and...
 
 For checking docs and getting more help please visit:
 [Login with phone number in WordPress documentations](https://idehweb.com/product/login-with-phone-number-in-wordpress/ "login with phone number in WordPress")
@@ -58,6 +58,7 @@ You can use your custom gateway. you can also use other ready sms gateways from 
 
 Supported gateways for now:
 
+* Textlocal
 * Twilio 
 * MelliPayamak 
 * KavehNegar 
@@ -87,6 +88,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+
+###1.7.52
+* added dynamic sms gateways
+* added Textlocal sms gateway
 
 ###1.7.50
 * fix security issue

@@ -25,8 +25,8 @@ class lwp_textlocal
     function admin_init()
     {
 
-        add_settings_field('idehweb_textlocal_username', __('Enter textlocal username', 'lwp-textlocal'), array(&$this, 'setting_idehweb_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
-        add_settings_field('idehweb_textlocal_hash', __('Enter textlocal hash', 'lwp-textlocal'), array(&$this, 'setting_idehweb_hash'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
+        add_settings_field('idehweb_textlocal_apikey', __('Enter textlocal api key', 'lwp-textlocal'), array(&$this, 'setting_idehweb_apikey'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
+//        add_settings_field('idehweb_textlocal_hash', __('Enter textlocal hash', 'lwp-textlocal'), array(&$this, 'setting_idehweb_hash'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
         add_settings_field('idehweb_textlocal_sender', __('Enter textlocal sender', 'lwp-textlocal'), array(&$this, 'setting_idehweb_sender'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
         add_settings_field('idehweb_textlocal_message', __('Enter message', 'lwp-textlocal'), array(&$this, 'setting_idehweb_message'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
 
@@ -44,43 +44,28 @@ class lwp_textlocal
     function lwp_send_sms_textlocal($phone_number, $code)
     {
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['lwp_textlocal_username'])) $options['lwp_textlocal_username'] = '';
-        if (!isset($options['idehweb_textlocal_hash'])) $options['idehweb_textlocal_hash'] = '';
+        if (!isset($options['idehweb_textlocal_apikey'])) $options['idehweb_textlocal_apikey'] = '';
         if (!isset($options['idehweb_textlocal_sender'])) $options['idehweb_textlocal_sender'] = '';
         if (!isset($options['idehweb_textlocal_message'])) $options['idehweb_textlocal_message'] = '';
-        $username = $options['lwp_textlocal_username'];
-        $hash = $options['idehweb_textlocal_hash'];
+        $apikey = $options['idehweb_textlocal_apikey'];
         $sender = $options['idehweb_textlocal_sender'];
         $message = $options['idehweb_textlocal_message'];
         $message=$this->lwp_replace_strings($message,'',$code);
         $message=rawurlencode($message);
-//        $phone_number = '+' . $phone_number;
         $numbers = $phone_number;
         $test = "0";
-
-//             print_r($message);
-//die();
         $message = urlencode($message);
-        $data = "username=".$username."&hash=".$hash."&message=".$message."&sender=".$sender."&numbers=".$numbers."&test=".$test;
-//        $ch = curl_init('https://api.txtlocal.com/send/?');
-//        curl_setopt($ch, CURLOPT_POST, true);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        $result = curl_exec($ch); // This is the result from the API
-//        curl_close($ch);
-//        print_r($result);
+//        $data = "username=".$apikey."&hash=".$hash."&message=".$message."&sender=".$sender."&numbers=".$numbers."&test=".$test;
+        $url="https://api.textlocal.in/send/?apikey=$apikey&sender=$sender&numbers=$numbers&message=$message";
 
-//        die();
-//        $response = wp_safe_remote_post($url, [
-//            'timeout' => 60,
-//            'redirection' => 1,
-////            'blocking' => true,0
-//            'headers' => array(),
+        $response = wp_safe_remote_get($url, [
+            'timeout' => 60,
+            'redirection' => 1,
+            'headers' => array(),
 //            'body' => $data
-//        ]);
-//        print_r($data);
-//        die();
-//        $body = wp_remote_retrieve_body($response);
+        ]);
+
+        $body = wp_remote_retrieve_body($response);
 //        print_r($body);
 //        die();
     }
@@ -93,23 +78,15 @@ class lwp_textlocal
 //        $string = str_replace('${text}', $text, $string);
         return $string;
     }
-    function setting_idehweb_username()
+    function setting_idehweb_apikey()
     {
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_textlocal_username'])) $options['idehweb_textlocal_username'] = '';
-        echo '<input type="text" name="idehweb_lwp_settings[idehweb_textlocal_username]" class="regular-text" value="' . esc_attr($options['idehweb_textlocal_username']) . '" />
+        if (!isset($options['idehweb_textlocal_apikey'])) $options['idehweb_textlocal_apikey'] = '';
+        echo '<input type="text" name="idehweb_lwp_settings[idehweb_textlocal_apikey]" class="regular-text" value="' . esc_attr($options['idehweb_textlocal_apikey']) . '" />
 		<p class="description">' . __('Enter textlocal Api key', 'lwp-textlocal') . '</p>';
 
     }
 
-    function setting_idehweb_hash()
-    {
-        $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_textlocal_hash'])) $options['idehweb_textlocal_hash'] = '';
-        echo '<input type="text" name="idehweb_lwp_settings[idehweb_textlocal_hash]" class="regular-text" value="' . esc_attr($options['idehweb_textlocal_hash']) . '" />
-		<p class="description">' . __('Enter Enter textlocal hash', 'lwp-textlocal') . '</p>';
-
-    }
     function setting_idehweb_sender()
     {
         $options = get_option('idehweb_lwp_settings');

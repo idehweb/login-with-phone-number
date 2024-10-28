@@ -1,4 +1,5 @@
 if(window.makecrispactivate) {
+    console.log("crisp is online")
     window.theMessages = {};
     window.picker = '';
     window.$crisp = [];

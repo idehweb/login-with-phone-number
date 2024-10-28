@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.5
-Stable tag: 1.7.52
+Stable tag: 1.7.53
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -88,6 +88,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+
+###1.7.53
+* enhance user experience on choosing gateway
+* enhance using textlocal
 
 ###1.7.52
 * added dynamic sms gateways

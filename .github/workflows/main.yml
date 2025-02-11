@@ -1,9 +1,10 @@
-
 name: Deploy to WordPress.org
+
 on:
   push:
     tags:
-    - "*"
+      - '*'
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -11,11 +12,15 @@ jobs:
       - name: git config
         run: |
           git config --global --add safe.directory /github/workspace
+
   tag:
-    name: New tag
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+
+      - name: Install Subversion
+        run: sudo apt-get install -y subversion
+
       - name: WordPress Plugin Deploy
         uses: idehweb/action-wordpress-plugin-deploy@master
         env:

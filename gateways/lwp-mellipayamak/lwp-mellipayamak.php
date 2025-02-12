@@ -13,17 +13,17 @@ class lwp_mellipayamak
         if (!is_array($args)) {
             $args = [];
         }
-        array_push($args, ["value" => "mellipayamak", "label" => __("Mellipayamak", 'lwp-mellipayamak')]);
+        array_push($args, ["value" => "mellipayamak", "label" => __("Mellipayamak", 'login-with-phone-number')]);
 
         return $args;
     }
 
     function admin_init()
     {
-        add_settings_field('idehweb_mellipayamak_username', __('Enter Mellipayamak username', 'lwp-mellipayamak'), array(&$this, 'setting_idehweb_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
-        add_settings_field('idehweb_mellipayamak_password', __('Enter Mellipayamak password', 'lwp-mellipayamak'), array(&$this, 'setting_idehweb_password'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
-        add_settings_field('idehweb_mellipayamak_from', __('Enter Mellipayamak from', 'lwp-mellipayamak'), array(&$this, 'setting_idehweb_from'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
-        add_settings_field('idehweb_mellipayamak_message', __('Enter Mellipayamak message', 'lwp-mellipayamak'), array(&$this, 'setting_idehweb_message'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
+        add_settings_field('idehweb_mellipayamak_username', __('Enter Mellipayamak username', 'login-with-phone-number'), array(&$this, 'setting_idehweb_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
+        add_settings_field('idehweb_mellipayamak_password', __('Enter Mellipayamak password', 'login-with-phone-number'), array(&$this, 'setting_idehweb_password'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
+        add_settings_field('idehweb_mellipayamak_from', __('Enter Mellipayamak from', 'login-with-phone-number'), array(&$this, 'setting_idehweb_from'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
+        add_settings_field('idehweb_mellipayamak_message', __('Enter Mellipayamak message', 'login-with-phone-number'), array(&$this, 'setting_idehweb_message'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_mellipayamak']);
     }
 
     function settings_validate($input)
@@ -76,7 +76,7 @@ class lwp_mellipayamak
         $options = get_option('idehweb_lwp_settings');
         $username = isset($options['idehweb_mellipayamak_username']) ? esc_attr($options['idehweb_mellipayamak_username']) : '';
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_mellipayamak_username]" class="regular-text" value="' . $username . '" />';
-        echo '<p class="description">' . __('Enter Mellipayamak username', 'lwp-mellipayamak') . '</p>';
+        echo '<p class="description">' . __('Enter Mellipayamak username', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_password()
@@ -84,7 +84,7 @@ class lwp_mellipayamak
         $options = get_option('idehweb_lwp_settings');
         $password = isset($options['idehweb_mellipayamak_password']) ? esc_attr($options['idehweb_mellipayamak_password']) : '';
         echo '<input type="password" name="idehweb_lwp_settings[idehweb_mellipayamak_password]" class="regular-text" value="' . $password . '" />';
-        echo '<p class="description">' . __('Enter Mellipayamak password', 'lwp-mellipayamak') . '</p>';
+        echo '<p class="description">' . __('Enter Mellipayamak password', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_from()
@@ -92,7 +92,7 @@ class lwp_mellipayamak
         $options = get_option('idehweb_lwp_settings');
         $from = isset($options['idehweb_mellipayamak_from']) ? esc_attr($options['idehweb_mellipayamak_from']) : '';
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_mellipayamak_from]" class="regular-text" value="' . $from . '" />';
-        echo '<p class="description">' . __('Enter Mellipayamak from (sender)', 'lwp-mellipayamak') . '</p>';
+        echo '<p class="description">' . __('Enter Mellipayamak from (sender)', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_message()

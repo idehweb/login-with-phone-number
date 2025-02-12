@@ -14,16 +14,16 @@ class lwp_textlocal
         if (!is_array($args)) {
             $args = [];
         }
-        array_push($args, ["value" => "textlocal", "label" => __("Textlocal", 'lwp-textlocal')]);
+        array_push($args, ["value" => "textlocal", "label" => __("Textlocal", 'login-with-phone-number')]);
 
         return $args;
     }
 
     function admin_init()
     {
-        add_settings_field('idehweb_textlocal_apikey', __('Enter Textlocal API key', 'lwp-textlocal'), array(&$this, 'setting_idehweb_apikey'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
-        add_settings_field('idehweb_textlocal_sender', __('Enter Textlocal sender', 'lwp-textlocal'), array(&$this, 'setting_idehweb_sender'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
-        add_settings_field('idehweb_textlocal_message', __('Enter Textlocal message', 'lwp-textlocal'), array(&$this, 'setting_idehweb_message'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
+        add_settings_field('idehweb_textlocal_apikey', __('Enter Textlocal API key', 'login-with-phone-number'), array(&$this, 'setting_idehweb_apikey'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
+        add_settings_field('idehweb_textlocal_sender', __('Enter Textlocal sender', 'login-with-phone-number'), array(&$this, 'setting_idehweb_sender'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
+        add_settings_field('idehweb_textlocal_message', __('Enter Textlocal message', 'login-with-phone-number'), array(&$this, 'setting_idehweb_message'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_textlocal']);
     }
 
     function settings_validate($input)
@@ -68,7 +68,7 @@ class lwp_textlocal
         $options = get_option('idehweb_lwp_settings');
         $apikey = isset($options['idehweb_textlocal_apikey']) ? esc_attr($options['idehweb_textlocal_apikey']) : '';
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_textlocal_apikey]" class="regular-text" value="' . $apikey . '" />';
-        echo '<p class="description">' . __('Enter Textlocal API key', 'lwp-textlocal') . '</p>';
+        echo '<p class="description">' . __('Enter Textlocal API key', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_sender()
@@ -76,7 +76,7 @@ class lwp_textlocal
         $options = get_option('idehweb_lwp_settings');
         $sender = isset($options['idehweb_textlocal_sender']) ? esc_attr($options['idehweb_textlocal_sender']) : '';
         echo '<input type="text" name="idehweb_lwp_settings[idehweb_textlocal_sender]" class="regular-text" value="' . $sender . '" />';
-        echo '<p class="description">' . __('Enter Textlocal sender', 'lwp-textlocal') . '</p>';
+        echo '<p class="description">' . __('Enter Textlocal sender', 'login-with-phone-number') . '</p>';
     }
 
     function setting_idehweb_message()

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.56
+Version: 1.7.57
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -126,9 +126,14 @@ class idehwebLwp
 //        echo $page;
 //        wp_enqueue_script('idehweb-lwp-admin-select2-sortable', plugins_url('/scripts/select2.sortable.js', __FILE__), array('jquery'), true, true);
 
-        if ($page == 'login-setting_page_idehweb-lwp-styles' || $page='toplevel_page_idehweb-lwp') {
+        if ($page == 'login-setting_page_idehweb-lwp-styles') {
             wp_enqueue_media();
             // Enqueue custom script that will interact with wp.media
+            wp_enqueue_script('idehweb-lwp-admin-media-script', plugins_url('/scripts/lwp-admin-style.js', __FILE__), array('jquery'), true, true);
+
+        }
+        if ( $page=='toplevel_page_idehweb-lwp') {
+//            echo 'hi';
             wp_enqueue_script('idehweb-lwp-admin-media-script', plugins_url('/scripts/lwp-admin.js', __FILE__), array('jquery'), true, true);
 
         }

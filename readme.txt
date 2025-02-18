@@ -88,6 +88,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.59
+* add mshastra gateway
 
 ###1.7.58
 * add farazsms gateway

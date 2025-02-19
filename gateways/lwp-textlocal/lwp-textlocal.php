@@ -48,7 +48,7 @@ class lwp_textlocal
         $response = wp_safe_remote_get($url, [
             'timeout' => 60,
             'redirection' => 1,
-            'headers' => []
+                'headers' => []
         ]);
 
         $body = wp_remote_retrieve_body($response);

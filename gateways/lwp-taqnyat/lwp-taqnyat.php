@@ -43,7 +43,7 @@ class lwp_taqnyat
             'body' => json_encode($data),
             'headers'=> [
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer'. $token,
+                'Authorization' => 'Bearer' . $token,
             ],
             'timeout'=> 60,
         ]);

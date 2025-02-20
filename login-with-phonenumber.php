@@ -14,9 +14,9 @@ require 'gateways/lwp-textlocal/lwp-textlocal.php';
 require 'gateways/lwp-mellipayamak/lwp-mellipayamak.php';
 require 'gateways/lwp-farazsms/lwp-farazsms.php';
 require 'gateways/lwp-mshastra/lwp-mshastra.php';
-require 'gateways/lwp-taqnyat/lwp-taqnyat.php';
-//require 'gateways/lwp-twilio/lwp-twilio.php';
 require 'gateways/lwp-2factor/lwp-2factor.php';
+require 'gateways/lwp-taqnyat/lwp-taqnyat.php';
+require 'gateways/lwp-twilio/lwp-twilio.php';
 
 if (!defined("ABSPATH"))
     exit;

@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.7
-Stable tag: 1.7.64
+Stable tag: 1.7.65
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -58,6 +58,7 @@ You can use your custom gateway. you can also use other ready sms gateways from 
 
 Supported gateways for now:
 
+* twilio
 * taqnyat
 * 2factor
 * Textlocal
@@ -90,7 +91,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
-  ###1.7.64
+###1.7.65
+* add twilio gateway
+
+###1.7.64
 * add taqnyat gateway
 
 ###1.7.62

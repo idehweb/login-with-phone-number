@@ -2425,6 +2425,7 @@ class idehwebLwp
         if (!is_array($options['idehweb_default_gateways'])) {
             $options['idehweb_default_gateways'] = [];
         }
+        if (!isset($options['idehweb_length_of_activation_code'])) $options['idehweb_length_of_activation_code'] = '6';
 
         if (!isset($localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'])) $localizationoptions['idehweb_localization_placeholder_of_phonenumber_field'] = '';
         if (!isset($localizationoptions['idehweb_localization_firebase_option_title'])) $localizationoptions['idehweb_localization_firebase_option_title'] = '';
@@ -2624,7 +2625,7 @@ class idehwebLwp
                         <label class="lwp_labels"
                                for="lwp_scode"><?php echo __('Security code', 'login-with-phone-number'); ?></label>
                         <input type="text" class="required lwp_scode" autocomplete="one-time-code" inputmode="numeric"
-                               maxlength="6" pattern="\d{6}" name="lwp_scode">
+                               maxlength="<?php echo esc_attr(isset($options['idehweb_length_of_activation_code'])); ?>" pattern="\d{<?php echo esc_attr(isset($options['idehweb_length_of_activation_code'])); ?>}" name="lwp_scode">
                     </div>
                     <button class="submit_button auth_secCode">
                         <?php echo __('Activate', 'login-with-phone-number'); ?>

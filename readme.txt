@@ -91,6 +91,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.70
+* update taqnyat
+
 ###1.7.68
 * add length of generated code
 

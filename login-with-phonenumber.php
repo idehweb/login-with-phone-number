@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.67
+Version: 1.7.68
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -319,6 +319,7 @@ class idehwebLwp
         add_settings_field('idehweb_user_registration', __('Enable user registration', 'login-with-phone-number'), array(&$this, 'setting_idehweb_user_registration'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-general-settings']);
         add_settings_field('idehweb_password_login', __('Enable password login', 'login-with-phone-number'), array(&$this, 'setting_idehweb_password_login'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-form-settings']);
         add_settings_field('idehweb_redirect_url', __('Enter redirect url', 'login-with-phone-number'), array(&$this, 'setting_idehweb_url_redirect'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-general-settings']);
+        add_settings_field('idehweb_length_of_activation_code', __('Enter length of activation code', 'login-with-phone-number'), array(&$this, 'setting_idehweb_length_of_activation_code'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-general-settings']);
         add_settings_field('idehweb_login_message', __('Enter login message', 'login-with-phone-number'), array(&$this, 'setting_idehweb_login_message'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_use_phone_number_for_username', __('use phone number for username', 'login-with-phone-number'), array(&$this, 'idehweb_use_phone_number_for_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-general-settings']);
         add_settings_field('idehweb_default_username', __('Default username', 'login-with-phone-number'), array(&$this, 'setting_default_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related_to_upnfu lwp-tab-general-settings']);
@@ -1782,6 +1783,16 @@ class idehwebLwp
         }
         echo '<input id="lwp_token" type="text" name="idehweb_lwp_settings[idehweb_redirect_url]" class="regular-text" value="' . esc_attr($options['idehweb_redirect_url']) . '" />
 		<p class="description">' . __('enter redirect url', 'login-with-phone-number') . '</p>';
+
+    }
+    function setting_idehweb_length_of_activation_code()
+    {
+        $options = get_option('idehweb_lwp_settings');
+
+        if (!isset($options['idehweb_length_of_activation_code'])) $options['idehweb_length_of_activation_code'] = '6';
+
+        echo '<input type="text" name="idehweb_lwp_settings[idehweb_length_of_activation_code]" class="regular-text" value="' . esc_attr($options['idehweb_length_of_activation_code']) . '" />
+		<p class="description">' . __('enter length of activation code', 'login-with-phone-number') . '</p>';
 
     }
 
@@ -3685,7 +3696,15 @@ class idehwebLwp
 
     function lwp_generate_token($user_id, $contact, $send_email = false, $method = '')
     {
+        $options = get_option('idehweb_lwp_settings');
+
+        if (!isset($options['idehweb_length_of_activation_code'])) $options['idehweb_length_of_activation_code'] = '6';
+
         $six_digit_random_number = wp_rand(100000, 999999);
+        if((int)$options['idehweb_length_of_activation_code']==4){
+            $six_digit_random_number = wp_rand(1000, 9999);
+
+        }
         update_user_meta($user_id, 'activation_code', $six_digit_random_number);
         update_user_meta($user_id, 'activation_code_timestamp', time());
         if ($send_email) {

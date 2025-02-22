@@ -33,13 +33,13 @@ class lwp_taqnyat
         $url = "https://api.taqnyat.sa/v1/messages";
 
         $data = [
-            'recipients'=> ['966' . $phone_number],
+            'recipients'=> [ $phone_number],
             'body'=> $message_body,
             'sender'=> $from,
         ];
 
         $response = wp_remote_post($url, [
-            'method' => 'post',
+
             'body' => json_encode($data),
             'headers'=> [
                 'Content-Type' => 'application/json',

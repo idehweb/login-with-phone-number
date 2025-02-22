@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/Twilio/autoload.php';
+//require __DIR__ . '/Twilio/autoload.php';
 
 class lwp_twilio
 {
@@ -66,6 +66,7 @@ class lwp_twilio
             'timeout' => 60,
             'headers' => [
                 'Authorization' => 'Basic ' . base64_encode("$sid:$token"),
+                'method' => 'POST',
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
             'body' => [

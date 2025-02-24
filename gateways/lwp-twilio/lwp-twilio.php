@@ -4,10 +4,10 @@ class lwp_twilio
 {
     function __construct()
     {
-        add_filter('lwp_add_to_default_gateways', [$this, 'lwp_add_to_default_gateways']);
+        add_filter('lwp_add_to_default_gateways', array(&$this, 'lwp_add_to_default_gateways'));
 //        add_action('admin_init', [$this, 'admin_init']);
-        add_action('idehweb_custom_fields', [$this, 'admin_init']);
-        add_action('lwp_send_sms_twilio', [$this, 'lwp_send_sms_twilio'], 10, 2);
+        add_action('idehweb_custom_fields', array(&$this, 'admin_init'));
+        add_action('lwp_send_sms_twilio', array(&$this, 'lwp_send_sms_twilio'), 10, 2);
     }
 
     function lwp_add_to_default_gateways($args = [])
@@ -24,10 +24,19 @@ class lwp_twilio
         add_settings_field('idehweb_twilio_sid', __('Enter Twilio SID', 'login-with-phone-number'), array(&$this, 'setting_twilio_sid'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_twilio']);
         add_settings_field('idehweb_twilio_token', __('Enter Twilio Token', 'login-with-phone-number'), array(&$this, 'setting_twilio_token'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_twilio']);
         add_settings_field('idehweb_twilio_from', __('Enter Twilio From', 'login-with-phone-number'), array(&$this, 'setting_twilio_from'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_twilio']);
+        wp_nonce_field('Twilio_nonce_action', 'Twilio_nonce');
     }
 
     function lwp_send_sms_twilio($phone_number, $code)
     {
+        if (!preg_match('/^\+?\d{10,15}$/', $phone_number)) {
+            die('Invalid phone number.');
+        }
+
+        if (!isset($_POST['Twilio_nonce']) || !wp_verify_nonce($_POST['Twilio_nonce'], 'Twilio_nonce_action')) {
+            die('Security check failed.');
+        }
+
         $options = get_option('idehweb_lwp_settings');
         $sid = isset($options['idehweb_twilio_sid']) ? sanitize_text_field($options['idehweb_twilio_sid']) : '';
         $token = isset($options['idehweb_twilio_token']) ? sanitize_text_field($options['idehweb_twilio_token']) : '';

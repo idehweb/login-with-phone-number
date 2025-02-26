@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.72
+Version: 1.7.73
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -20,6 +20,7 @@ require 'gateways/lwp-twilio/lwp-twilio.php';
 require 'gateways/lwp-trustsignal/lwp-trustsignal.php';
 require 'gateways/lwp-msg91/lwp-msg91.php';
 require 'gateways/lwp-kavenegar/lwp-kavenegar.php';
+require 'gateways/lwp-MessageBird/lwp-MessageBird.php';
 
 if (!defined("ABSPATH"))
     exit;
@@ -339,7 +340,9 @@ class idehwebLwp
 
         add_settings_field('idehweb_lwp_space3', '', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
-        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
+        add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
+        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-documentation-settings']);
+        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-documentation-settings']);
 
         add_settings_field('idehweb_localization_disable_placeholder', __('Disable automatic placeholder', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_disable_automatic_placeholder'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_status', __('Enable localization', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_enable_custom_localization'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -439,6 +442,7 @@ class idehwebLwp
                             <a class="lwp-tab-item" href="#lwp-tab-gateway-settings" data-tab="lwp-tab-gateway-settings"><?php _e('Gateway', 'login-with-phone-number'); ?></a>
                             <a class="lwp-tab-item" href="#lwp-tab-form-settings" data-tab="lwp-tab-form-settings"><?php _e('Form', 'login-with-phone-number'); ?></a>
                             <a class="lwp-tab-item" href="#lwp-tab-installation-settings" data-tab="lwp-tab-installation-settings"><?php _e('Installation', 'login-with-phone-number'); ?></a>
+                            <a class="lwp-tab-item" href="#lwp-tab-documentation-settings" data-tab="lwp-tab-documentation-settings"><?php _e('documentation', 'login-with-phone-number'); ?></a>
 
                         </div>
                         <div class="lwp-tabs-content">

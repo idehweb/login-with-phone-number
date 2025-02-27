@@ -24,18 +24,18 @@ class lwp_twilio
         add_settings_field('idehweb_twilio_sid', __('Enter Twilio SID', 'login-with-phone-number'), array(&$this, 'setting_twilio_sid'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_twilio']);
         add_settings_field('idehweb_twilio_token', __('Enter Twilio Token', 'login-with-phone-number'), array(&$this, 'setting_twilio_token'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_twilio']);
         add_settings_field('idehweb_twilio_from', __('Enter Twilio From', 'login-with-phone-number'), array(&$this, 'setting_twilio_from'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_twilio']);
-        wp_nonce_field('Twilio_nonce_action', 'Twilio_nonce');
+//        wp_nonce_field('Twilio_nonce_action', 'Twilio_nonce');
     }
 
     function lwp_send_sms_twilio($phone_number, $code)
     {
-        if (!preg_match('/^\+?\d{10,15}$/', $phone_number)) {
-            die('Invalid phone number.');
-        }
+//        if (!preg_match('/^\+?\d{10,15}$/', $phone_number)) {
+//            die('Invalid phone number.');
+//        }
 
-        if (!isset($_POST['Twilio_nonce']) || !wp_verify_nonce($_POST['Twilio_nonce'], 'Twilio_nonce_action')) {
-            die('Security check failed.');
-        }
+//        if (!isset($_POST['Twilio_nonce']) || !wp_verify_nonce($_POST['Twilio_nonce'], 'Twilio_nonce_action')) {
+//            die('Security check failed.');
+//        }
 
         $options = get_option('idehweb_lwp_settings');
         $sid = isset($options['idehweb_twilio_sid']) ? sanitize_text_field($options['idehweb_twilio_sid']) : '';

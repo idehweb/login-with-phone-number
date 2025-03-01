@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.75
+Version: 1.7.77
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -142,7 +142,7 @@ class idehwebLwp
             wp_enqueue_script('idehweb-lwp-admin-media-script', plugins_url('/scripts/lwp-admin-style.js', __FILE__), array('jquery'), true, true);
 
         }
-        if ( $page=='toplevel_page_idehweb-lwp') {
+        if ($page == 'toplevel_page_idehweb-lwp') {
 //            echo 'hi';
             wp_enqueue_script('idehweb-lwp-admin-media-script', plugins_url('/scripts/lwp-admin.js', __FILE__), array('jquery'), true, true);
 
@@ -231,6 +231,7 @@ class idehwebLwp
         add_settings_section('idehweb-lwp-styles', '', array(&$this, 'section_intro'), 'idehweb-lwp-styles');
         add_settings_section('idehweb-lwp-localization', '', array(&$this, 'section_intro'), 'idehweb-lwp-localization');
 //        add_settings_section('idehweb-lwp-gateways', '', array(&$this, 'section_intro'), 'idehweb-lwp-gateways');
+
         add_settings_field('idehweb_styles_status', __('Enable custom styles', 'login-with-phone-number'), array(&$this, 'setting_idehweb_style_enable_custom_style'), 'idehweb-lwp-styles', 'idehweb-lwp-styles', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_position_form', __('Enable fix position', 'login-with-phone-number'), array(&$this, 'idehweb_position_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-form-settings']);
         add_settings_field('idehweb_auto_show_form', __('Enable auto pop up form', 'login-with-phone-number'), array(&$this, 'idehweb_auto_show_form'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel related-to-position-fixed lwp-tab-form-settings']);
@@ -354,6 +355,10 @@ class idehwebLwp
         add_settings_field('idehweb_localization_custom_option_title', __('Custom option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_custom_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_ultramessage_option_title', __('Ultramessage option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_ultramessage_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
 
+
+
+        add_settings_field('idehweb_lwp_twilio_guid', __('Twilio help', 'lwp-twilio'), array(&$this, 'setting_idehweb_twilio_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_twilio']);
+
     }
 
     function admin_menu()
@@ -439,11 +444,16 @@ class idehwebLwp
                 <form action="options.php" method="post" id="iuytfrdghj" class="lwp-setting-page-main">
                     <div class="lwp-tabs-wrapper">
                         <div class="lwp-tabs-list">
-                            <a class="lwp-tab-item" href="#lwp-tab-general-settings" data-tab="lwp-tab-general-settings"><?php _e('General', 'login-with-phone-number'); ?></a>
-                            <a class="lwp-tab-item" href="#lwp-tab-gateway-settings" data-tab="lwp-tab-gateway-settings"><?php _e('Gateway', 'login-with-phone-number'); ?></a>
-                            <a class="lwp-tab-item" href="#lwp-tab-form-settings" data-tab="lwp-tab-form-settings"><?php _e('Form', 'login-with-phone-number'); ?></a>
-                            <a class="lwp-tab-item" href="#lwp-tab-installation-settings" data-tab="lwp-tab-installation-settings"><?php _e('Installation', 'login-with-phone-number'); ?></a>
-                            <a class="lwp-tab-item" href="#lwp-tab-documentation-settings" data-tab="lwp-tab-documentation-settings"><?php _e('documentation', 'login-with-phone-number'); ?></a>
+                            <a class="lwp-tab-item" href="#lwp-tab-general-settings"
+                               data-tab="lwp-tab-general-settings"><?php _e('General', 'login-with-phone-number'); ?></a>
+                            <a class="lwp-tab-item" href="#lwp-tab-gateway-settings"
+                               data-tab="lwp-tab-gateway-settings"><?php _e('Gateway', 'login-with-phone-number'); ?></a>
+                            <a class="lwp-tab-item" href="#lwp-tab-form-settings"
+                               data-tab="lwp-tab-form-settings"><?php _e('Form', 'login-with-phone-number'); ?></a>
+                            <a class="lwp-tab-item" href="#lwp-tab-installation-settings"
+                               data-tab="lwp-tab-installation-settings"><?php _e('Installation', 'login-with-phone-number'); ?></a>
+                            <a class="lwp-tab-item" href="#lwp-tab-documentation-settings"
+                               data-tab="lwp-tab-documentation-settings"><?php _e('documentation', 'login-with-phone-number'); ?></a>
 
                         </div>
                         <div class="lwp-tabs-content">
@@ -678,11 +688,11 @@ class idehwebLwp
 
 
                         <?php
-//                        if (empty($options['idehweb_token'])) {
+                        //                        if (empty($options['idehweb_token'])) {
                         ?>
                         // $('.authwithwebsite').click();
                         <?php
-//                        }
+                        //                        }
                         ?>
 
                     });
@@ -690,7 +700,6 @@ class idehwebLwp
                     // var edf2 = $('#idehweb_lwp_settings_use_phone_number_for_username');
 
                     var idehweb_body = $('body');
-
 
 
                     idehweb_body.on('click', '.lwp_more_help', function () {
@@ -1361,14 +1370,30 @@ class idehwebLwp
     function setting_default_gateways()
     {
         $options = get_option('idehweb_lwp_settings');
-        $affected_rows = [];
-        $affected_rows = apply_filters('lwp_add_to_default_gateways', $affected_rows);
-        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_default_gateways'])) {
+            $options['idehweb_default_gateways'] = ['firebase'];
+        }
+
         $gateways = [
             ["value" => "firebase", "label" => __("Firebase (Google)", 'login-with-phone-number')],
             ["value" => "custom", "label" => __("Custom (Config Your Gateway)", 'login-with-phone-number')],
+            ["value" => "twilio", "label" => __("Twilio (Pro)", 'login-with-phone-number')],
         ];
-        $gateways = array_merge($gateways, $affected_rows);
+
+        $gateways = apply_filters('lwp_add_to_default_gateways', $gateways);
+// Sort gateways by the first letter of the label.
+        usort($gateways, function ($a, $b) {
+            return strcasecmp($a['label'][0], $b['label'][0]);
+        });
+        //        $affected_rows = [];
+//        $affected_rows = apply_filters('lwp_add_to_default_gateways', $affected_rows);
+//        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+//        $gateways = [
+//            ["value" => "firebase", "label" => __("Firebase (Google)", 'login-with-phone-number')],
+//            ["value" => "custom", "label" => __("Custom (Config Your Gateway)", 'login-with-phone-number')],
+//            ["value" => "twilio", "label" => __("Twilio (Pro)", 'login-with-phone-number')],
+//        ];
+//        $gateways = array_merge($gateways, $affected_rows);
         ?>
         <div class="idehweb_default_gateways_wrapper">
 
@@ -1793,6 +1818,7 @@ class idehwebLwp
 		<p class="description">' . __('enter redirect url', 'login-with-phone-number') . '</p>';
 
     }
+
     function setting_idehweb_length_of_activation_code()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -2211,7 +2237,6 @@ class idehwebLwp
 		<p class="description">' . __('Default nickname', 'login-with-phone-number') . '</p>';
 
     }
-
 
 
     function settings_validate($input)
@@ -2633,7 +2658,9 @@ class idehwebLwp
                         <label class="lwp_labels"
                                for="lwp_scode"><?php echo __('Security code', 'login-with-phone-number'); ?></label>
                         <input type="text" class="required lwp_scode" autocomplete="one-time-code" inputmode="numeric"
-                               maxlength="<?php echo esc_attr(($options['idehweb_length_of_activation_code'])); ?>" pattern="\d{<?php echo esc_attr(($options['idehweb_length_of_activation_code'])); ?>}" name="lwp_scode">
+                               maxlength="<?php echo esc_attr(($options['idehweb_length_of_activation_code'])); ?>"
+                               pattern="\d{<?php echo esc_attr(($options['idehweb_length_of_activation_code'])); ?>}"
+                               name="lwp_scode">
                     </div>
                     <button class="submit_button auth_secCode">
                         <?php echo __('Activate', 'login-with-phone-number'); ?>
@@ -3708,12 +3735,14 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
 
         if (!isset($options['idehweb_length_of_activation_code'])) $options['idehweb_length_of_activation_code'] = '6';
+//        $six_digit_random_number = wp_rand(100000, 999999);
 
-        $six_digit_random_number = wp_rand(100000, 999999);
-        if((int)$options['idehweb_length_of_activation_code']==4){
-            $six_digit_random_number = wp_rand(1000, 9999);
+        $digit_length = isset($options['idehweb_length_of_activation_code']) ? (int)$options['idehweb_length_of_activation_code'] : 6;
+        $min = pow(10, $digit_length - 1);
+        $max = pow(10, $digit_length) - 1;
+        $six_digit_random_number = wp_rand($min, $max);
 
-        }
+
         update_user_meta($user_id, 'activation_code', $six_digit_random_number);
         update_user_meta($user_id, 'activation_code_timestamp', time());
         if ($send_email) {
@@ -4359,7 +4388,11 @@ class idehwebLwp
     {
         return wp_parse_args(array('registered_date' => 'registered'), $columns);
     }
+    function setting_idehweb_twilio_username()
+    {
+        echo '<p class="description">' . __('Enter TWILIO ACCOUNT SID', 'lwp-twilio') . '</p>';
 
+    }
 
 }
 

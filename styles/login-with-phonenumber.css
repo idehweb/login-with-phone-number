@@ -124,7 +124,11 @@ form.ajax-auth {
 .ajax-auth input.error {
     /*border: 1px solid #FF0000 !important;*/
 }
-
+.idehweb_default_gateways_wrapper .select2.select2-container,
+.idehweb_default_gateways_wrapper .select2-search__field,
+.idehweb_default_gateways_wrapper .select2-selection{
+    min-width: 100px !important;
+}
 .ajax-auth input.submit_button {
     font-size: 13px;
     color: #FFF;

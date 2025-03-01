@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.78
+Version: 1.7.79
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -358,6 +358,8 @@ class idehwebLwp
 
 
         add_settings_field('idehweb_lwp_twilio_guid', __('Twilio help', 'lwp-twilio'), array(&$this, 'setting_idehweb_twilio_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_twilio']);
+        add_settings_field('idehweb_lwp_ultramsg_guid', __('Ultramsg help', 'lwp-twilio'), array(&$this, 'setting_idehweb_ultramsg_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_ultramsg']);
+        add_settings_field('idehweb_lwp_whatsapp_guid', __('Whatsapp help', 'lwp-twilio'), array(&$this, 'setting_idehweb_whatsapp_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_whatsapp']);
 
     }
 
@@ -452,8 +454,8 @@ class idehwebLwp
                                data-tab="lwp-tab-form-settings"><?php _e('Form', 'login-with-phone-number'); ?></a>
                             <a class="lwp-tab-item" href="#lwp-tab-installation-settings"
                                data-tab="lwp-tab-installation-settings"><?php _e('Installation', 'login-with-phone-number'); ?></a>
-                            <a class="lwp-tab-item" href="#lwp-tab-documentation-settings"
-                               data-tab="lwp-tab-documentation-settings"><?php _e('documentation', 'login-with-phone-number'); ?></a>
+<!--                            <a class="lwp-tab-item" href="#lwp-tab-documentation-settings"-->
+<!--                               data-tab="lwp-tab-documentation-settings">--><?php //_e('documentation', 'login-with-phone-number'); ?><!--</a>-->
 
                         </div>
                         <div class="lwp-tabs-content">
@@ -1378,6 +1380,8 @@ class idehwebLwp
             ["value" => "firebase", "label" => __("Firebase (Google)", 'login-with-phone-number')],
             ["value" => "custom", "label" => __("Custom (Config Your Gateway)", 'login-with-phone-number')],
             ["value" => "twilio", "label" => __("Twilio (Pro)", 'login-with-phone-number')],
+            ["value" => "whatsapp", "label" => __("Whatsapp Meta (Pro)", 'login-with-phone-number')],
+            ["value" => "ultramsg", "label" => __("Ultramsg - Whatsapp third-party (Pro)", 'login-with-phone-number')]
         ];
 
         $gateways = apply_filters('lwp_add_to_default_gateways', $gateways);
@@ -4390,7 +4394,21 @@ class idehwebLwp
     }
     function setting_idehweb_twilio_username()
     {
-        echo '<p class="description">' . __('Enter TWILIO ACCOUNT SID', 'lwp-twilio') . '</p>';
+//        echo '<p class="description">' . __('Enter TWILIO ACCOUNT SID', 'lwp-twilio') . '</p>';
+        echo '<a href="' . esc_url('https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/') . '" target="_blank">' . __('To proceed, you will need to purchase the Twilio Gateway Extension for the Login with Phone Number plugin.', 'login-with-phone-number') . '</a>';
+
+
+    }    function setting_idehweb_ultramsg_username()
+    {
+//        echo '<p class="description">' . __('Enter ultramsg ACCOUNT SID', 'lwp-ultramsg') . '</p>';
+        echo '<a href="' . esc_url('https://idehweb.com/product/ultramsg-gateway-for-login-with-phone-number/') . '" target="_blank">' . __('To proceed, you will need to purchase the ultramsg Gateway Extension for the Login with Phone Number plugin.', 'login-with-phone-number') . '</a>';
+
+
+    }    function setting_idehweb_whatsapp_username()
+    {
+//        echo '<p class="description">' . __('Enter whatsapp ACCOUNT SID', 'lwp-whatsapp') . '</p>';
+        echo '<a href="' . esc_url('https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/') . '" target="_blank">' . __('To proceed, you will need to purchase the whatsapp Gateway Extension for the Login with Phone Number plugin.', 'login-with-phone-number') . '</a>';
+
 
     }
 

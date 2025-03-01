@@ -94,7 +94,7 @@ class lwp_farazsms
         $token = isset($options['idehweb_farazsms_token']) ? esc_attr($options['idehweb_farazsms_token']) : '';
         echo '<input type="token" name="idehweb_lwp_settings[idehweb_farazsms_token]" class="regular-text" value="' . $token . '" /> ';
         echo '<p class="description">' . __('Enter farazsms token', 'login-with-phone-number') . '</p>';
-        echo '<a href="https://idehweb.ir/%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7-%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%81%d8%b1%d8%a7%d8%b2-%d8%a7%d8%b3-%d8%a7%d9%85-%d8%a7%d8%b3-%d8%af%d8%b1-%d9%be%d9%84%d8%a7%da%af%db%8c%d9%86-%d9%88%d8%b1/" type="link">farazsms documentation</a>';
+        echo '<a href="https://idehweb.ir/%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7-%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%81%d8%b1%d8%a7%d8%b2-%d8%a7%d8%b3-%d8%a7%d9%85-%d8%a7%d8%b3-%d8%af%d8%b1-%d9%be%d9%84%d8%a7%da%af%db%8c%d9%86-%d9%88%d8%b1/" target="_blank" type="link">farazsms documentation</a>';
     }
 
     function setting_idehweb_from()

@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.7
-Stable tag: 1.7.79
+Stable tag: 1.7.80
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -95,11 +95,6 @@ Supported gateways for now:
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/login-with-phone-number)
 
 ##Changelog
-
-###1.7.77
-* make $digit_length work dynamically
-* make Twilio separate exention (PRO)
-* optimize style of "sms default gateway"
 
 ###1.7.79
 * add ultramessage gatway

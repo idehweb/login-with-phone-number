@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.7
-Stable tag: 1.7.81
+Stable tag: 1.7.82
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -74,7 +74,8 @@ Supported gateways for now:
 * IQSMS 
 * Ippanel 
 * Whatsapp 
-* Ultramessage 
+* Ultramessage
+* Telegram
 
 [youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
@@ -96,8 +97,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
+###1.7.82
+* add Teleram gateway
+
 ###1.7.79
-* add ultramessage gatway 
+* add ultramessage gateway 
 
 ###1.7.77
 * make $digit_length work dynamically

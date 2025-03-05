@@ -399,42 +399,120 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings');
 
-        // ✅ بررسی انتخاب درگاه و هدایت به صفحه تنظیمات مربوطه
         if (isset($_POST['lwp_select_gateway']) && !empty($_POST['lwp_gateway'])) {
             $selected_gateway = sanitize_text_field($_POST['lwp_gateway']);
             wp_redirect(admin_url("admin.php?page=idehweb-lwp&skip_wizard=1#lwp-tab-gateway-settings"));
             exit;
         }
 
-        // ✅ نمایش ویزارد اگر هنوز انتخاب نشده یا "Skip" نشده است
         if (!isset($_GET['skip_wizard']) && !isset($_POST['lwp_select_gateway'])) {
             ?>
             <div class="lwp-wizard-overlay">
                 <div class="lwp-wizard">
-                    <h2>Setup Wizard</h2>
                     <p>Please select your SMS Gateway:</p>
-                    <form method="post">
-                        <select name="lwp_gateway" required>
-                            <option value=""><?php _e("-- Select a Gateway --", "login-with-phone-number"); ?></option>
-                            <option value="melipayamak"><?php _e("MeliPayamak", "login-with-phone-number"); ?></option>
-                            <option value="farazsms"><?php _e("FarazSMS", "login-with-phone-number"); ?></option>
-                            <option value="kavenegar"><?php _e("Kavenegar", "login-with-phone-number"); ?></option>
-                            <option value="textlocal"><?php _e("Textlocal", "login-with-phone-number"); ?></option>
-                            <option value="twilio"><?php _e("Twilio", "login-with-phone-number"); ?></option>
-                            <option value="mshastra"><?php _e("Mshastra", "login-with-phone-number"); ?></option>
-                            <option value="2factor"><?php _e("2Factor", "login-with-phone-number"); ?></option>
-                            <option value="taqnyat"><?php _e("Taqnyat", "login-with-phone-number"); ?></option>
-                            <option value="trustsignal"><?php _e("TrustSignal", "login-with-phone-number"); ?></option>
-                            <option value="msg91"><?php _e("MSG91", "login-with-phone-number"); ?></option>
-                            <option value="messagebird"><?php _e("MessageBird", "login-with-phone-number"); ?></option>
-                        </select>
-                        <br><br>
+                    <form method="post" id="gateway-form">
+                        <div class="gateway-options">
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="twilio">
+                                <?php _e("Twilio", "login-with-phone-number"); ?>
+                                <a href="https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
+                                    <?php _e("No expiration date", "login-with-phone-number"); ?>
+                                </a>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="whatsapp">
+                                <?php _e("WhatsApp", "login-with-phone-number"); ?>
+                                <a  href="https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
+                                    <?php _e("No expiration date", "login-with-phone-number"); ?>
+                                </a>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="Telegram">
+                                <?php _e("Telegram", "login-with-phone-number"); ?>
+                                <a href="https://idehweb.com/product/telegram-gateway-for-login-with-phone-number-2/" target="_blank" class="purchase-link">
+                                    <?php _e("No expiration date", "login-with-phone-number"); ?>
+                                </a>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="firebase" required>
+                                <?php _e("firebase", "login-with-phone-number"); ?>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="mshastra">
+                                <?php _e("mshastra", "login-with-phone-number"); ?>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="Textlocal">
+                                <?php _e("Textlocal", "login-with-phone-number"); ?>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="Taqnyat" required>
+                                <?php _e("Taqnyat", "login-with-phone-number"); ?>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="trustsignal">
+                                <?php _e("trustsignal", "login-with-phone-number"); ?>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="Ultramsg">
+                                <?php _e("Ultramsg", "login-with-phone-number"); ?>
+                            </label>
+                        </div>
+
+                        <br>
                         <input type="submit" name="lwp_select_gateway" value="<?php _e('Next', 'login-with-phone-number'); ?>" class="button-primary">
                         <a href="admin.php?page=idehweb-lwp&skip_wizard=1" class="button"><?php _e("Skip", "login-with-phone-number"); ?></a>
                     </form>
                 </div>
             </div>
+            <script>
+                document.addEventListener("DOMcontentloaded",function (){
+                    if (window.location.search.includes("skip_wizard=1")){
+                        let wizard= document.querySelector(".lwp-wizard-overlay");
+                        if (wizard) {
+                            wizard.style.display = "none";
+                        }
+                    }
+                });
+            </script>
             <style>
+                /* wizard */
+                /* wizard */
+                .gateway-options {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    max-width: 500px;
+                }
+
+                .gateway-label {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    border-radius: 5px;
+                    background: #f9f9f9;
+                }
+
+                .gateway-label input {
+                    margin-right: 10px;
+                }
+
+                .purchase-link {
+                    margin-left: auto;
+                    color: blue;
+                    text-decoration: underline;
+                }
                 .lwp-wizard-overlay {
                     position: fixed;
                     top: 0;
@@ -470,16 +548,6 @@ class idehwebLwp
                     display: inline-block;
                 }
             </style>
-            <script>
-                document.addEventListener("DOMcontentloaded",function (){
-                    if (window.location.search.includes("skip_wizard=1")){
-                        let wizard= document.querySelector(".lwp-wizard-overlay");
-                        if (wizard) {
-                            wizard.style.display = "none";
-                        }
-                    }
-                });
-            </script>
             <?php
             return;
         }
@@ -2421,6 +2489,8 @@ class idehwebLwp
         );
 
         wp_enqueue_style('idehweb-lwp', plugins_url('/styles/login-with-phonenumber.css', __FILE__));
+
+        wp_enqueue_style('idehweb-lwp', plugins_url('/styles/wizard.css', __FILE__));
 
         wp_enqueue_script('idehweb-lwp-validate-script', plugins_url('/scripts/jquery.validate.js', __FILE__), array('jquery'));
 

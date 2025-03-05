@@ -100,7 +100,7 @@ class lwp_mellipayamak
     {
         $options = get_option('idehweb_lwp_settings');
         $message = isset($options['idehweb_mellipayamak_message']) ? sanitize_textarea_field($options['idehweb_mellipayamak_message']) : '';
-        echo '<textarea name="idehweb_lwp_settings[idehweb_mellipayamak_message]" class="regular-text">' . esc_textarea($message) . '</textarea>';
+        echo '<input type="text" name="idehweb_lwp_settings[idehweb_mellipayamak_message]" class="regular-text" value="' . $message . '" />';
         echo '<p class="description">' . __('Enter message, use ${code} for the verification code', 'login-with-phone-number') . '</p>';
         echo '<a href="' . esc_url('https://idehweb.ir/%d9%88%d8%b1%d9%88%d8%af-%d8%a8%d8%a7-%d8%af%d8%b1%da%af%d8%a7%d9%87-%d9%85%d9%84%db%8c-%d9%be%db%8c%d8%a7%d9%85%da%a9-%d8%af%d8%b1-%d9%be%d9%84%d8%a7%da%af%db%8c%d9%86-%d9%88%d8%b1%d9%88%d8%af/') . '" type="link" target="_blank">Melipayamak documentation</a>';
 

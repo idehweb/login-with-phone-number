@@ -398,159 +398,198 @@ class idehwebLwp
     function settings_page()
     {
         $options = get_option('idehweb_lwp_settings');
-//
-//        if (isset($_POST['lwp_select_gateway']) && !empty($_POST['lwp_gateway'])) {
-//            $selected_gateway = sanitize_text_field($_POST['lwp_gateway']);
-//            wp_redirect(admin_url("admin.php?page=idehweb-lwp&skip_wizard=1#lwp-tab-gateway-settings"));
-//            exit;
-//        }
-//
-//        if (!isset($_GET['skip_wizard']) && !isset($_POST['lwp_select_gateway'])) {
-//            ?>
-<!--            <div class="lwp-wizard-overlay">-->
-<!--                <div class="lwp-wizard">-->
-<!--                    <p>Please select your SMS Gateway:</p>-->
-<!--                    <form method="post" id="gateway-form">-->
-<!--                        <div class="gateway-options">-->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="twilio">-->
-<!--                                --><?php //_e("Twilio", "login-with-phone-number"); ?>
-<!--                                <a href="https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">-->
-<!--                                    --><?php //_e("shopping (No expiration date)", "login-with-phone-number"); ?>
-<!--                                </a>-->
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="whatsapp">-->
-<!--                                --><?php //_e("WhatsApp", "login-with-phone-number"); ?>
-<!--                                <a  href="https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">-->
-<!--                                    --><?php //_e("shopping (No expiration date)", "login-with-phone-number"); ?>
-<!--                                </a>-->
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="Telegram">-->
-<!--                                --><?php //_e("Telegram", "login-with-phone-number"); ?>
-<!--                                <a href="https://idehweb.com/product/telegram-gateway-for-login-with-phone-number-2/" target="_blank" class="purchase-link">-->
-<!--                                    --><?php //_e("shopping (No expiration date)", "login-with-phone-number"); ?>
-<!--                                </a>-->
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="firebase" required>-->
-<!--                                --><?php //_e("firebase", "login-with-phone-number"); ?>
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="mshastra">-->
-<!--                                --><?php //_e("mshastra", "login-with-phone-number"); ?>
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="Textlocal">-->
-<!--                                --><?php //_e("Textlocal", "login-with-phone-number"); ?>
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="Taqnyat" required>-->
-<!--                                --><?php //_e("Taqnyat", "login-with-phone-number"); ?>
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="trustsignal">-->
-<!--                                --><?php //_e("trustsignal", "login-with-phone-number"); ?>
-<!--                            </label>-->
-<!---->
-<!--                            <label class="gateway-label">-->
-<!--                                <input type="radio" name="lwp_gateway" value="Ultramsg">-->
-<!--                                --><?php //_e("Ultramsg", "login-with-phone-number"); ?>
-<!--                            </label>-->
-<!--                        </div>-->
-<!---->
-<!--                        <br>-->
-<!--                        <input type="submit" name="lwp_select_gateway" value="--><?php //_e('Next', 'login-with-phone-number'); ?><!--" class="button-primary">-->
-<!--                        <a href="admin.php?page=idehweb-lwp&skip_wizard=1" class="button">--><?php //_e("Skip", "login-with-phone-number"); ?><!--</a>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <script>-->
-<!--                document.addEventListener("DOMcontentloaded",function (){-->
-<!--                    if (window.location.search.includes("skip_wizard=1")){-->
-<!--                        let wizard= document.querySelector(".lwp-wizard-overlay");-->
-<!--                        if (wizard) {-->
-<!--                            wizard.style.display = "none";-->
-<!--                        }-->
-<!--                    }-->
-<!--                });-->
-<!--            </script>-->
-<!--            <style>-->
-<!--                /* wizard */-->
-<!--                /* wizard */-->
-<!--                .gateway-options {-->
-<!--                    display: flex;-->
-<!--                    flex-direction: column;-->
-<!--                    gap: 10px;-->
-<!--                    max-width: 500px;-->
-<!--                }-->
-<!---->
-<!--                .gateway-label {-->
-<!--                    display: flex;-->
-<!--                    align-items: center;-->
-<!--                    justify-content: space-between;-->
-<!--                    width: 100%;-->
-<!--                    border: 1px solid #ddd;-->
-<!--                    padding: 8px;-->
-<!--                    border-radius: 5px;-->
-<!--                    background: #f9f9f9;-->
-<!--                }-->
-<!---->
-<!--                .gateway-label input {-->
-<!--                    margin-right: 10px;-->
-<!--                }-->
-<!---->
-<!--                .purchase-link {-->
-<!--                    margin-left: auto;-->
-<!--                    color: blue;-->
-<!--                    text-decoration: underline;-->
-<!--                }-->
-<!--                .lwp-wizard-overlay {-->
-<!--                    position: fixed;-->
-<!--                    top: 0;-->
-<!--                    left: 0;-->
-<!--                    width: 100%;-->
-<!--                    height: 100%;-->
-<!--                    background: rgba(0, 0, 0, 0.5);-->
-<!--                    display: flex;-->
-<!--                    align-items: center;-->
-<!--                    justify-content: center;-->
-<!--                }-->
-<!--                .lwp-wizard {-->
-<!--                    background: white;-->
-<!--                    padding: 20px;-->
-<!--                    border-radius: 10px;-->
-<!--                    width: 400px;-->
-<!--                    text-align: center;-->
-<!--                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);-->
-<!--                }-->
-<!--                select {-->
-<!--                    width: 100%;-->
-<!--                    padding: 5px;-->
-<!--                    margin-top: 10px;-->
-<!--                }-->
-<!--                .button {-->
-<!--                    margin-left: 10px;-->
-<!--                    background: red;-->
-<!--                    color: white;-->
-<!--                    border: none;-->
-<!--                    padding: 7px 15px;-->
-<!--                    cursor: pointer;-->
-<!--                    text-decoration: none;-->
-<!--                    display: inline-block;-->
-<!--                }-->
-<!--            </style>-->
-<!--            --><?php
-//            return;
-//        }
+
+        if (isset($_POST['lwp_select_gateway']) && !empty($_POST['lwp_gateway'])) {
+            $selected_gateway = sanitize_text_field($_POST['lwp_gateway']);
+
+            $options['idehweb_default_gateways'] = [$selected_gateway];
+            update_option('idehweb_lwp_settings', $options);
+            wp_redirect(admin_url("admin.php?page=idehweb-lwp&skip_wizard=1&selected_gateway={$selected_gateway}#lwp-tab-gateway-settings"));
+            exit;
+        }
+
+        if (!isset($_GET['skip_wizard']) && !isset($_POST['lwp_select_gateway'])) {
+            ?>
+            <div class="lwp-wizard-overlay">
+                <div class="lwp-wizard">
+                    <!-- Country Selection Section -->
+                    <p>Please select your country:</p>
+                    <div class="country-selection">
+                        <div class="country-images">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="USA" class="country-img" data-country="usa">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Brazil" class="country-img" data-country="brazil">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" alt="EU" class="country-img" data-country="eu">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg" alt="Iran" class="country-img" data-country="iran">
+                            <img src="https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png" alt="China" class="country-img" data-country="china">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Saudi_Arabia.svg" alt="Saudi Arabia" class="country-img" data-country="saudi-arabia">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_India.svg" alt="India" class="country-img" data-country="india">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" alt="Russia" class="country-img" data-country="russia">
+
+                        </div>
+                    </div>
+
+
+                    <p>Please select your SMS Gateway:</p>
+                    <form method="post" id="gateway-form">
+                        <div class="gateway-options">
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="twilio">
+                                <?php _e("Twilio", "login-with-phone-number"); ?>
+                                <a href="https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
+                                    <?php _e("shopping (No expiration date)", "login-with-phone-number"); ?>
+                                </a>
+                            </label>
+
+                            <label class="gateway-label">
+                                <input type="radio" name="lwp_gateway" value="whatsapp">
+                                <?php _e("WhatsApp", "login-with-phone-number"); ?>
+                                <a href="https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
+                                    <?php _e("shopping (No expiration date)", "login-with-phone-number"); ?>
+                                </a>
+                            </label>
+
+                            <!-- Add more gateways as needed -->
+
+                        </div>
+
+                        <br>
+                        <input type="submit" name="lwp_select_gateway" value="<?php _e('Next', 'login-with-phone-number'); ?>" class="button-primary">
+                        <a href="admin.php?page=idehweb-lwp&skip_wizard=1" class="button"><?php _e("Skip", "login-with-phone-number"); ?></a>
+                    </form>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentloaded", function () {
+                    if (window.location.search.includes("skip_wizard=1")) {
+                        let wizard = document.querySelector(".lwp-wizard-overlay");
+                        if (wizard) {
+                            wizard.style.display = "none";
+                        }
+                    }
+
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const selectedGateway = urlParams.get('selected_gateway');
+                    if (selectedGateway) {
+                        // Redirect to the selected gateway's specific settings page
+                        window.location.href = admin_url("admin.php?page=idehweb-lwp&skip_wizard=1&gateway=" + selectedGateway + "#lwp-tab-gateway-settings");
+                    }
+                });
+
+                // Add flag wizard
+                document.addEventListener("DOMContentLoaded", function () {
+                    const countryImages = document.querySelectorAll('.country-img');
+                    const gatewayOptions = document.querySelector('.gateway-options');
+
+                    countryImages.forEach(img => {
+                        img.addEventListener('click', function () {
+                            const selectedCountry = img.getAttribute('data-country');
+                            updateGateways(selectedCountry);
+                        });
+                    });
+
+                    function updateGateways(country) {
+                        // Clear the current gateway options
+                        gatewayOptions.innerHTML = '';
+
+                        let gatewaysToShow = [];
+
+                        switch (country) {
+                            case 'saudi-arabia':
+                                gatewaysToShow = ['taqnyat'];
+                                break;
+                            case 'india':
+                                gatewaysToShow = ['mshastra'];
+                                break;
+                            case 'russia':
+                                gatewaysToShow = ['twilio', 'whatsapp', 'textlocal','firebase'];
+                                break;
+                            case 'iran':
+                                gatewaysToShow = ['farazsms', 'melipayamak','firebase'];
+                                break;
+                            case 'usa':
+                            case 'brazil':
+                            case 'eu':
+                                gatewaysToShow = ['twilio', 'whatsapp', 'telegram', 'firebase', 'mshastra', 'textlocal', 'trustsignal', 'ultramsg'];
+                                break;
+                            default:
+                                gatewaysToShow = ['twilio', 'whatsapp', 'telegram', 'firebase', 'textlocal', 'trustsignal', 'melipayamak', 'ultramsg'];
+                                break;
+                        }
+
+                        // Add the filtered gateways back to the form
+                        gatewaysToShow.forEach(gateway => {
+                            const label = document.createElement('label');
+                            label.classList.add('gateway-label');
+                            label.innerHTML = `<input type="radio" name="lwp_gateway" value="${gateway}"> ${gateway}`;
+                            gatewayOptions.appendChild(label);
+                        });
+                    }
+                });
+            </script>
+            <style>
+                /* wizard */
+                .gateway-options {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    max-width: 500px;
+                    margin: 0 auto;
+                }
+
+                .gateway-label {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    border-radius: 5px;
+                    background: #f9f9f9;
+                    cursor: pointer;
+                    transition: background 0.3s ease;
+                }
+
+                .gateway-label input {
+                    margin-right: 10px;
+                }
+
+                .purchase-link {
+                    margin-left: auto;
+                    color: blue;
+                    text-decoration: underline;
+                    flex-shrink: 0;
+                }
+
+                .gateway-label:hover {
+                    background: #f0f0f0;
+                }
+
+                .country-selection {
+                    margin-bottom: 20px;
+                }
+
+                .country-images {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: center;
+                }
+
+                .country-img {
+                    width: 50px;
+                    height: 30px;
+                    cursor: pointer;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                }
+
+                .country-img:hover {
+                    opacity: 0.8;
+                }
+            </style>
+            <?php
+            return;
+        }
+
 
         if (!isset($options['idehweb_phone_number'])) $options['idehweb_phone_number'] = '';
         if (!isset($options['idehweb_token'])) $options['idehweb_token'] = '';

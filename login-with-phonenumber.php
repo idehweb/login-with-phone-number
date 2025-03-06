@@ -412,82 +412,85 @@ class idehwebLwp
             ?>
             <div class="lwp-wizard-overlay">
                 <div class="lwp-wizard">
-                    <!-- Country Selection Section -->
                     <p>Please select your country:</p>
-                    <div class="country-selection">
-                        <div class="country-images">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="USA" class="country-img" data-country="usa">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Brazil" class="country-img" data-country="brazil">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" alt="EU" class="country-img" data-country="eu">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg" alt="Iran" class="country-img" data-country="iran">
-                            <img src="https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png" alt="China" class="country-img" data-country="china">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Saudi_Arabia.svg" alt="Saudi Arabia" class="country-img" data-country="saudi-arabia">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_India.svg" alt="India" class="country-img" data-country="india">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" alt="Russia" class="country-img" data-country="russia">
-
+                    <button id="show-country-list" class="button">Show Country List</button>
+                    <div id="country-list" style="display: none;">
+                        <p>Select countries where your customers are from:</p>
+                        <div class="country-selection">
+                            <div class="country-images">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="USA" class="country-img" data-country="usa">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Brazil" class="country-img" data-country="brazil">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" alt="EU" class="country-img" data-country="eu">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg" alt="Iran" class="country-img" data-country="iran">
+                                <img src="https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png" alt="China" class="country-img" data-country="china">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Saudi_Arabia.svg" alt="Saudi Arabia" class="country-img" data-country="saudi-arabia">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_India.svg" alt="India" class="country-img" data-country="india">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg" alt="Russia" class="country-img" data-country="russia">
+                            </div>
                         </div>
                     </div>
 
+                    <!-- SMS Gateway options are hidden initially -->
+                    <div id="sms-gateway-section" style="display: none;">
+                        <p>Please select your SMS Gateway:</p>
+                        <form method="post" id="gateway-form">
+                            <div class="gateway-options">
+                                <label class="gateway-label">
+                                    <input type="radio" name="lwp_gateway" value="twilio">
+                                    <?php _e("Twilio", "login-with-phone-number"); ?>
+                                    <a href="https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
+                                        <?php _e("shopping (No expiration date)", "login-with-phone-number"); ?>
+                                    </a>
+                                </label>
 
-                    <p>Please select your SMS Gateway:</p>
-                    <form method="post" id="gateway-form">
-                        <div class="gateway-options">
-                            <label class="gateway-label">
-                                <input type="radio" name="lwp_gateway" value="twilio">
-                                <?php _e("Twilio", "login-with-phone-number"); ?>
-                                <a href="https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
-                                    <?php _e("shopping (No expiration date)", "login-with-phone-number"); ?>
-                                </a>
-                            </label>
+                                <label class="gateway-label">
+                                    <input type="radio" name="lwp_gateway" value="whatsapp">
+                                    <?php _e("WhatsApp", "login-with-phone-number"); ?>
+                                    <a href="https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
+                                        <?php _e("shopping (No expiration date)", "login-with-phone-number"); ?>
+                                    </a>
+                                </label>
 
-                            <label class="gateway-label">
-                                <input type="radio" name="lwp_gateway" value="whatsapp">
-                                <?php _e("WhatsApp", "login-with-phone-number"); ?>
-                                <a href="https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/" target="_blank" class="purchase-link">
-                                    <?php _e("shopping (No expiration date)", "login-with-phone-number"); ?>
-                                </a>
-                            </label>
+                                <!-- Add more gateways as needed -->
 
-                            <!-- Add more gateways as needed -->
+                            </div>
 
-                        </div>
-
-                        <br>
-                        <input type="submit" name="lwp_select_gateway" value="<?php _e('Next', 'login-with-phone-number'); ?>" class="button-primary">
-                        <a href="admin.php?page=idehweb-lwp&skip_wizard=1" class="button"><?php _e("Skip", "login-with-phone-number"); ?></a>
-                    </form>
+                            <br>
+                            <input type="submit" name="lwp_select_gateway" value="<?php _e('Next', 'login-with-phone-number'); ?>" class="button-primary">
+                            <a href="admin.php?page=idehweb-lwp&skip_wizard=1" class="button"><?php _e("Skip", "login-with-phone-number"); ?></a>
+                        </form>
+                    </div>
                 </div>
             </div>
             <script>
-                document.addEventListener("DOMContentloaded", function () {
-                    if (window.location.search.includes("skip_wizard=1")) {
-                        let wizard = document.querySelector(".lwp-wizard-overlay");
-                        if (wizard) {
-                            wizard.style.display = "none";
-                        }
-                    }
-
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const selectedGateway = urlParams.get('selected_gateway');
-                    if (selectedGateway) {
-                        // Redirect to the selected gateway's specific settings page
-                        window.location.href = admin_url("admin.php?page=idehweb-lwp&skip_wizard=1&gateway=" + selectedGateway + "#lwp-tab-gateway-settings");
-                    }
-                });
-
-                // Add flag wizard
                 document.addEventListener("DOMContentLoaded", function () {
-                    const countryImages = document.querySelectorAll('.country-img');
+                    const showCountryListButton = document.getElementById('show-country-list');
+                    const countryList = document.getElementById('country-list');
+                    const smsGatewaySection = document.getElementById('sms-gateway-section');
                     const gatewayOptions = document.querySelector('.gateway-options');
+
+                    showCountryListButton.addEventListener('click', function () {
+                        // Toggle visibility of country list
+                        countryList.style.display = countryList.style.display === 'none' ? 'block' : 'none';
+
+                        // Hide the SMS gateway section when country list is shown
+                        smsGatewaySection.style.display = 'none';
+                    });
+
+                    const countryImages = document.querySelectorAll('.country-img');
 
                     countryImages.forEach(img => {
                         img.addEventListener('click', function () {
                             const selectedCountry = img.getAttribute('data-country');
                             updateGateways(selectedCountry);
+                            countryList.style.display = 'none'; // Hide country list after selection
                         });
                     });
 
                     function updateGateways(country) {
+                        // Show the SMS gateway section after selecting a country
+                        smsGatewaySection.style.display = 'block';
+
                         // Clear the current gateway options
                         gatewayOptions.innerHTML = '';
 
@@ -584,6 +587,20 @@ class idehwebLwp
 
                 .country-img:hover {
                     opacity: 0.8;
+                }
+
+                /* Button style */
+                #show-country-list {
+                    margin-top: 10px;
+                }
+
+                #country-list {
+                    display: none;
+                }
+
+                /* Hide gateway section initially */
+                #sms-gateway-section {
+                    display: none;
                 }
             </style>
             <?php

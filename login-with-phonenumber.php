@@ -391,17 +391,247 @@ class idehwebLwp
     {
         wp_enqueue_style('idehweb-lwp-admin', plugins_url('/styles/lwp-admin.css', __FILE__));
         wp_enqueue_style('idehweb-lwp-admin-select2-style', plugins_url('/styles/select2.min.css', __FILE__));
-
-
     }
 
     function settings_page()
     {
         $options = get_option('idehweb_lwp_settings');
+
+        if (!isset($_GET['skip_wizard'])) {
+            ?>
+            <!-- Wizard Overlay -->
+            <div id="wizardModal" class="wizard-overlay">
+                <div class="wizard-container" id="draggableWizard">
+                    <div class="wizard-header" id="wizardHeader">
+                        <span class="wizard-title">⚙️ Setup Wizard</span>
+                        <button id="closeWizard" class="close-button">×</button>
+                    </div>
+
+                    <div class="wizard-content">
+                        <!-- Information Section (ONLY in Page 1) -->
+                        <div class="wizard-info" id="wizardInfo">
+                            <h3>ℹ️ How This Wizard Works</h3>
+                            <p>This wizard will help you configure the login system quickly. Follow the steps below and choose your preferred setup method.</p>
+                        </div>
+
+                        <!-- Page 1 -->
+                        <div id="wizardPage1">
+                            <h2>Welcome!</h2>
+                            <p>Let's get started! Select an option to continue.</p>
+                            <div class="button-container">
+                                <button id="installManually" class="button-secondary">Install Manually</button>
+                                <button id="nextToPage2" class="button-primary">Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Page 2 -->
+                        <div id="wizardPage2" style="display: none;">
+                            <h2>Choose an Option</h2>
+                            <div class="radio-container">
+                                <label><input type="radio" name="option_select" value="international"> International</label>
+                                <label><input type="radio" name="option_select" value="custom"> Custom</label>
+                            </div>
+                            <div class="button-container">
+                                <button id="backToPage1" class="button-secondary">Back</button>
+                                <button id="nextToPage3" class="button-primary" disabled>Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Page 3: International -->
+                        <div id="wizardPage3International" style="display: none;">
+                            <h2>International Setup</h2>
+                            <p>This configuration is optimized for global users.</p>
+                            <div class="button-container">
+                                <button id="backToPage2FromIntl" class="button-secondary">Back</button>
+                                <button id="finishWizardIntl" class="button-primary">Finish</button>
+                            </div>
+                        </div>
+
+                        <!-- Page 3: Custom -->
+                        <div id="wizardPage3Custom" style="display: none;">
+                            <h2>Custom Setup</h2>
+                            <p>Set up a custom authentication method.</p>
+                            <div class="button-container">
+                                <button id="backToPage2FromCustom" class="button-secondary">Back</button>
+                                <button id="finishWizardCustom" class="button-primary">Finish</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Styles (Windows 11 Look) -->
+            <style>
+                /* Overlay */
+                .wizard-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.4);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                }
+
+                /* Wizard Container */
+                .wizard-container {
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(10px);
+                    padding: 20px;
+                    border-radius: 12px;
+                    width: 460px;
+                    max-width: 90%;
+                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+                    text-align: center;
+                    position: relative;
+                    animation: fadeIn 0.3s ease-out;
+                }
+
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: scale(0.95); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+
+                /* Wizard Header */
+                .wizard-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 8px 12px;
+                    border-bottom: 1px solid #ddd;
+                    background: rgba(0, 0, 0, 0.1);
+                    color: #333;
+                    font-size: 13px;
+                    font-weight: bold;
+                    cursor: grab;
+                    border-top-left-radius: 12px;
+                    border-top-right-radius: 12px;
+                }
+
+                .close-button {
+                    background: none;
+                    border: none;
+                    font-size: 16px;
+                    cursor: pointer;
+                    color: #333;
+                }
+
+                /* Buttons */
+                .button-container {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 15px;
+                }
+
+                .button-primary {
+                    background: #0073aa;
+                    color: white;
+                    border: none;
+                    padding: 10px 18px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    transition: 0.2s;
+                }
+
+                .button-secondary {
+                    background: #ccc;
+                    color: black;
+                    border: none;
+                    padding: 10px 18px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    transition: 0.2s;
+                }
+
+                /* Mobile Optimization */
+                @media screen and (max-width: 480px) {
+                    .wizard-container {
+                        width: 90%;
+                        padding: 15px;
+                    }
+
+                    .wizard-header {
+                        font-size: 12px;
+                        padding: 6px 10px;
+                    }
+
+                    .button-container {
+                        flex-direction: column;
+                        gap: 10px;
+                    }
+
+                    .button-primary, .button-secondary {
+                        width: 100%;
+                    }
+                }
+            </style>
+
+            <!-- JavaScript -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    function hideInfo() {
+                        document.getElementById("wizardInfo").classList.add("hidden");
+                    }
+
+                    document.getElementById("nextToPage2").addEventListener("click", function () {
+                        document.getElementById("wizardPage1").style.display = "none";
+                        document.getElementById("wizardPage2").style.display = "block";
+                        hideInfo();
+                    });
+
+                    document.querySelectorAll('input[name="option_select"]').forEach(function (radio) {
+                        radio.addEventListener("change", function () {
+                            document.getElementById("nextToPage3").disabled = false;
+                        });
+                    });
+
+                    document.getElementById("nextToPage3").addEventListener("click", function () {
+                        let selectedOption = document.querySelector('input[name="option_select"]:checked').value;
+                        document.getElementById("wizardPage2").style.display = "none";
+
+                        if (selectedOption === "international") {
+                            document.getElementById("wizardPage3International").style.display = "block";
+                        } else {
+                            document.getElementById("wizardPage3Custom").style.display = "block";
+                        }
+                    });
+
+                    // Fixing Back Buttons
+                    document.getElementById("backToPage1").addEventListener("click", function () {
+                        document.getElementById("wizardPage2").style.display = "none";
+                        document.getElementById("wizardPage1").style.display = "block";
+                        document.getElementById("wizardInfo").classList.remove("hidden");
+                    });
+
+                    document.getElementById("backToPage2FromIntl").addEventListener("click", function () {
+                        document.getElementById("wizardPage3International").style.display = "none";
+                        document.getElementById("wizardPage2").style.display = "block";
+                    });
+
+                    document.getElementById("backToPage2FromCustom").addEventListener("click", function () {
+                        document.getElementById("wizardPage3Custom").style.display = "none";
+                        document.getElementById("wizardPage2").style.display = "block";
+                    });
+
+                    function closeWizard() {
+                        window.location.href = window.location.href + "&skip_wizard=1";
+                    }
+
+                    document.getElementById("closeWizard").addEventListener("click", closeWizard);
+                    document.getElementById("installManually").addEventListener("click", closeWizard);
+                });
+            </script>
+
+            <?php
+            return;
+        }
+
         if (!isset($options['idehweb_phone_number'])) $options['idehweb_phone_number'] = '';
         if (!isset($options['idehweb_token'])) $options['idehweb_token'] = '';
         if (!isset($options['idehweb_online_support'])) $options['idehweb_online_support'] = '1';
-
 
         ?>
         <div class="wrap">

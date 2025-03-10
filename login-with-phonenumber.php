@@ -396,7 +396,7 @@ class idehwebLwp
     function settings_page()
     {
         $options = get_option('idehweb_lwp_settings');
-
+//        $country_options = get_country_code_options();
         if (!isset($_GET['skip_wizard'])) {
             ?>
             <!-- Wizard Overlay -->
@@ -410,7 +410,7 @@ class idehwebLwp
                     <div class="wizard-content">
                         <!-- Information Section (ONLY in Page 1) -->
                         <div class="wizard-info" id="wizardInfo">
-                            <h3>ℹ️ How This Wizard Works</h3>
+                            <h3> How This Wizard Works</h3>
                             <p>This wizard will help you configure the login system quickly. Follow the steps below and choose your preferred setup method.</p>
                         </div>
 
@@ -440,7 +440,15 @@ class idehwebLwp
                         <!-- Page 3: International -->
                         <div id="wizardPage3International" style="display: none;">
                             <h2>International Setup</h2>
-                            <p>This configuration is optimized for global users.</p>
+                            <p>Select multiple countries from the list below.</p>
+                            <select id="countrySelectIntl" class="country-select" multiple>
+                                <?php
+                                $countries = $this->get_country_code_options();
+                                foreach ($countries as $country) {
+                                    echo '<option value="' . esc_attr($country["value"]) . '">' . esc_html($country["label"]) . '</option>';
+                                }
+                                ?>
+                            </select>
                             <div class="button-container">
                                 <button id="backToPage2FromIntl" class="button-secondary">Back</button>
                                 <button id="finishWizardIntl" class="button-primary">Finish</button>
@@ -450,7 +458,15 @@ class idehwebLwp
                         <!-- Page 3: Custom -->
                         <div id="wizardPage3Custom" style="display: none;">
                             <h2>Custom Setup</h2>
-                            <p>Set up a custom authentication method.</p>
+                            <p>Select a single country from the list below.</p>
+                            <select id="countrySelectCustom" class="country-select">
+                                <option value="">Select a country...</option>
+                                <?php
+                                foreach ($countries as $country) {
+                                    echo '<option value="' . esc_attr($country["value"]) . '">' . esc_html($country["label"]) . '</option>';
+                                }
+                                ?>
+                            </select>
                             <div class="button-container">
                                 <button id="backToPage2FromCustom" class="button-secondary">Back</button>
                                 <button id="finishWizardCustom" class="button-primary">Finish</button>
@@ -599,7 +615,19 @@ class idehwebLwp
                         }
                     });
 
-                    // Fixing Back Buttons
+                    // مدیریت انتخاب چندتایی برای International
+                    document.getElementById("countrySelectIntl").addEventListener("change", function () {
+                        let selectedValues = Array.from(this.selectedOptions).map(option => option.value);
+                        console.log("Selected Countries (International):", selectedValues);
+                    });
+
+                    // مدیریت انتخاب تکی برای Custom
+                    document.getElementById("countrySelectCustom").addEventListener("change", function () {
+                        let selectedValue = this.value;
+                        console.log("Selected Country (Custom):", selectedValue);
+                    });
+
+                    // دکمه‌های بازگشت
                     document.getElementById("backToPage1").addEventListener("click", function () {
                         document.getElementById("wizardPage2").style.display = "none";
                         document.getElementById("wizardPage1").style.display = "block";

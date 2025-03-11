@@ -464,13 +464,17 @@ class idehwebLwp
                             <p>All countries have been selected ✅</p>
                             <!-- List of gateways -->
                             <h3>Available Gateways</h3>
-                            <ul id="gatewayList" class="gateway-list">
-                                <li>Firebase</li>
-                                <li>TextLocal</li>
-                                <li>Vonage</li>
-                                <li>telegram</li>
-                                <li>whatsapp</li>
-                            </ul>
+                            <div id="gatewayList" class="gateway-list">
+                                <label class="gateway-option">
+                                    <input type="radio" name="selectedGateway" value="firebase"> Firebase
+                                </label>
+                                <label class="gateway-option">
+                                    <input type="radio" name="selectedGateway" value="telegram"> Telegram
+                                </label>
+                                <label class="gateway-option">
+                                    <input type="radio" name="selectedGateway" value="whatsapp"> WhatsApp
+                                </label>
+                            </div>
                             <div class="button-container">
                                 <button id="backToPage2FromCustom" class="button-secondary">Back</button>
                                 <button id="finishWizardCustom" class="button-primary">Finish</button>
@@ -479,6 +483,7 @@ class idehwebLwp
                     </div>
                 </div>
             </div>
+
             <?php
             return;
         }

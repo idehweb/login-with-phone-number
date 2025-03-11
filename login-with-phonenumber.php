@@ -395,8 +395,9 @@ class idehwebLwp
 
     function settings_page()
     {
+        wp_enqueue_style('idehweb-lwp-setting-page-wizard-css', plugins_url('/styles/wizard.css', __FILE__));
+        wp_enqueue_script('idehweb-lwp-setting-page-wizard-js', plugins_url('/scripts/wizard.js', __FILE__), array('jquery'), true, true);
         $options = get_option('idehweb_lwp_settings');
-//        $country_options = get_country_code_options();
         if (!isset($_GET['skip_wizard'])) {
             ?>
             <!-- Wizard Overlay -->
@@ -426,10 +427,10 @@ class idehwebLwp
 
                         <!-- Page 2 -->
                         <div id="wizardPage2" style="display: none;">
-                            <h2>Choose an Option</h2>
+                            <h2>your customer where is from?</h2>
                             <div class="radio-container">
-                                <label><input type="radio" name="option_select" value="international"> International</label>
-                                <label><input type="radio" name="option_select" value="custom"> Custom</label>
+                                <label><input type="radio" name="option_select" value="international">Custom </label>
+                                <label><input type="radio" name="option_select" value="custom"> International</label>
                             </div>
                             <div class="button-container">
                                 <button id="backToPage1" class="button-secondary">Back</button>
@@ -437,10 +438,11 @@ class idehwebLwp
                             </div>
                         </div>
 
-                        <!-- Page 3: International -->
+                        <!-- Page 3: custom -->
                         <div id="wizardPage3International" style="display: none;">
-                            <h2>International Setup</h2>
+                            <h2>custom Setup</h2>
                             <p>Select multiple countries from the list below.</p>
+                            <input type="text" id="searchIntl" placeholder="Search country..." class="search-box">
                             <select id="countrySelectIntl" class="country-select" multiple>
                                 <?php
                                 $countries = $this->get_country_code_options();
@@ -449,24 +451,26 @@ class idehwebLwp
                                 }
                                 ?>
                             </select>
+                            <div id="selectedCountriesContainer" style="display: none;"></div>
                             <div class="button-container">
                                 <button id="backToPage2FromIntl" class="button-secondary">Back</button>
                                 <button id="finishWizardIntl" class="button-primary">Finish</button>
                             </div>
                         </div>
 
-                        <!-- Page 3: Custom -->
+                        <!-- Page 3: International -->
                         <div id="wizardPage3Custom" style="display: none;">
-                            <h2>Custom Setup</h2>
-                            <p>Select a single country from the list below.</p>
-                            <select id="countrySelectCustom" class="country-select">
-                                <option value="">Select a country...</option>
-                                <?php
-                                foreach ($countries as $country) {
-                                    echo '<option value="' . esc_attr($country["value"]) . '">' . esc_html($country["label"]) . '</option>';
-                                }
-                                ?>
-                            </select>
+                            <h2>Internatonal Setup</h2>
+                            <p>All countries have been selected ✅</p>
+                            <!-- List of gateways -->
+                            <h3>Available Gateways</h3>
+                            <ul id="gatewayList" class="gateway-list">
+                                <li>Firebase</li>
+                                <li>TextLocal</li>
+                                <li>Vonage</li>
+                                <li>telegram</li>
+                                <li>whatsapp</li>
+                            </ul>
                             <div class="button-container">
                                 <button id="backToPage2FromCustom" class="button-secondary">Back</button>
                                 <button id="finishWizardCustom" class="button-primary">Finish</button>
@@ -475,184 +479,6 @@ class idehwebLwp
                     </div>
                 </div>
             </div>
-
-            <!-- Styles (Windows 11 Look) -->
-            <style>
-                /* Overlay */
-                .wizard-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.4);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 9999;
-                }
-
-                /* Wizard Container */
-                .wizard-container {
-                    background: rgba(255, 255, 255, 0.95);
-                    backdrop-filter: blur(10px);
-                    padding: 20px;
-                    border-radius: 12px;
-                    width: 460px;
-                    max-width: 90%;
-                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-                    text-align: center;
-                    position: relative;
-                    animation: fadeIn 0.3s ease-out;
-                }
-
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: scale(0.95); }
-                    to { opacity: 1; transform: scale(1); }
-                }
-
-                /* Wizard Header */
-                .wizard-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 8px 12px;
-                    border-bottom: 1px solid #ddd;
-                    background: rgba(0, 0, 0, 0.1);
-                    color: #333;
-                    font-size: 13px;
-                    font-weight: bold;
-                    cursor: grab;
-                    border-top-left-radius: 12px;
-                    border-top-right-radius: 12px;
-                }
-
-                .close-button {
-                    background: none;
-                    border: none;
-                    font-size: 16px;
-                    cursor: pointer;
-                    color: #333;
-                }
-
-                /* Buttons */
-                .button-container {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 15px;
-                }
-
-                .button-primary {
-                    background: #0073aa;
-                    color: white;
-                    border: none;
-                    padding: 10px 18px;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    transition: 0.2s;
-                }
-
-                .button-secondary {
-                    background: #ccc;
-                    color: black;
-                    border: none;
-                    padding: 10px 18px;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    transition: 0.2s;
-                }
-
-                /* Mobile Optimization */
-                @media screen and (max-width: 480px) {
-                    .wizard-container {
-                        width: 90%;
-                        padding: 15px;
-                    }
-
-                    .wizard-header {
-                        font-size: 12px;
-                        padding: 6px 10px;
-                    }
-
-                    .button-container {
-                        flex-direction: column;
-                        gap: 10px;
-                    }
-
-                    .button-primary, .button-secondary {
-                        width: 100%;
-                    }
-                }
-            </style>
-
-            <!-- JavaScript -->
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    function hideInfo() {
-                        document.getElementById("wizardInfo").classList.add("hidden");
-                    }
-
-                    document.getElementById("nextToPage2").addEventListener("click", function () {
-                        document.getElementById("wizardPage1").style.display = "none";
-                        document.getElementById("wizardPage2").style.display = "block";
-                        hideInfo();
-                    });
-
-                    document.querySelectorAll('input[name="option_select"]').forEach(function (radio) {
-                        radio.addEventListener("change", function () {
-                            document.getElementById("nextToPage3").disabled = false;
-                        });
-                    });
-
-                    document.getElementById("nextToPage3").addEventListener("click", function () {
-                        let selectedOption = document.querySelector('input[name="option_select"]:checked').value;
-                        document.getElementById("wizardPage2").style.display = "none";
-
-                        if (selectedOption === "international") {
-                            document.getElementById("wizardPage3International").style.display = "block";
-                        } else {
-                            document.getElementById("wizardPage3Custom").style.display = "block";
-                        }
-                    });
-
-                    // مدیریت انتخاب چندتایی برای International
-                    document.getElementById("countrySelectIntl").addEventListener("change", function () {
-                        let selectedValues = Array.from(this.selectedOptions).map(option => option.value);
-                        console.log("Selected Countries (International):", selectedValues);
-                    });
-
-                    // مدیریت انتخاب تکی برای Custom
-                    document.getElementById("countrySelectCustom").addEventListener("change", function () {
-                        let selectedValue = this.value;
-                        console.log("Selected Country (Custom):", selectedValue);
-                    });
-
-                    // دکمه‌های بازگشت
-                    document.getElementById("backToPage1").addEventListener("click", function () {
-                        document.getElementById("wizardPage2").style.display = "none";
-                        document.getElementById("wizardPage1").style.display = "block";
-                        document.getElementById("wizardInfo").classList.remove("hidden");
-                    });
-
-                    document.getElementById("backToPage2FromIntl").addEventListener("click", function () {
-                        document.getElementById("wizardPage3International").style.display = "none";
-                        document.getElementById("wizardPage2").style.display = "block";
-                    });
-
-                    document.getElementById("backToPage2FromCustom").addEventListener("click", function () {
-                        document.getElementById("wizardPage3Custom").style.display = "none";
-                        document.getElementById("wizardPage2").style.display = "block";
-                    });
-
-                    function closeWizard() {
-                        window.location.href = window.location.href + "&skip_wizard=1";
-                    }
-
-                    document.getElementById("closeWizard").addEventListener("click", closeWizard);
-                    document.getElementById("installManually").addEventListener("click", closeWizard);
-                });
-            </script>
-
             <?php
             return;
         }

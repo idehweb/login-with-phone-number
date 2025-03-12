@@ -397,6 +397,7 @@ class idehwebLwp
     {
         wp_enqueue_style('idehweb-lwp-setting-page-wizard-css', plugins_url('/styles/wizard.css', __FILE__));
         wp_enqueue_script('idehweb-lwp-setting-page-wizard-js', plugins_url('/scripts/wizard.js', __FILE__), array('jquery'), true, true);
+
         $options = get_option('idehweb_lwp_settings');
         if (!isset($_GET['skip_wizard'])) {
             ?>
@@ -404,21 +405,26 @@ class idehwebLwp
             <div id="wizardModal" class="wizard-overlay">
                 <div class="wizard-container" id="draggableWizard">
                     <div class="wizard-header" id="wizardHeader">
-                        <span class="wizard-title">⚙️ Setup Wizard</span>
+                        <span class="wizard-title">
+                            <span class="gear-icon">⚙️</span> Setup Wizard
+                        </span>
                         <button id="closeWizard" class="close-button">×</button>
                     </div>
 
                     <div class="wizard-content">
                         <!-- Information Section (ONLY in Page 1) -->
                         <div class="wizard-info" id="wizardInfo">
-                            <h3> How This Wizard Works</h3>
-                            <p>This wizard will help you configure the login system quickly. Follow the steps below and choose your preferred setup method.</p>
+                            <h3>🔹 Quick Setup Guide</h3>
+                            <p>Welcome to the <strong>Login with Phone Number</strong> plugin setup assistant!
+                                This wizard will guide you step by step to configure the login system according to your preferences.
+                                Follow the instructions to get started quickly and efficiently.</p>
+
                         </div>
 
                         <!-- Page 1 -->
                         <div id="wizardPage1">
-                            <h2>Welcome!</h2>
-                            <p>Let's get started! Select an option to continue.</p>
+                            <h2>👋 Welcome to the Setup Wizard!</h2>
+                            <p>Let's begin! Choose how you’d like to proceed with the installation.</p>
                             <div class="button-container">
                                 <button id="installManually" class="button-secondary">Install Manually</button>
                                 <button id="nextToPage2" class="button-primary">Next</button>

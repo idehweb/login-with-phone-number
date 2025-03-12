@@ -1,6 +1,17 @@
 jQuery(document).ready(function ($) {
+    var urlParams = new URLSearchParams(window.location.search);
+    var selectedGateway = urlParams.get("selected_gateway");
+
+    if (selectedGateway) {
+        $("#idehweb_default_gateways").val(selectedGateway).trigger("change");
+    }
+
+    $(".lwp-tab-item[data-tab='lwp-tab-gateway-settings']").click();
+
     var default_tab = window.location.hash ? window.location.hash.substring(1) : 'lwp-tab-general-settings'; // Default to 'gateway-settings'
     // $('#' + initialTab).addClass('active');
+
+
 
 
     jQuery('.ilwplabel').css('display', 'none')

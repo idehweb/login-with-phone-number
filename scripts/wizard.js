@@ -2,39 +2,39 @@ document.addEventListener("DOMContentLoaded", function () {
     let gatewayOptions = document.querySelectorAll('input[name="selectedGateway"]');
     let finishButton = document.getElementById("finishWizardCustom");
 
-    //  ابتدا دکمه‌ی Finish را غیرفعال کن
+    // Initially disable the finish button
     finishButton.disabled = true;
 
-    //  فعال‌سازی دکمه‌ی Finish بعد از انتخاب Gateway
+    // Enable the finish button when a gateway is selected
     gatewayOptions.forEach(function (option) {
         option.addEventListener("change", function () {
             finishButton.disabled = false;
         });
     });
 
-    //  وقتی روی Finish کلیک شد، ویزارد بسته شده و به صفحه‌ی تنظیمات Gateway هدایت شود
+    // Handle finish button click event
     finishButton.addEventListener("click", function () {
         let selectedGateway = document.querySelector('input[name="selectedGateway"]:checked').value;
-        localStorage.setItem("selectedGateway", selectedGateway); // ذخیره در Local Storage
+        localStorage.setItem("selectedGateway", selectedGateway);
 
-        // مسیر هدایت به تنظیمات Gateway
         let gatewayTabs = {
             "firebase": "firebase",
             "telegram": "telegram",
             "whatsapp": "whatsapp"
         };
 
+        // Redirect to the appropriate settings page with selected gateway
         if (gatewayTabs[selectedGateway]) {
-            console.log("url", window.location.href.split("?")[0] + "?page=idehweb-lwp&skip_wizard=1&tab=" + gatewayTabs[selectedGateway]+'#lwp-tab-gateway-settings');
+            let basePath = window.location.origin + window.location.pathname.split("/wp-admin")[0];
 
-            // window.location.href = window.location.href.split("?")[0] + "?page=idehweb-lwp&skip_wizard=1&tab=" + gatewayTabs[selectedGateway]+'#lwp-tab-gateway-settings';
+            let newUrl = `${basePath}/wp-admin/admin.php?page=idehweb-lwp&skip_wizard=1&tab=lwp-tab-gateway-settings&selected_gateway=${gatewayTabs[selectedGateway]}#lwp-tab-gateway-settings`;
 
-            window.location.assign(
-                window.location.href.split("?")[0] + "?page=idehweb-lwp&skip_wizard=1&tab=" + gatewayTabs[selectedGateway] + "#lwp-tab-gateway-settings"
-            );
+            console.log("Navigating to:", newUrl);
+            window.location.href = newUrl; // Use href to properly handle URL fragment navigation
         }
     });
 
+    // Restore previously selected gateway from localStorage
     let savedGateway = localStorage.getItem("selectedGateway");
     if (savedGateway) {
         let selectedGatewayInput = document.querySelector(`input[name="selectedGateway"][value="${savedGateway}"]`);
@@ -44,31 +44,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-
-
-
-
-
-
-
-
+    // Hide wizard information section
     function hideInfo() {
         document.getElementById("wizardInfo").classList.add("hidden");
     }
 
+    // Navigation from Page 1 to Page 2
     document.getElementById("nextToPage2").addEventListener("click", function () {
         document.getElementById("wizardPage1").style.display = "none";
         document.getElementById("wizardPage2").style.display = "block";
         hideInfo();
     });
 
+    // Enable Next button on Page 2 when an option is selected
     document.querySelectorAll('input[name="option_select"]').forEach(function (radio) {
         radio.addEventListener("change", function () {
             document.getElementById("nextToPage3").disabled = false;
         });
     });
 
+    // Navigation from Page 2 to Page 3 based on selected option
     document.getElementById("nextToPage3").addEventListener("click", function () {
         let selectedOption = document.querySelector('input[name="option_select"]:checked').value;
         document.getElementById("wizardPage2").style.display = "none";
@@ -80,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Handle country selection for the "Custom" setup
     let selectedCountries = [];
     document.getElementById("countrySelectIntl").addEventListener("change", function () {
         let container = document.getElementById("selectedCountriesContainer");
@@ -92,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 div.classList.add("selected-country");
                 div.innerHTML = `${option.text} <button class="remove-country">×</button>`;
 
+                // Remove country from the list when the remove button is clicked
                 div.querySelector(".remove-country").addEventListener("click", function () {
                     option.selected = false;
                     selectedCountries = selectedCountries.filter(c => c !== option.value);
@@ -106,13 +103,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        if (selectedCountries.length > 0) {
-            container.style.display = "block";
-        } else {
-            container.style.display = "none";
-        }
+        // Show or hide the selected countries container
+        container.style.display = selectedCountries.length > 0 ? "block" : "none";
     });
 
+    // Back button functionality to navigate between pages
     document.getElementById("backToPage1").addEventListener("click", function () {
         document.getElementById("wizardPage2").style.display = "none";
         document.getElementById("wizardPage1").style.display = "block";
@@ -129,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("wizardPage2").style.display = "block";
     });
 
+    // Close wizard and skip setup
     function closeWizard() {
         window.location.href = window.location.href + "&skip_wizard=1";
     }
@@ -136,6 +132,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("closeWizard").addEventListener("click", closeWizard);
     document.getElementById("installManually").addEventListener("click", closeWizard);
 });
+
+// Function to filter country list based on search input
 function filterCountries(inputId, selectId) {
     document.getElementById(inputId).addEventListener("input", function () {
         let searchValue = this.value.toLowerCase();
@@ -146,6 +144,15 @@ function filterCountries(inputId, selectId) {
     });
 }
 
-// search box for International and Custom
+// Apply search filtering to country selection
 filterCountries("searchIntl", "countrySelectIntl");
 // filterCountries("searchCustom", "countrySelectCustom");
+
+
+
+
+
+
+
+
+

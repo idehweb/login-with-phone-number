@@ -160,16 +160,27 @@
 /* Country List */
 .country-select {
     width: 100%;
+    min-height: 40px !important;
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
     background: white;
-    transition: 0.2s;
+    display: block;
+    box-sizing: border-box;
+}
+
+/*.country-select .select2-container {*/
+/*    width: 100% !important;*/
+/*}*/
+.select2-container--default .select2-selection--multiple {
+    padding-right: 250px;
+    padding-bottom: 3px;
 }
 
 .country-select:focus {
     border-color: #0073aa;
     outline: none;
+    width: 100%;
 }
 
 /* Selected Countries Container */
@@ -268,7 +279,6 @@
         font-size: 14px;
     }
 }
-/* چرخش چرخ‌دنده در عنوان */
 @keyframes rotateGear {
     from {
         transform: rotate(0deg);

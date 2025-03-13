@@ -444,16 +444,29 @@ class idehwebLwp
                             </div>
                         </div>
 
+
+<!--                        --><?php
+//                        $country_codes = $this->get_country_code_options();
+//                        ?>
+<!--                        <select id="lwp_idehweb_country_codes_guid" class="country-select">-->
+<!--                            --><?php
+//                            $country_codes = $this->get_country_code_options();
+//                            foreach ($country_codes as $country) {
+//                                echo '<option value="' . esc_attr($country["code"]) . '" >' . esc_html($country['label']) . '</option>';
+//                            }
+//                            ?>
+<!--                        </select>-->
+
+
                         <!-- Page 3: custom -->
                         <div id="wizardPage3International" style="display: none;">
                             <h2>custom Setup</h2>
                             <p>Select multiple countries from the list below.</p>
-                            <input type="text" id="searchIntl" placeholder="Search country..." class="search-box">
-                            <select id="countrySelectIntl" class="country-select" multiple>
+                            <select id="lwp_idehweb_country_codes_guid" class="country-select" multiple>
                                 <?php
-                                $countries = $this->get_country_code_options();
-                                foreach ($countries as $country) {
-                                    echo '<option value="' . esc_attr($country["value"]) . '">' . esc_html($country["label"]) . '</option>';
+                                $country_codes = $this->get_country_code_options();
+                                foreach ($country_codes as $country) {
+                                    echo '<option value="' . esc_attr($country["code"]) . '" >' . esc_html($country['label']) . '</option>';
                                 }
                                 ?>
                             </select>
@@ -762,6 +775,7 @@ class idehwebLwp
                         idehweb_country_codes.select2();
                         lwp_idehweb_country_codes.select2();
                         $("#idehweb_default_gateways").select2();
+                        // $("#lwp_idehweb_country_codes_guid").select2();
                         // $(".idehweb_default_gateways_wrapper ul.select2-selection__rendered").sortable({
                         //     containment: 'parent',
                         //

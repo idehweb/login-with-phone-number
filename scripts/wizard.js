@@ -1,34 +1,54 @@
 jQuery(document).ready(function ($) {
-var lwp_countries_gateways=[
-    {
-        "country":"ir",
-        "gateways":["farazsms","melipayamak"]
-    },
-    {
-        "country":"sa",
-        "gateways":["taqnyat"]
-    }
-    ,
-    {
-        "country":"in",
-        "gateways":["mshastra","textlocal"]
-    }
-];
-    $(window).load(function () {
+    var lwp_countries_gateways = [
+        { "country": "ir", "gateways": ["farazsms", "melipayamak"] },
+        { "country": "sa", "gateways": ["taqnyat"] },
+        { "country": "in", "gateways": ["mshastra", "textlocal"] }
+    ];
+
+    $(window).on('load', function () {
         $("#lwp_idehweb_country_codes_guid").select2();
-    })
-    $(document).on('click','#finishWizardIntl',function (e){
+    });
+
+    $(document).on('click', '#finishWizardIntl', function (e) {
+        e.preventDefault();
         var selectedValues = $("#lwp_idehweb_country_codes_guid").val();
-        console.log("Selected Values:", selectedValues);
-        // lwp_countries_gateways.forEach(item=>{
-        //     if(item?.name==selectedValues)
-        // })
+        console.log("Selected Countries:", selectedValues);
+
+        var selectedGateways = [];
+        selectedValues.forEach(function (selectedCountry) {
+            lwp_countries_gateways.forEach(function (item) {
+                if (item.country === selectedCountry) {
+                    selectedGateways = selectedGateways.concat(item.gateways);
+                }
+            });
+        });
+
+        console.log("Selected Gateways:", selectedGateways,idehweb_lwp.ajaxurl, idehweb_lwp.nonce);
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: idehweb_lwp.ajaxurl,
+            data: {
+                action: "lwp_set_countries",
+                nonce: idehweb_lwp.nonce,
+                selected_countries: selectedValues,
+                selected_gateways: selectedGateways
+            },
+            success: function (response) {
+                console.log("Response from server:", response);
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+                // console.log("Response Text:", xhr.responseText);
+            }
+        });
+    });
+});
         //get countries
         //get list of country and gateways
         //return gateways
 
-    });
-})
 document.addEventListener("DOMContentLoaded", function () {
     let gatewayOptions = document.querySelectorAll('input[name="selectedGateway"]');
     let finishButton = document.getElementById("finishWizardCustom");

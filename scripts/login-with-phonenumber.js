@@ -18,7 +18,6 @@ jQuery(document).ready(function ($) {
             $('input.lwp_scode[name="lwp_scode"]').blur();
             $('.auth_secCode').click();
         }
-
     })
     $('body').on('click', '#show_login , .show_login, .lwp-open-form', function (e) {
         console.log('show_login clicked');

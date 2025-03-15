@@ -35,6 +35,9 @@ class idehwebLwp
 //        if (class_exists(LWP_PRO::class)) {
 //            $LWP_PRO = new LWP_PRO;
 //        }
+
+
+
         add_action('init', array(&$this, 'idehweb_lwp_textdomain'));
         add_action('admin_init', array(&$this, 'admin_init'));
         add_action('admin_menu', array(&$this, 'admin_menu'));
@@ -62,6 +65,9 @@ class idehwebLwp
         add_action('wp_ajax_nopriv_lwp_update_password_action', array(&$this, 'lwp_update_password_action'));
         add_action('wp_ajax_nopriv_lwp_enter_password_action', array(&$this, 'lwp_enter_password_action'));
         add_action('wp_ajax_nopriv_lwp_forgot_password', array(&$this, 'lwp_forgot_password'));
+        add_action('wp_ajax_lwp_set_countries', array(&$this, 'lwp_set_countries'));
+//        add_action('wp_ajax_nopriv_lwp_set_countries', array(&$this, 'lwp_set_countries'));
+
         add_action('activated_plugin', array(&$this, 'lwp_activation_redirect'));
 
         add_action('admin_enqueue_scripts', array(&$this, 'lwp_load_wp_media_files'));
@@ -133,8 +139,16 @@ class idehwebLwp
 
     function lwp_load_wp_media_files($page)
     {
+        $localize = array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+        );
+        $localize['nonce'] = wp_create_nonce('lwp_set_countries');
 //        echo $page;
 //        wp_enqueue_script('idehweb-lwp-admin-select2-sortable', plugins_url('/scripts/select2.sortable.js', __FILE__), array('jquery'), true, true);
+        wp_enqueue_script('idehweb-lwp-setting-page-wizard-js', plugins_url('/scripts/wizard.js', __FILE__), array('jquery'), true, true);
+        wp_enqueue_style('idehweb-lwp-setting-page-wizard-css', plugins_url('/styles/wizard.css', __FILE__));
+
+        wp_localize_script('idehweb-lwp-setting-page-wizard-js', 'idehweb_lwp', $localize);
 
         if ($page == 'login-setting_page_idehweb-lwp-styles') {
             wp_enqueue_media();
@@ -215,7 +229,8 @@ class idehwebLwp
 
     function admin_init()
     {
-        $options = get_option('idehweb_lwp_settings');
+//        $options = get_option('idehweb_lwp_settings');
+        update_option('idehweb_lwp_settings',[]);
         $style_options = get_option('idehweb_lwp_settings_styles');
         if (!$style_options) {
             $style_options = [];
@@ -395,8 +410,6 @@ class idehwebLwp
 
     function settings_page()
     {
-        wp_enqueue_style('idehweb-lwp-setting-page-wizard-css', plugins_url('/styles/wizard.css', __FILE__));
-        wp_enqueue_script('idehweb-lwp-setting-page-wizard-js', plugins_url('/scripts/wizard.js', __FILE__), array('jquery'), true, true);
 
         $options = get_option('idehweb_lwp_settings');
         if (!isset($_GET['skip_wizard'])) {
@@ -458,11 +471,12 @@ class idehwebLwp
 <!--                        </select>-->
 
 
+<!--                        <select name="idehweb_lwp_settings[idehweb_country_codes][]" id="idehweb_country_codes" multiple>-->
                         <!-- Page 3: custom -->
                         <div id="wizardPage3International" style="display: none;">
                             <h2>custom Setup</h2>
                             <p>Select multiple countries from the list below.</p>
-                            <select id="lwp_idehweb_country_codes_guid" class="country-select" multiple>
+                            <select name="idehweb_lwp_setting[idehweb_country_code-json-save][]" id="lwp_idehweb_country_codes_guid" class="country-select" multiple>
                                 <?php
                                 $country_codes = $this->get_country_code_options();
                                 foreach ($country_codes as $country) {
@@ -470,7 +484,7 @@ class idehwebLwp
                                 }
                                 ?>
                             </select>
-                            <div id="selectedCountriesContainer" style="display: none;"></div>
+<!--                            <div id="selectedCountriesContainer" style="display: none;"></div>-->
                             <div class="button-container">
                                 <button id="backToPage2FromIntl" class="button-secondary">Back</button>
                                 <button id="finishWizardIntl" class="button-primary">Finish</button>
@@ -2448,13 +2462,16 @@ class idehwebLwp
 
         wp_enqueue_style('idehweb-lwp', plugins_url('/styles/login-with-phonenumber.css', __FILE__));
 
-        wp_enqueue_style('idehweb-lwp', plugins_url('/styles/wizard.css', __FILE__));
+//        wp_enqueue_style('idehweb-lwp', plugins_url('/styles/wizard.css', __FILE__));
 
         wp_enqueue_script('idehweb-lwp-validate-script', plugins_url('/scripts/jquery.validate.js', __FILE__), array('jquery'));
 
 
         wp_enqueue_script('idehweb-lwp', plugins_url('/scripts/login-with-phonenumber.js', __FILE__), array('jquery'));
 
+
+
+//        wp_enqueue_style('idehweb-lwp-setting-page-wizard-css', plugins_url('/styles/wizard.css', __FILE__));
 
         if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways'])) {
             wp_enqueue_script('lwp-firebase', 'https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js', array(), false, true);
@@ -2467,6 +2484,9 @@ class idehwebLwp
         $localize['close_button'] = $options['idehweb_close_button'];
         $localize['nonce'] = wp_create_nonce('lwp_login');
         wp_localize_script('idehweb-lwp', 'idehweb_lwp', $localize);
+
+
+
         if ($options['idehweb_use_custom_gateway'] == '1' && in_array('firebase', $options['idehweb_default_gateways'])) {
             $options['idehweb_firebase_config'] = $this->setting_clean_firebase_config_code($options['idehweb_firebase_config']);
             wp_add_inline_script('idehweb-lwp', '' . htmlspecialchars_decode($options['idehweb_firebase_config']));
@@ -3709,6 +3729,48 @@ class idehwebLwp
             die();
         }
     }
+
+    function lwp_set_countries()
+    {
+
+        error_log("Received AJAX request in lwp_set_countries");
+
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'lwp_set_countries')) {
+            error_log("Invalid nonce received in set_countries");
+            wp_send_json_error("Invalid nonce.");
+            exit;
+        }
+        if (!isset($_POST['selected_countries']) || empty($_POST['selected_countries'])) {
+            error_log("No countries selected in lwp_set_countries");
+            wp_send_json_error("No countries selected.");
+            exit;
+        }
+//echo'hi';
+//        die();
+        $selected_countries = $_POST['selected_countries'];
+        $selected_gateways = isset($_POST['selected_gateways']) ? $_POST['selected_gateways'] : [];
+
+        if (empty($selected_countries)) {
+            error_log("No countries selected in lwp_set_countries");
+            wp_send_json_error("No countries selected.");
+            exit;
+        }
+        $options = get_option('idehweb_lwp_settings');
+        print_r($options['idehweb_country_codes']);
+//
+//        $options['idehweb_country_codes'];
+        update_option('idehweb_lwp_settings', json_encode($options));
+//        error_log("Saved Countries: " . print_r($selected_countries, true));
+//        update_option('lwp_selected_gateways', $selected_gateways);
+//        error_log("Saved Gateways: " . print_r($selected_gateways, true));
+//
+//        error_log("Received Countries: " . print_r($selected_countries, true));
+//        error_log("Received Gateways: " . print_r($selected_gateways, true));
+        wp_send_json_success(["message" => "Countries saved successfully!"]);
+    }
+
+
+
 
     function lwp_ajax_verify_with_email()
 

@@ -15,15 +15,15 @@ jQuery(document).ready(function ($) {
         console.log("Selected Countries:", selectedValues);
 
         var selectedGateways = [];
-        selectedValues.forEach(function (selectedCountry) {
-            lwp_countries_gateways.forEach(function (item) {
+        $.each(selectedValues, function (index, selectedCountry) {
+            $.each(lwp_countries_gateways, function (i, item) {
                 if (item.country === selectedCountry) {
                     selectedGateways = selectedGateways.concat(item.gateways);
                 }
             });
         });
 
-        console.log("Selected Gateways:", selectedGateways,idehweb_lwp.ajaxurl, idehweb_lwp.nonce);
+        console.log("Selected Gateways:", selectedGateways, idehweb_lwp.ajaxurl, idehweb_lwp.nonce);
 
         $.ajax({
             type: "POST",
@@ -40,139 +40,106 @@ jQuery(document).ready(function ($) {
             },
             error: function (xhr, status, error) {
                 console.error("AJAX Error:", error);
-                // console.log("Response Text:", xhr.responseText);
             }
         });
     });
-});
-        //get countries
-        //get list of country and gateways
-        //return gateways
 
-document.addEventListener("DOMContentLoaded", function () {
-    let gatewayOptions = document.querySelectorAll('input[name="selectedGateway"]');
-    let finishButton = document.getElementById("finishWizardCustom");
+    // Get selected_gateway from URL
+    function getQueryParam(param) {
+        let urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    var selectedGateway = getQueryParam("selected_gateway") || localStorage.getItem("selectedGateway");
+
+    var default_tab = selectedGateway ? "lwp-tab-gateway-settings" : (window.location.hash ? window.location.hash.substring(1) : "lwp-tab-general-settings");
+
+    console.log("Default Tab:", default_tab);
+
+    if (selectedGateway) {
+        console.log("Selected Gateway:", selectedGateway);
+        $('input[name="selectedGateway"][value="' + selectedGateway + '"]').prop("checked", true);
+        $("#finishWizardCustom").prop("disabled", false);
+    }
 
     // Initially disable the finish button
-    finishButton.disabled = true;
+    $("#finishWizardCustom").prop("disabled", true);
 
     // Enable the finish button when a gateway is selected
-    gatewayOptions.forEach(function (option) {
-        option.addEventListener("change", function () {
-            finishButton.disabled = false;
-        });
+    $('input[name="selectedGateway"]').on("change", function () {
+        $("#finishWizardCustom").prop("disabled", false);
     });
 
     // Handle finish button click event
-    // finishButton.addEventListener("click", function () {
-    //     let selectedGateway = document.querySelector('input[name="selectedGateway"]:checked').value;
-    //     localStorage.setItem("selectedGateway", selectedGateway);
-    //
-    //     let gatewayTabs = {
-    //         "firebase": "firebase",
-    //         "telegram": "telegram",
-    //         "whatsapp": "whatsapp"
-    //     };
-    //
-    //     // Redirect to the appropriate settings page with selected gateway
-    //     if (gatewayTabs[selectedGateway]) {
-    //         let basePath = window.location.origin + window.location.pathname.split("/wp-admin")[0];
-    //
-    //         let newUrl = `${basePath}/wp-admin/admin.php?page=idehweb-lwp&skip_wizard=1&tab=lwp-tab-gateway-settings&selected_gateway=${gatewayTabs[selectedGateway]}#lwp-tab-gateway-settings`;
-    //
-    //         console.log("Navigating to:", newUrl);
-    //         window.location.href = newUrl; // Use href to properly handle URL fragment navigation
-    //     }
-    // });
+    $("#finishWizardCustom").on("click", function () {
+        var selectedGateway = $('input[name="selectedGateway"]:checked').val();
+        localStorage.setItem("selectedGateway", selectedGateway);
+
+        var gatewayTabs = {
+            "firebase": "firebase",
+            "telegram": "telegram",
+            "whatsapp": "whatsapp"
+        };
+
+        if (gatewayTabs[selectedGateway]) {
+            var basePath = window.location.origin + window.location.pathname.split("/wp-admin")[0];
+            var newUrl = basePath + "/wp-admin/admin.php?page=idehweb-lwp&skip_wizard=1&tab=lwp-tab-gateway-settings&selected_gateway=" + gatewayTabs[selectedGateway] + "#lwp-tab-gateway-settings";
+
+            console.log("Navigating to:", newUrl);
+            window.location.href = newUrl;
+        }
+    });
 
     // Restore previously selected gateway from localStorage
-    let savedGateway = localStorage.getItem("selectedGateway");
+    var savedGateway = localStorage.getItem("selectedGateway");
     if (savedGateway) {
-        let selectedGatewayInput = document.querySelector(`input[name="selectedGateway"][value="${savedGateway}"]`);
-        if (selectedGatewayInput) {
-            selectedGatewayInput.checked = true;
-            finishButton.disabled = false;
-        }
+        $('input[name="selectedGateway"][value="' + savedGateway + '"]').prop("checked", true);
+        $("#finishWizardCustom").prop("disabled", false);
     }
 
-    // Hide wizard information section
     function hideInfo() {
-        document.getElementById("wizardInfo").classList.add("hidden");
+        $("#wizardInfo").addClass("hidden");
     }
 
     // Navigation from Page 1 to Page 2
-    document.getElementById("nextToPage2").addEventListener("click", function () {
-        document.getElementById("wizardPage1").style.display = "none";
-        document.getElementById("wizardPage2").style.display = "block";
+    $("#nextToPage2").on("click", function () {
+        $("#wizardPage1").hide();
+        $("#wizardPage2").show();
         hideInfo();
     });
 
     // Enable Next button on Page 2 when an option is selected
-    document.querySelectorAll('input[name="option_select"]').forEach(function (radio) {
-        radio.addEventListener("change", function () {
-            document.getElementById("nextToPage3").disabled = false;
-        });
+    $('input[name="option_select"]').on("change", function () {
+        $("#nextToPage3").prop("disabled", false);
     });
 
     // Navigation from Page 2 to Page 3 based on selected option
-    document.getElementById("nextToPage3").addEventListener("click", function () {
-        let selectedOption = document.querySelector('input[name="option_select"]:checked').value;
-        document.getElementById("wizardPage2").style.display = "none";
+    $("#nextToPage3").on("click", function () {
+        var selectedOption = $('input[name="option_select"]:checked').val();
+        $("#wizardPage2").hide();
 
         if (selectedOption === "international") {
-            document.getElementById("wizardPage3International").style.display = "block";
+            $("#wizardPage3International").show();
         } else {
-            document.getElementById("wizardPage3Custom").style.display = "block";
+            $("#wizardPage3Custom").show();
         }
     });
 
-    // Handle country selection for the "Custom" setup
-    let selectedCountries = [];
-    // document.getElementById("countrySelectIntl").addEventListener("change", function () {
-    //     let container = document.getElementById("selectedCountriesContainer");
-    //     let selectedOptions = Array.from(this.selectedOptions);
-    //
-    //     selectedOptions.forEach(option => {
-    //         if (!selectedCountries.includes(option.value)) {
-    //             selectedCountries.push(option.value);
-    //             let div = document.createElement("div");
-    //             div.classList.add("selected-country");
-    //             div.innerHTML = `${option.text} <button class="remove-country">×</button>`;
-    //
-    //             // Remove country from the list when the remove button is clicked
-    //             div.querySelector(".remove-country").addEventListener("click", function () {
-    //                 option.selected = false;
-    //                 selectedCountries = selectedCountries.filter(c => c !== option.value);
-    //                 div.remove();
-    //
-    //                 if (container.children.length === 0) {
-    //                     container.style.display = "none";
-    //                 }
-    //             });
-    //
-    //             container.appendChild(div);
-    //         }
-    //     });
-    //
-    //     // Show or hide the selected countries container
-    //     container.style.display = selectedCountries.length > 0 ? "block" : "none";
-    // });
-
     // Back button functionality to navigate between pages
-    document.getElementById("backToPage1").addEventListener("click", function () {
-        document.getElementById("wizardPage2").style.display = "none";
-        document.getElementById("wizardPage1").style.display = "block";
-        document.getElementById("wizardInfo").classList.remove("hidden");
+    $("#backToPage1").on("click", function () {
+        $("#wizardPage2").hide();
+        $("#wizardPage1").show();
+        $("#wizardInfo").removeClass("hidden");
     });
 
-    document.getElementById("backToPage2FromIntl").addEventListener("click", function () {
-        document.getElementById("wizardPage3International").style.display = "none";
-        document.getElementById("wizardPage2").style.display = "block";
+    $("#backToPage2FromIntl").on("click", function () {
+        $("#wizardPage3International").hide();
+        $("#wizardPage2").show();
     });
 
-    document.getElementById("backToPage2FromCustom").addEventListener("click", function () {
-        document.getElementById("wizardPage3Custom").style.display = "none";
-        document.getElementById("wizardPage2").style.display = "block";
+    $("#backToPage2FromCustom").on("click", function () {
+        $("#wizardPage3Custom").hide();
+        $("#wizardPage2").show();
     });
 
     // Close wizard and skip setup
@@ -180,30 +147,19 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = window.location.href + "&skip_wizard=1";
     }
 
-    document.getElementById("closeWizard").addEventListener("click", closeWizard);
-    document.getElementById("installManually").addEventListener("click", closeWizard);
+    $("#closeWizard, #installManually").on("click", closeWizard);
+
+    // Function to filter country list based on search input
+    function filterCountries(inputId, selectId) {
+        $("#" + inputId).on("input", function () {
+            var searchValue = $(this).val().toLowerCase();
+            $("#" + selectId + " option").each(function () {
+                var optionText = $(this).text().toLowerCase();
+                $(this).toggle(optionText.includes(searchValue));
+            });
+        });
+    }
+
+    // Apply search filtering to country selection
+    filterCountries("searchIntl", "countrySelectIntl");
 });
-
-// Function to filter country list based on search input
-function filterCountries(inputId, selectId) {
-    // document.getElementById(inputId).addEventListener("input", function () {
-    //     let searchValue = this.value.toLowerCase();
-    //     let options = document.getElementById(selectId).options;
-    //     for (let option of options) {
-    //         option.style.display = option.text.toLowerCase().includes(searchValue) ? "block" : "none";
-    //     }
-    // });
-}
-
-// Apply search filtering to country selection
-filterCountries("searchIntl", "countrySelectIntl");
-// filterCountries("searchCustom", "countrySelectCustom");
-
-
-
-
-
-
-
-
-

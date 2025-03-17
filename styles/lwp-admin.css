@@ -309,7 +309,10 @@
     color: #fff;
     text-decoration: none;
 }
-
+.idehweb_default_gateways_wrapper .select2{
+    width:100%;
+    min-width:100%;
+}
 #lwp_phone_number, #lwp_secod {
     direction: ltr;
     text-align: left;

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.85
+Version: 1.7.86
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -425,7 +425,7 @@ class idehwebLwp
                 <div class="wizard-container" id="draggableWizard">
                     <div class="wizard-header" id="wizardHeader">
                         <span class="wizard-title">
-                            <span class="gear-icon">⚙️</span> Setup Wizard
+                            <span class="gear-icon">⚙️</span><?php _e("Setup Wizard", 'login-with-phone-number') ?>
                         </span>
                         <button id="closeWizard" class="close-button">×</button>
                     </div>
@@ -433,10 +433,10 @@ class idehwebLwp
                     <div class="wizard-content">
                         <!-- Information Section (ONLY in Page 1) -->
                         <div class="wizard-info" id="wizardInfo">
-                            <h3>🔹 Quick Setup Guide</h3>
-                            <p>Welcome to the <strong>Login with Phone Number</strong> plugin setup assistant!
+                            <h3>🔹 <?php _e("Quick Setup Guide", 'login-with-phone-number') ?></h3>
+                            <p><?php _e("Welcome to the", 'login-with-phone-number') ?><strong><?php _e("Login with Phone Number", 'login-with-phone-number') ?></strong><?php _e(" plugin setup assistant!
                                 This wizard will guide you step by step to configure the login system according to your preferences.
-                                Follow the instructions to get started quickly and efficiently.</p>
+                                Follow the instructions to get started quickly and efficiently.", 'login-with-phone-number') ?></p>
 
                         </div>
 
@@ -452,36 +452,23 @@ class idehwebLwp
 
                         <!-- Page 2 -->
                         <div id="wizardPage2" style="display: none;">
-                            <h2>your customer where is from?</h2>
+                            <h2><?php _e("Where do your customers come from", 'login-with-phone-number') ?></h2>
                             <div class="radio-container">
-                                <label><input type="radio" name="option_select" value="international">Custom </label>
-                                <label><input type="radio" name="option_select" value="custom"> International</label>
+                                <label><input type="radio" name="option_select" value="international"><?php _e("From specific countries (I serve customers in certain locations)", 'login-with-phone-number') ?></label>
+                                <label><input type="radio" name="option_select" value="custom"><?php _e("From all over the world (I serve customers in all countries)", 'login-with-phone-number') ?></label>
                             </div>
                             <div class="button-container">
-                                <button id="backToPage1" class="button-secondary">Back</button>
-                                <button id="nextToPage3" class="button-primary" disabled>Next</button>
+                                <button id="backToPage1" class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
+                                <button id="nextToPage3" class="button-primary" disabled><?php _e("Next", 'login-with-phone-number') ?></button>
                             </div>
                         </div>
-
-
-                        <!--                        --><?php
-                        //                        $country_codes = $this->get_country_code_options();
-                        //                        ?>
-                        <!--                        <select id="lwp_idehweb_country_codes_guid" class="country-select">-->
-                        <!--                            --><?php
-                        //                            $country_codes = $this->get_country_code_options();
-                        //                            foreach ($country_codes as $country) {
-                        //                                echo '<option value="' . esc_attr($country["code"]) . '" >' . esc_html($country['label']) . '</option>';
-                        //                            }
-                        //                            ?>
-                        <!--                        </select>-->
 
 
                         <!--                        <select name="idehweb_lwp_settings[idehweb_country_codes][]" id="idehweb_country_codes" multiple>-->
                         <!-- Page 3: custom -->
                         <div id="wizardPage3International" style="display: none;">
-                            <h2>custom Setup</h2>
-                            <p>Select multiple countries from the list below.</p>
+                            <h2><?php _e("custom Setup", 'login-with-phone-number') ?></h2>
+                            <p><?php _e("Select multiple countries from the list below.", 'login-with-phone-number') ?></p>
                             <select name="idehweb_lwp_setting[idehweb_country_code-json-save][]" id="lwp_idehweb_country_codes_guid" class="country-select" multiple>
                                 <?php
                                 $country_codes = $this->get_country_code_options();
@@ -490,33 +477,33 @@ class idehwebLwp
                                 }
                                 ?>
                             </select>
-                            <!--                            <div id="selectedCountriesContainer" style="display: none;"></div>-->
+                        <div id="selectedCountriesContainer" style="display: none;"></div>
                             <div class="button-container">
-                                <button id="backToPage2FromIntl" class="button-secondary">Back</button>
-                                <button id="finishWizardIntl" class="button-primary">Finish</button>
+                                <button id="backToPage2FromIntl" class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
+                                <button id="finishWizardIntl" class="button-primary"><?php _e("Finish", 'login-with-phone-number') ?></button>
                             </div>
                         </div>
 
                         <!-- Page 3: International -->
                         <div id="wizardPage3Custom" style="display: none;">
-                            <h2>Internatonal Setup</h2>
-                            <p>All countries have been selected ✅</p>
+                            <h2><?php _e("International Setup", 'login-with-phone-number') ?></h2>
+                            <p><?php _e("All countries have been selected", 'login-with-phone-number') ?>✅</p>
                             <!-- List of gateways -->
-                            <h3>Available Gateways</h3>
+                            <h3><?php _e("Available Gateways", 'login-with-phone-number') ?></h3>
                             <div id="gatewayList" class="gateway-list">
                                 <label class="gateway-option">
-                                    <input type="radio" name="selectedGateway" value="firebase"> Firebase
+                                    <input type="radio" name="selectedGateway" value="firebase"><?php _e(" Firebase", 'login-with-phone-number') ?>
                                 </label>
                                 <label class="gateway-option">
-                                    <input type="radio" name="selectedGateway" value="telegram"> Telegram
+                                    <input type="radio" name="selectedGateway" value="telegram"><?php _e(" Telegram", 'login-with-phone-number') ?>
                                 </label>
                                 <label class="gateway-option">
-                                    <input type="radio" name="selectedGateway" value="whatsapp"> WhatsApp
+                                    <input type="radio" name="selectedGateway" value="whatsapp"> <?php _e("WhatsApp", 'login-with-phone-number') ?>
                                 </label>
                             </div>
                             <div class="button-container">
-                                <button id="backToPage2FromCustom" class="button-secondary">Back</button>
-                                <button id="finishWizardCustom" class="button-primary">Finish</button>
+                                <button id="backToPage2FromCustom" class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
+                                <button id="finishWizardCustom" class="button-primary"><?php _e("Finish", 'login-with-phone-number') ?></button>
                             </div>
                         </div>
                     </div>
@@ -3741,62 +3728,103 @@ class idehwebLwp
 
     function lwp_set_countries()
     {
-        error_log("Received AJAX request in lwp_set_countries");
-
+        // Verify nonce for security
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'lwp_set_countries')) {
-            error_log("Invalid nonce received in set_countries");
-            echo json_encode([
+            wp_send_json([
                 'success' => false,
-                'message' => 'Invalid nonce.'
-            ]);
-            die();
+                'message' => __('Invalid nonce.', 'login-with-phone-number')
+            ], 403);
         }
+
+        // Validate `selected_countries`
         if (!isset($_POST['selected_countries']) || empty($_POST['selected_countries'])) {
-            error_log("No countries selected in lwp_set_countries");
-            echo json_encode([
+            wp_send_json([
                 'success' => false,
-                'message' => 'No countries selected.'
-            ]);
-            die();
+                'message' => __('No countries selected.', 'login-with-phone-number')
+            ], 400);
         }
 
-        $selected_countries = $_POST['selected_countries'];
-
-        if (empty($selected_countries)) {
-            error_log("No countries selected in lwp_set_countries");
-            echo json_encode([
+        // Validate `selected_gateways`
+        if (!isset($_POST['selected_gateways']) || empty($_POST['selected_gateways'])) {
+            wp_send_json([
                 'success' => false,
-                'message' => 'No countries selected.'
-            ]);
-            die();
+                'message' => __('No gateways selected.', 'login-with-phone-number')
+            ], 400);
         }
-        $options = get_option('idehweb_lwp_settings');
+
+        // Sanitize input data
+        $selected_countries = array_map('sanitize_text_field', $_POST['selected_countries']);
+        $selected_gateways  = array_map('sanitize_text_field', $_POST['selected_gateways']);
+
+        // Fetch existing settings
+        $options = get_option('idehweb_lwp_settings', []);
         if (!is_array($options)) {
             $options = [];
         }
+
+        // Update options safely
         $options['idehweb_country_codes'] = $selected_countries;
-//        print_r($options['idehweb_country_codes']);
-//
-        update_option('idehweb_lwp_settings', ($options));
-        error_log("Saved Countries: " . print_r($selected_countries, true));
+        $options['idehweb_default_gateways'] = $selected_gateways;
 
-        echo json_encode([
-            'success' => true,
-            'data' => $selected_countries,
-            'message' => 'Countries saved successfully.'
-        ]);
-        die();
+        update_option('idehweb_lwp_settings', $options);
 
-//        header('Content-Type: application/json');
-//        echo json_encode($selected_countries);
-//        exit;
-
-//        $options['idehweb_country_codes'];
-//        update_option('lwp_selected_gateways', $selected_gateways);
+//        error_log("Saved Countries: " . print_r($selected_countries, true));
 //        error_log("Saved Gateways: " . print_r($selected_gateways, true));
+        // Send JSON response
+        wp_send_json([
+            'success' => true,
+            'data' => [
+                'selected_countries' => $selected_countries,
+                'selected_gateways'  => $selected_gateways
+            ],
+            'message' => __('Countries and gateways saved successfully.', 'login-with-phone-number')
+        ]);
+////        error_log("Received AJAX request in lwp_set_countries");
 //
-//        error_log("Received Countries: " . print_r($selected_countries, true));
-//        error_log("Received Gateways: " . print_r($selected_gateways, true));
+//        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'lwp_set_countries')) {
+////            error_log("Invalid nonce received in set_countries");
+//            echo json_encode([
+//                'success' => false,
+//                'message' => 'Invalid nonce.'
+//            ]);
+//            die();
+//        }
+//        if (!isset($_POST['selected_countries']) || empty($_POST['selected_countries'])) {
+////            error_log("No countries selected in lwp_set_countries");
+//            echo json_encode([
+//                'success' => false,
+//                'message' => 'No countries selected.'
+//            ]);
+//            die();
+//        }
+//
+//        $selected_countries = $_POST['selected_countries'];
+//
+//        if (empty($selected_countries)) {
+//            error_log("No countries selected in lwp_set_countries");
+//            echo json_encode([
+//                'success' => false,
+//                'message' => 'No countries selected.'
+//            ]);
+//            die();
+//        }
+//        $options = get_option('idehweb_lwp_settings');
+//        if (!is_array($options)) {
+//            $options = [];
+//        }
+//        $options['idehweb_country_codes'] = $selected_countries;
+////        print_r($options['idehweb_country_codes']);
+////
+//        update_option('idehweb_lwp_settings', ($options));
+//        error_log("Saved Countries: " . print_r($selected_countries, true));
+//
+//        echo json_encode([
+//            'success' => true,
+//            'data' => $selected_countries,
+//            'message' => 'Countries saved successfully.'
+//        ]);
+//        die();
+
     }
 
     function lwp_ajax_verify_with_email()

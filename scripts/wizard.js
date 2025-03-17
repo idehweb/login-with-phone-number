@@ -7,10 +7,11 @@ jQuery(document).ready(function ($) {
     // });
 
     var lwp_countries_gateways = [
-        { "country": "ir", "gateways": ["farazsms", "melipayamak"] },
+        { "country": "ir", "gateways": ["farazsms", "mellipayamak"] },
         { "country": "sa", "gateways": ["taqnyat"] },
         { "country": "in", "gateways": ["mshastra", "textlocal"] }
     ];
+
 
     $(window).on('load', function () {
         $("#lwp_idehweb_country_codes_guid").select2();
@@ -18,6 +19,10 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '#finishWizardIntl', function (e) {
         e.preventDefault();
+        var basePath = window.location.origin + window.location.pathname.split("/wp-admin")[0];
+        var newUrl = basePath + "/wp-admin/admin.php?page=idehweb-lwp";
+        // window.location.href = newUrl;
+
         var selectedValues = $("#lwp_idehweb_country_codes_guid").val();
         console.log("Selected Countries:", selectedValues);
 
@@ -40,10 +45,17 @@ jQuery(document).ready(function ($) {
                 action: "lwp_set_countries",
                 nonce: idehweb_lwp.nonce,
                 selected_countries: selectedValues,
-                selected_gateways: selectedGateways
+                selected_gateways: (selectedGateways?.length>0) ? selectedGateways : ["firebase","twilio"]
             },
             success: function (response) {
                 console.log("Response from server:", response);
+                // &tab=lwp-tab-gateway-settings&selected_gateway=firebase#lwp-tab-gateway-settings
+                // selectedGateways
+                // let newUrl = window.location.origin + window.location.pathname + "?page=idehweb-lwp&tab=lwp-tab-gateway-settings&selected_gateway="+selectedGateways?.join(", ")+"#lwp-tab-gateway-settings";
+                let newUrl = window.location.origin + window.location.pathname + "?page=idehweb-lwp&tab=lwp-tab-gateway-settings#lwp-tab-gateway-settings";
+                window.history.replaceState({}, document.title, newUrl);
+                window.location.href = newUrl;
+                window.location.reload();
             },
             error: function (xhr, status, error) {
                 console.error("AJAX Error:", error);
@@ -78,7 +90,7 @@ jQuery(document).ready(function ($) {
     });
 
     // Handle finish button click event
-    $("#finishWizardCustom").on("click", function () {
+    $("body").on("click","#finishWizardCustom", function () {
         var selectedGateway = $('input[name="selectedGateway"]:checked').val();
         localStorage.setItem("selectedGateway", selectedGateway);
 

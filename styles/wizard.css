@@ -172,7 +172,7 @@
 /*.country-select .select2-container {*/
 /*    width: 100% !important;*/
 /*}*/
-.select2-container--default .select2-selection--multiple {
+.select2-container .country-select {
     padding-right: 250px;
     padding-bottom: 3px;
 }
@@ -182,7 +182,9 @@
     outline: none;
     width: 100%;
 }
-
+#wizardPage3International .select2{
+    width:100% !important;
+}
 /* Selected Countries Container */
 #selectedCountriesContainer {
     max-height: 150px;

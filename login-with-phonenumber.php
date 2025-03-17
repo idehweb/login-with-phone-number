@@ -136,8 +136,11 @@ class idehwebLwp
 
     function lwp_load_wp_media_files($page)
     {
+        $wizard_url = admin_url('admin.php?page=idehweb-lwp&wizard'); // Secure admin URL
+
         $localize = array(
             'ajaxurl' => admin_url('admin-ajax.php'),
+            'wizard_url' => esc_url($wizard_url)
         );
         $localize['nonce'] = wp_create_nonce('lwp_set_countries');
         wp_enqueue_script('idehweb-lwp-setting-page-wizard-js', plugins_url('/scripts/wizard.js', __FILE__), array('jquery'), true, true);
@@ -354,10 +357,10 @@ class idehwebLwp
         add_settings_field('idehweb_default_role', __('Default Role', 'login-with-phone-number'), array(&$this, 'setting_default_role'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-general-settings']);
 
         add_settings_field('idehweb_lwp_space3', '', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
-        add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
-        add_settings_field('instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
+        add_settings_field('idehweb_lwp_installer', __('Automatic installer', 'login-with-phone-number'), array(&$this, 'setting_installer'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
+        add_settings_field('idehweb_lwp_instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
         add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-documentation-settings']);
-        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-documentation-settings']);
+//        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-documentation-settings']);
 
         add_settings_field('idehweb_localization_disable_placeholder', __('Disable automatic placeholder', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_disable_automatic_placeholder'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_status', __('Enable localization', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_enable_custom_localization'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -366,14 +369,16 @@ class idehwebLwp
         add_settings_field('idehweb_localization_placeholder_of_phonenumber_field', __('Placeholder of phone number field', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_placeholder_of_phonenumber_field'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_firebase_option_title', __('Firebase option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_firebase_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
         add_settings_field('idehweb_localization_custom_option_title', __('Custom option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_custom_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
-        add_settings_field('idehweb_localization_ultramessage_option_title', __('Ultramessage option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_ultramessage_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+//        add_settings_field('idehweb_localization_ultramessage_option_title', __('Ultramessage option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_ultramessage_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+//        add_settings_field('idehweb_localization_telegram_option_title', __('telegram option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_telegram_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
+//        add_settings_field('idehweb_localization_whatsapp_option_title', __('whatsapp option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_whatsapp_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
 
 
 
         add_settings_field('idehweb_lwp_twilio_guid', __('Twilio help', 'lwp-twilio'), array(&$this, 'setting_idehweb_twilio_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_twilio']);
         add_settings_field('idehweb_lwp_ultramsg_guid', __('Ultramsg help', 'lwp-twilio'), array(&$this, 'setting_idehweb_ultramsg_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_ultramsg']);
         add_settings_field('idehweb_lwp_whatsapp_guid', __('Whatsapp help', 'lwp-twilio'), array(&$this, 'setting_idehweb_whatsapp_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_whatsapp']);
-        add_settings_field('idehweb_lwp_Telegram_guid', __('Telegram help', 'lwp-twilio'), array(&$this, 'setting_idehweb_Telegram_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_Telegram']);
+        add_settings_field('idehweb_lwp_Telegram_guid', __('Telegram help', 'lwp-twilio'), array(&$this, 'setting_idehweb_Telegram_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_telegram']);
 
     }
 
@@ -413,7 +418,7 @@ class idehwebLwp
         $options = get_option('idehweb_lwp_settings');
 //        print_r($options);
 //        die();
-        if (!isset($_GET['skip_wizard'])) {
+        if (isset($_GET['wizard'])) {
             ?>
             <!-- Wizard Overlay -->
             <div id="wizardModal" class="wizard-overlay">
@@ -844,7 +849,11 @@ class idehwebLwp
 
                     var ldwtutshow = localStorage.getItem('ldwtutshow');
                     if (ldwtutshow === null) {
-                        createTutorial();
+                        // createTutorial();
+                        if (typeof idehweb_lwp !== "undefined" && idehweb_lwp.wizard_url) {
+
+                            window.location.href = idehweb_lwp.wizard_url;
+                        }
                     }
 
                     function createTutorial() {
@@ -1509,7 +1518,7 @@ class idehwebLwp
             ["value" => "twilio", "label" => __("Twilio (Pro)", 'login-with-phone-number')],
             ["value" => "whatsapp", "label" => __("Whatsapp Meta (Pro)", 'login-with-phone-number')],
             ["value" => "ultramsg", "label" => __("Ultramsg - Whatsapp third-party (Pro)", 'login-with-phone-number')],
-            ["value" => "ultramsg", "label" => __("Telegram (pro)", 'login-with-phone-number')],
+            ["value" => "telegram", "label" => __("Telegram (pro)", 'login-with-phone-number')],
 
         ];
 
@@ -2255,8 +2264,14 @@ class idehwebLwp
         return $retrun_array;
     }
 
+    function setting_installer(){
+        $wizard_url = admin_url('admin.php?page=idehweb-lwp&wizard');
+        echo '<p><a href="' . esc_url($wizard_url) . '" class="lwp_install_now">' . __('Install Now', 'login-with-phone-number') . '</a></p>';
+
+    }
     function setting_instructions()
     {
+
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_phone_number'])) $options['idehweb_phone_number'] = '';
         $display = 'inherit';

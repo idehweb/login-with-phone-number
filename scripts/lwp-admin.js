@@ -166,7 +166,9 @@ jQuery(document).ready(function ($) {
                 let main_class = item.classList[2];
                 let main_gateways = main_class?.split('related_to_')
                 let main_gateway_name = main_gateways[1];
-                // console.log("main_gateway_name", main_gateway_name)
+                console.log("data", data)
+                // console.log("data", data)
+                console.log("main_gateway_name",".related_to_" + main_gateway_name)
 // if(!available_gateways.)
                 if (data.includes(main_gateway_name)) {
                     $(".related_to_" + main_gateway_name).css("display", "table-row")

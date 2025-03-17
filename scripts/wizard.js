@@ -1,4 +1,11 @@
 jQuery(document).ready(function ($) {
+    // jQuery(document).ready(function ($) {
+    //     if (window.location.search.includes("skip_wizard=1")) {
+    //         let newUrl = window.location.origin + window.location.pathname + "?page=idehweb-lwp&wizard";
+    //         window.history.replaceState({}, document.title, newUrl);
+    //     }
+    // });
+
     var lwp_countries_gateways = [
         { "country": "ir", "gateways": ["farazsms", "melipayamak"] },
         { "country": "sa", "gateways": ["taqnyat"] },
@@ -144,7 +151,12 @@ jQuery(document).ready(function ($) {
 
     // Close wizard and skip setup
     function closeWizard() {
-        window.location.href = window.location.href + "&skip_wizard=1";
+        localStorage.setItem('ldwtutshow', 1);
+
+        let newUrl = window.location.origin + window.location.pathname + "?page=idehweb-lwp";
+                window.history.replaceState({}, document.title, newUrl);
+        window.location.href = newUrl;
+
     }
 
     $("#closeWizard, #installManually").on("click", closeWizard);

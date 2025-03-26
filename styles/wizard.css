@@ -184,7 +184,7 @@
 }
 #wizardPage3International .select2{
     width:100% !important;
-}
+    }
 /* Selected Countries Container */
 #selectedCountriesContainer {
     max-height: 150px;

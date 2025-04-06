@@ -173,9 +173,20 @@
     max-width: 150px;
 }
 
-.select2 .select2-selection.select2-selection--multiple {
+.select2-container--default .select2-selection--multiple {
+    width: 100% !important;
+    min-height: 38px;
+    height: auto;
+    padding: 5px;
     display: flex;
 }
+
+@media (min-width: 1130px) {
+    .select2-container--default .select2-selection--multiple {
+        width: 350px !important;
+    }
+}
+
 
 .pro-not-exist {
     color: #ff0000;

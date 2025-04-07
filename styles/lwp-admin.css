@@ -1,6 +1,7 @@
 .lwp-tabs-list{
     display: flex;
     gap: 10px;
+    margin-left: 2px;
 }
 .lwp-tab-item{
     background-color: #fff;
@@ -187,6 +188,13 @@
     }
 }
 
+.select2-results__options.select2-idehweb_default_gateways-results{
+    width: 100% !important;
+    min-height: 38px;
+    height: auto;
+    padding: 5px;
+    display: flex;
+}
 
 .pro-not-exist {
     color: #ff0000;

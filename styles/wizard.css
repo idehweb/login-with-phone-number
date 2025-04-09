@@ -115,8 +115,8 @@
 .radio-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 12px;
+    gap: 23px;
+    margin-top: 32px;
 }
 
 .radio-container label {

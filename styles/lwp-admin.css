@@ -7,6 +7,15 @@
     background-color: #fff;
     padding: 7px 10px;
 }
+.lwp-merge-combine-users{
+    border: 1px solid #2371b1;
+    background-color: #2371b1;
+    padding: 8px;
+    color: #fff;
+    border-radius: 5px;
+    margin-top: 30px;
+
+}
 .idehweb_default_gateways,.idehweb_default_gateways .select2{
     min-width:100%;
 }
@@ -533,5 +542,11 @@
     .lwp_modal {
 
         min-width: 90%;
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .form-table .ilwplabel td {
+        margin: 15px;
     }
 }

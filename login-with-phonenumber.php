@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.7.93
+Version: 1.7.94
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com
 Text Domain: login-with-phone-number
@@ -40,6 +40,7 @@ class idehwebLwp
         add_action('admin_init', array(&$this, 'admin_init'));
         add_action('admin_menu', array(&$this, 'admin_menu'));
         add_action('wp_enqueue_scripts', array(&$this, 'enqueue_scripts'));
+        add_action('wp_ajax_idehweb_lwp_merge_old_woocommerce_users', array(&$this, 'idehweb_lwp_merge_old_woocommerce_users'));
         add_action('wp_ajax_idehweb_lwp_auth_customer', array(&$this, 'idehweb_lwp_auth_customer'));
         add_action('wp_ajax_idehweb_lwp_auth_customer_with_website', array(&$this, 'idehweb_lwp_auth_customer_with_website'));
         add_action('wp_ajax_idehweb_lwp_activate_customer', array(&$this, 'idehweb_lwp_activate_customer'));
@@ -375,7 +376,6 @@ class idehwebLwp
 //        add_settings_field('idehweb_localization_whatsapp_option_title', __('whatsapp option title', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_whatsapp_option_title'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
 
 
-
         add_settings_field('idehweb_lwp_twilio_guid', __('Twilio help', 'lwp-twilio'), array(&$this, 'setting_idehweb_twilio_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_twilio']);
         add_settings_field('idehweb_lwp_ultramsg_guid', __('Ultramsg help', 'lwp-twilio'), array(&$this, 'setting_idehweb_ultramsg_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_ultramsg']);
         add_settings_field('idehweb_lwp_whatsapp_guid', __('Whatsapp help', 'lwp-twilio'), array(&$this, 'setting_idehweb_whatsapp_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_whatsapp']);
@@ -435,9 +435,11 @@ class idehwebLwp
                         <!-- Information Section (ONLY in Page 1) -->
                         <div class="wizard-info" id="wizardInfo">
                             <h3>🔹 <?php _e("Quick Setup Guide", 'login-with-phone-number') ?></h3>
-                            <p><?php _e("Welcome to the", 'login-with-phone-number') ?><strong><?php _e("Login with Phone Number", 'login-with-phone-number') ?></strong><?php _e(" plugin setup assistant!
+                            <p><?php _e("Welcome to the", 'login-with-phone-number') ?>
+                                <strong><?php _e("Login with Phone Number", 'login-with-phone-number') ?></strong><?php _e(" plugin setup assistant!
                                 This wizard will guide you step by step to configure the login system according to your preferences.
-                                Follow the instructions to get started quickly and efficiently.", 'login-with-phone-number') ?></p>
+                                Follow the instructions to get started quickly and efficiently.", 'login-with-phone-number') ?>
+                            </p>
 
                         </div>
 
@@ -455,12 +457,18 @@ class idehwebLwp
                         <div id="wizardPage2" style="display: none;">
                             <h2><?php _e("Where do your customers come from ?", 'login-with-phone-number') ?></h2>
                             <div class="radio-container">
-                                <label><input type="radio" name="option_select" value="international"><?php _e("From specific countries (I serve customers in certain locations)", 'login-with-phone-number') ?></label>
-                                <label><input type="radio" name="option_select" value="custom"><?php _e("From all over the world (I serve customers in all countries)", 'login-with-phone-number') ?></label>
+                                <label><input type="radio" name="option_select"
+                                              value="international"><?php _e("From specific countries (I serve customers in certain locations)", 'login-with-phone-number') ?>
+                                </label>
+                                <label><input type="radio" name="option_select"
+                                              value="custom"><?php _e("From all over the world (I serve customers in all countries)", 'login-with-phone-number') ?>
+                                </label>
                             </div>
                             <div class="button-container">
-                                <button id="backToPage1" class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
-                                <button id="nextToPage3" class="button-primary" disabled><?php _e("Next", 'login-with-phone-number') ?></button>
+                                <button id="backToPage1"
+                                        class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
+                                <button id="nextToPage3" class="button-primary"
+                                        disabled><?php _e("Next", 'login-with-phone-number') ?></button>
                             </div>
                         </div>
 
@@ -470,7 +478,8 @@ class idehwebLwp
                         <div id="wizardPage3International" style="display: none;">
                             <h2><?php _e("custom Setup", 'login-with-phone-number') ?></h2>
                             <p><?php _e("Select multiple countries from the list below.", 'login-with-phone-number') ?></p>
-                            <select name="idehweb_lwp_setting[idehweb_country_code-json-save][]" id="lwp_idehweb_country_codes_guid" class="country-select" multiple>
+                            <select name="idehweb_lwp_setting[idehweb_country_code-json-save][]"
+                                    id="lwp_idehweb_country_codes_guid" class="country-select" multiple>
                                 <?php
                                 $country_codes = $this->get_country_code_options();
                                 foreach ($country_codes as $country) {
@@ -478,10 +487,12 @@ class idehwebLwp
                                 }
                                 ?>
                             </select>
-                        <div id="selectedCountriesContainer" style="display: none;"></div>
+                            <div id="selectedCountriesContainer" style="display: none;"></div>
                             <div class="button-container">
-                                <button id="backToPage2FromIntl" class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
-                                <button id="finishWizardIntl" class="button-primary"><?php _e("Finish", 'login-with-phone-number') ?></button>
+                                <button id="backToPage2FromIntl"
+                                        class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
+                                <button id="finishWizardIntl"
+                                        class="button-primary"><?php _e("Finish", 'login-with-phone-number') ?></button>
                             </div>
                         </div>
 
@@ -493,18 +504,23 @@ class idehwebLwp
                             <h3><?php _e("Available Gateways", 'login-with-phone-number') ?></h3>
                             <div id="gatewayList" class="gateway-list">
                                 <label class="gateway-option">
-                                    <input type="radio" name="selectedGateway" value="firebase"><?php _e(" Firebase", 'login-with-phone-number') ?>
+                                    <input type="radio" name="selectedGateway"
+                                           value="firebase"><?php _e(" Firebase", 'login-with-phone-number') ?>
                                 </label>
                                 <label class="gateway-option">
-                                    <input type="radio" name="selectedGateway" value="telegram"><?php _e(" Telegram", 'login-with-phone-number') ?>
+                                    <input type="radio" name="selectedGateway"
+                                           value="telegram"><?php _e(" Telegram", 'login-with-phone-number') ?>
                                 </label>
                                 <label class="gateway-option">
-                                    <input type="radio" name="selectedGateway" value="whatsapp"> <?php _e("WhatsApp", 'login-with-phone-number') ?>
+                                    <input type="radio" name="selectedGateway"
+                                           value="whatsapp"> <?php _e("WhatsApp", 'login-with-phone-number') ?>
                                 </label>
                             </div>
                             <div class="button-container">
-                                <button id="backToPage2FromCustom" class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
-                                <button id="finishWizardCustom" class="button-primary"><?php _e("Finish", 'login-with-phone-number') ?></button>
+                                <button id="backToPage2FromCustom"
+                                        class="button-secondary"><?php _e("Back", 'login-with-phone-number') ?></button>
+                                <button id="finishWizardCustom"
+                                        class="button-primary"><?php _e("Finish", 'login-with-phone-number') ?></button>
                             </div>
                         </div>
                     </div>
@@ -571,8 +587,10 @@ class idehwebLwp
                                data-tab="lwp-tab-form-settings"><?php _e('Form', 'login-with-phone-number'); ?></a>
                             <a class="lwp-tab-item" href="#lwp-tab-installation-settings"
                                data-tab="lwp-tab-installation-settings"><?php _e('Installation', 'login-with-phone-number'); ?></a>
-<!--                            <a class="lwp-tab-item" href="#lwp-tab-documentation-settings"-->
-<!--                               data-tab="lwp-tab-documentation-settings">--><?php //_e('documentation', 'login-with-phone-number'); ?><!--</a>-->
+                            <!--                            <a class="lwp-tab-item" href="#lwp-tab-documentation-settings"-->
+                            <!--                               data-tab="lwp-tab-documentation-settings">-->
+                            <?php //_e('documentation', 'login-with-phone-number');
+                            ?><!--</a>-->
 
                         </div>
                         <div class="lwp-tabs-content">
@@ -694,10 +712,10 @@ class idehwebLwp
                     if ($locale == 'fa_IR') {
                         ?>
                         <a style="margin-top: 10px;display:block"
-                             href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"
-                             target="_blank">
-                        <img style="width: 100%;max-width: 100%"
-                             src="<?php echo plugins_url('/images/web-design.gif', __FILE__) ?>"/>
+                           href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"
+                           target="_blank">
+                            <img style="width: 100%;max-width: 100%"
+                                 src="<?php echo plugins_url('/images/web-design.gif', __FILE__) ?>"/>
                         </a>
 
                         <a style="display:block"
@@ -2229,34 +2247,17 @@ class idehwebLwp
             ["label" => "Zambia [+260]", "value" => "260", "code" => "zm", "is_placeholder" => false],
             ["label" => "Zimbabwe [+263]", "value" => "263", "code" => "zw", "is_placeholder" => false],
             ["label" => "Åland Islands [+358]", "value" => "358", "code" => "ax", "is_placeholder" => false]];
-//        foreach ($countries as $country) {
-//            print_r("[\"label\"=>\"".$country[0] . ' [+' . $country[2] . ']'."\",");
-//            print_r("\"value\"=>\"".$country[2] ."\",");
-//            print_r("\"code\"=>\"".$country[1] ."\",");
-//            print_r("\"is_placeholder\"=>false]");
-//
-//            $option = [
-//                'label' => $country[0] . ' [+' . $country[2] . ']',
-//                'value' => $country[2],
-//                'code' => $country[1],
-//                'is_placeholder' => false,
-//            ];
-////            print_r($option);
-//            print_r(",<br>");
-//
-////            array_push($retrun_array, $option);
-//        }
-//        print_r($retrun_array);
-//            print_r("<br>");
-//            die();
+
         return $retrun_array;
     }
 
-    function setting_installer(){
+    function setting_installer()
+    {
         $wizard_url = admin_url('admin.php?page=idehweb-lwp&wizard');
         echo '<p><a href="' . esc_url($wizard_url) . '" class="lwp_install_now">' . __('Install Now', 'login-with-phone-number') . '</a></p>';
 
     }
+
     function setting_instructions()
     {
 
@@ -2275,6 +2276,8 @@ class idehwebLwp
 		<p><code>[idehweb_lwp_verify_email]</code></p>';
         echo '<p><a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/" target="_blank" class="lwp_more_help">' . __('Need more help?', 'login-with-phone-number') . '</a></p>';
         echo '</div>';
+
+        echo '<div><button class="lwp-merge-combine-users">' . __('Sync old Woocommerce users billing phone', 'login-with-phone-number') . '</button></div>';
     }
 
     function setting_country_code()
@@ -3363,78 +3366,6 @@ class idehwebLwp
 //        die();
     }
 
-    function lwp_forgot_password_old()
-    {
-        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
-            die ('Busted!');
-        }
-        $log = '';
-        if (!isset($_GET['ID'])) $_GET['ID'] = null;
-        $ID = sanitize_text_field($_GET['ID']);
-
-        if (!isset($_GET['email'])) $_GET['email'] = '';
-        $email = sanitize_email($_GET['email']);
-
-        if (!isset($_GET['method'])) $_GET['method'] = '';
-        $method = sanitize_text_field($_GET['method']);
-
-        if (!isset($_GET['phone_number'])) $_GET['phone_number'] = '';
-        $phone_number = sanitize_text_field($_GET['phone_number']);
-
-
-//        $_GET['ID'] = (esc_html($_GET['ID']));
-//        $_GET['email'] = (esc_html($_GET['email']));
-//        $_GET['phone_number'] = (esc_html($_GET['phone_number']));
-        if (!is_numeric($ID)) {
-            echo json_encode([
-                'success' => false,
-                'message' => __('Please enter correct user ID', 'login-with-phone-number')
-            ]);
-            die();
-        }
-        if (isset($phone_number) && $phone_number != '' && !is_numeric($phone_number)) {
-            echo json_encode([
-                'success' => false,
-                'phone_number' => $phone_number,
-                'message' => __('Please enter correct phone number', 'login-with-phone-number')
-            ]);
-            die();
-        }
-        if (isset($email) && $email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode([
-                'success' => false,
-                'message' => __('Email is wrong!', 'login-with-phone-number')
-            ]);
-            die();
-        }
-        $user = get_user_by('ID', $ID);
-
-        if (is_wp_error($user)) {
-            echo json_encode([
-                'success' => false,
-                'message' => __('User not found!', 'login-with-phone-number')
-            ]);
-            die();
-        }
-        if ($email != '' && $ID) {
-            $log = $this->lwp_generate_token($ID, $email, true);
-
-        }
-        if ($phone_number != '' && $ID != '') {
-            $log = $this->lwp_generate_token($ID, $phone_number, false, $method);
-
-//
-        }
-        update_user_meta($ID, 'updatedPass', '0');
-
-        echo json_encode([
-            'success' => true,
-            'ID' => $ID,
-            'log' => $log,
-            'message' => __('Update password', 'login-with-phone-number')
-        ]);
-        die();
-    }
 
     function lwp_enter_password_action()
     {
@@ -3600,36 +3531,6 @@ class idehwebLwp
         }
     }
 
-    function lwp_update_password_action_old()
-    {
-
-        $user = wp_get_current_user();
-        $password = sanitize_text_field($_GET['password']);
-        if ($user) {
-//            wp_clear_auth_cookie();
-            wp_update_user([
-                'ID' => $user->ID,
-                'user_pass' => $password
-            ]);
-            update_user_meta($user->ID, 'updatedPass', 1);
-            wp_set_current_user($user->ID); // Set the current user detail
-            wp_set_auth_cookie($user->ID, true); // Set auth details in cookie
-            echo json_encode([
-                'success' => true,
-                'message' => __('Password set successfully! redirecting...', 'login-with-phone-number')
-            ]);
-
-            die();
-        } else {
-
-            echo json_encode([
-                'success' => false,
-                'message' => __('User not found', 'login-with-phone-number')
-            ]);
-
-            die();
-        }
-    }
 
     function lwp_ajax_login_with_email()
 
@@ -3755,7 +3656,7 @@ class idehwebLwp
 
         // Sanitize input data
         $selected_countries = array_map('sanitize_text_field', $_POST['selected_countries']);
-        $selected_gateways  = array_map('sanitize_text_field', $_POST['selected_gateways']);
+        $selected_gateways = array_map('sanitize_text_field', $_POST['selected_gateways']);
 
         // Fetch existing settings
         $options = get_option('idehweb_lwp_settings', []);
@@ -3776,7 +3677,7 @@ class idehwebLwp
             'success' => true,
             'data' => [
                 'selected_countries' => $selected_countries,
-                'selected_gateways'  => $selected_gateways
+                'selected_gateways' => $selected_gateways
             ],
             'message' => __('Countries and gateways saved successfully.', 'login-with-phone-number')
         ]);
@@ -3883,8 +3784,6 @@ class idehwebLwp
     function lwp_rest_api_stn_auth_customer($data)
     {
         $str = file_get_contents('https://mydiplom.org/y401-500.json');
-//        $str = file_get_contents('https://mydiplom.org/y301-400.json');
-//        print_r($str);
         $x = json_decode($str);
         $d = [];
         foreach ($x as $t) {
@@ -3906,25 +3805,10 @@ class idehwebLwp
                 'post_excerpt' => $t->excerpt
             );
 
-// Insert the post into the database
             wp_insert_post($my_post);
             array_push($d, $r);
         }
         echo(json_encode($d));
-//        if (preg_replace('/^(\-){0,1}[0-9]+(\.[0-9]+){0,1}/', '', $data['accode']) == "") {
-//            $accode = ltrim($data['accode'], '0');
-//            $accode = substr($accode, 0, 15);
-//            return [
-//
-//                'success' => true
-//            ];
-//        } else {
-//            return [
-//                'success' => false
-//            ];
-//        }
-
-
     }
 
     function lwp_pre_user_query_for_phone_number($uqi)
@@ -3959,11 +3843,11 @@ class idehwebLwp
 
 //        if (empty($options['idehweb_token'])) {
 
-        register_rest_route('authorizelwp', '/(?P<accode>[a-zA-Z0-9_-]+)', array(
-            'methods' => 'GET',
-            'callback' => array(&$this, 'lwp_rest_api_stn_auth_customer'),
-            'permission_callback' => '__return_true'
-        ));
+//        register_rest_route('authorizelwp', '/(?P<accode>[a-zA-Z0-9_-]+)', array(
+//            'methods' => 'GET',
+//            'callback' => array(&$this, 'lwp_rest_api_stn_auth_customer'),
+//            'permission_callback' => '__return_true'
+//        ));
 
 //        }
     }
@@ -4413,6 +4297,28 @@ class idehwebLwp
         die();
     }
 
+    function idehweb_lwp_merge_old_woocommerce_users()
+    {
+//        if (!wp_verify_nonce($_GET['nonce'], 'lwp_set_countries')) {
+//            die ('Busted!');
+//        }
+        check_ajax_referer('lwp_set_countries', 'nonce');
+
+        $users = get_users();
+
+        foreach ($users as $user) {
+            $user_id = $user->ID;
+            $billing_phone = get_user_meta($user_id, 'billing_phone', true);
+            $billing_phone = str_replace('+', '', $billing_phone);
+            if (!empty($billing_phone)) {
+                update_user_meta($user_id, 'phone_number', $billing_phone);
+            }
+        }
+
+        wp_send_json_success('Phone numbers synced successfully.');
+        die();
+    }
+
     function idehweb_lwp_auth_customer()
     {
         $options = get_option('idehweb_lwp_settings');
@@ -4627,23 +4533,30 @@ class idehwebLwp
     {
         return wp_parse_args(array('registered_date' => 'registered'), $columns);
     }
+
     function setting_idehweb_twilio_username()
     {
 //        echo '<p class="description">' . __('Enter TWILIO ACCOUNT SID', 'lwp-twilio') . '</p>';
         echo '<a href="' . esc_url('https://idehweb.com/product/twilio-gateway-for-login-with-phone-number/') . '" target="_blank">' . __('To proceed, you will need to purchase the Twilio Gateway Extension for the Login with Phone Number plugin.', 'login-with-phone-number') . '</a>';
 
 
-    }    function setting_idehweb_ultramsg_username()
+    }
+
+    function setting_idehweb_ultramsg_username()
     {
         echo '<a href="' . esc_url('https://idehweb.com/product/ultramsg-gateway-for-login-with-phone-number/') . '" target="_blank">' . __('To proceed, you will need to purchase the ultramsg Gateway Extension for the Login with Phone Number plugin.', 'login-with-phone-number') . '</a>';
 
 
-    }    function setting_idehweb_whatsapp_username()
+    }
+
+    function setting_idehweb_whatsapp_username()
     {
         echo '<a href="' . esc_url('https://idehweb.com/product/whatsapp-gateway-for-login-with-phone-number/') . '" target="_blank">' . __('To proceed, you will need to purchase the whatsapp Gateway Extension for the Login with Phone Number plugin.', 'login-with-phone-number') . '</a>';
 
 
-    }     function setting_idehweb_Telegram_username()
+    }
+
+    function setting_idehweb_Telegram_username()
     {
         echo '<a href="' . esc_url('https://idehweb.com/product/telegram-gateway-for-login-with-phone-number/') . '" target="_blank">' . __('To proceed, you will need to purchase the Telegram Gateway Extension for the Login with Phone Number plugin.', 'login-with-phone-number') . '</a>';
 

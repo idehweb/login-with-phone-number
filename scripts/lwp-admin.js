@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
     let selectedGateway = getQueryParam("selected_gateway");
 
     jQuery('.ilwplabel').css('display', 'none')
-    console.log("let's make all " + ".ilwplabel." + default_tab + " display table-row")
+    // console.log("let's make all " + ".ilwplabel." + default_tab + " display table-row")
     jQuery('.ilwplabel.' + default_tab).css('display', 'table-row')
 
     //related to general tabs
@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
 
     //related to gateway tabs
     // var edf3 = $('#idehweb_lwp_settings_use_custom_gateway');
-    console.log("selectedGateway", selectedGateway);
+    // console.log("selectedGateway", selectedGateway);
 
     var edf4 = $('#idehweb_default_gateways');
 
@@ -59,7 +59,7 @@ jQuery(document).ready(function ($) {
 
 
         if (edf5.is(':checked')) {
-            console.log('ed5 is checked!');
+            // console.log('ed5 is checked!');
             related_to_entimer.css('display', 'table-row');
 
         } else {
@@ -73,7 +73,7 @@ jQuery(document).ready(function ($) {
     if (default_tab == 'lwp-tab-gateway-settings') {
         if (the_gateways) {
             the_gateways.each((i, item) => {
-                console.log("in", i, item.classList)
+                // console.log("in", i, item.classList)
                 $(item).css('display', 'none')
                 if (item && item.classList && item.classList[2]) {
                     let main_class = item.classList[2];
@@ -137,19 +137,19 @@ jQuery(document).ready(function ($) {
     if (default_tab == 'lwp-tab-form-settings') {
 
         if (edf6.is(':checked')) {
-            console.log('edf6 is checked.')
+            // console.log('edf6 is checked.')
             related_to_position_fixed.css('display', 'table-row');
 
         } else {
-            console.log('edf6 is not checked.', related_to_position_fixed)
+            // console.log('edf6 is not checked.', related_to_position_fixed)
             related_to_position_fixed.css('display', 'none');
         }
         if (edf7.is(':checked')) {
-            console.log('edf7 is checked.')
+            // console.log('edf7 is checked.')
             related_to_accept_terms.css('display', 'table-row');
 
         } else {
-            console.log('edf7 is not checked.', related_to_accept_terms)
+            // console.log('edf7 is not checked.', related_to_accept_terms)
             related_to_accept_terms.css('display', 'none');
         }
     }
@@ -166,9 +166,9 @@ jQuery(document).ready(function ($) {
                 let main_class = item.classList[2];
                 let main_gateways = main_class?.split('related_to_')
                 let main_gateway_name = main_gateways[1];
-                console.log("data", data)
                 // console.log("data", data)
-                console.log("main_gateway_name",".related_to_" + main_gateway_name)
+                // console.log("data", data)
+                // console.log("main_gateway_name",".related_to_" + main_gateway_name)
 // if(!available_gateways.)
                 if (data.includes(main_gateway_name)) {
                     $(".related_to_" + main_gateway_name).css("display", "table-row")
@@ -179,30 +179,30 @@ jQuery(document).ready(function ($) {
             data = [];
         }
         // Assuming data is a string that could contain both "custom" and "firebase"
-        console.log("data:", data);
+        // console.log("data:", data);
 
 // Check if data contains both "custom" and "firebase"
         if (data.includes("custom") && data.includes("firebase")) {
-            console.log("data includes both custom and firebase");
+            // console.log("data includes both custom and firebase");
             // Set the styles for both custom and firebase
             related_to_firebase.css('display', 'table-row');
             related_to_custom.css('display', 'table-row');
         }
 // Check if data contains only "custom"
         else if (data.includes("custom")) {
-            console.log("data includes custom");
+            // console.log("data includes custom");
             related_to_firebase.css('display', 'none');
             related_to_custom.css('display', 'table-row');
         }
 // Check if data contains only "firebase"
         else if (data.includes("firebase")) {
-            console.log("data includes firebase");
+            // console.log("data includes firebase");
             related_to_firebase.css('display', 'table-row');
             related_to_custom.css('display', 'none');
         }
 // If data doesn't contain "custom" or "firebase"
         else {
-            console.log("data includes neither custom nor firebase");
+            // console.log("data includes neither custom nor firebase");
             related_to_firebase.css('display', 'none');
             related_to_custom.css('display', 'none');
         }
@@ -211,7 +211,7 @@ jQuery(document).ready(function ($) {
 
     $('body').on('change', '.idehweb_lwp_position_form',
         function () {
-            console.log('hi');
+            // console.log('hi');
             if (this.checked && this.value == '1') {
                 // console.log('change is checked!');
 
@@ -259,7 +259,7 @@ jQuery(document).ready(function ($) {
     edf5.change(
         function () {
             if (this.checked && this.value == '1') {
-                console.log('edf5 change is checked!');
+                // console.log('edf5 change is checked!');
 
                 related_to_entimer.css('display', 'table-row');
 
@@ -272,7 +272,7 @@ jQuery(document).ready(function ($) {
     edf7.change(
         function () {
             if (this.checked && this.value == '1') {
-                console.log('edf7 change change is checked!');
+                // console.log('edf7 change change is checked!');
 
                 // $("#idehweb_phone_number_ccode").chosen();
                 related_to_accept_terms.css('display', 'table-row');
@@ -283,13 +283,32 @@ jQuery(document).ready(function ($) {
 
             }
         });
+    jQuery('.ilwplabel').on('click', '.lwp-merge-combine-users', function (e) {
+        e.preventDefault();
+
+        console.log("click on optimize and tunning users")
+        // return
+        $.ajax({
+            dataType: 'json',
+            url: idehweb_lwp.ajaxurl,
+            data: {
+                'action': 'idehweb_lwp_merge_old_woocommerce_users',
+                'nonce': idehweb_lwp?.nonce,
+            },
+            success: function (data) {
+
+
+            }
+        });
+
+    })
     jQuery('.lwp-tabs-list').on('click', '.lwp-tab-item', function (e) {
 
         e.preventDefault();
         var lwp_data_tab = jQuery(this).attr("data-tab");
         jQuery('.ilwplabel').css('display', 'none')
         window.location.hash = lwp_data_tab;
-        console.log("lwp_data_tab:", lwp_data_tab)
+        // console.log("lwp_data_tab:", lwp_data_tab)
         if (lwp_data_tab == 'lwp-tab-general-settings') {
             jQuery('.ilwplabel.' + lwp_data_tab).css('display', 'table-row')
         }
@@ -335,12 +354,12 @@ jQuery(document).ready(function ($) {
             // }
 
 
-            console.log("default_gateways", default_gateways)
+            // console.log("default_gateways", default_gateways)
             // if(default_gateways && default_gateways.length>0){
             let the_gateways = jQuery('.lwp-gateways')
             if (the_gateways) {
                 the_gateways.each((i, item) => {
-                    console.log("in", i, item.classList)
+                    // console.log("in", i, item.classList)
                     jQuery(item).css('display', 'none')
                     if (item && item.classList && item.classList[2]) {
                         let main_class = item.classList[2];
@@ -392,28 +411,28 @@ jQuery(document).ready(function ($) {
 
 
             if (edf6.is(':checked')) {
-                console.log('edf6 is checked.')
+                // console.log('edf6 is checked.')
                 related_to_position_fixed.css('display', 'table-row');
 
             } else {
-                console.log('edf6 is not checked.')
+                // console.log('edf6 is not checked.')
                 related_to_position_fixed.css('display', 'none');
             }
 
 
             if (edf7.is(':checked')) {
-                console.log('edf7 is checked.')
+                // console.log('edf7 is checked.')
                 related_to_accept_terms.css('display', 'table-row');
 
             } else {
-                console.log('edf7 is not checked.', related_to_accept_terms)
+                // console.log('edf7 is not checked.', related_to_accept_terms)
                 related_to_accept_terms.css('display', 'none');
             }
         }
         if (lwp_data_tab == 'lwp-tab-installation-settings') {
             jQuery('.ilwplabel.' + lwp_data_tab).css('display', 'table-row')
         }
-        console.log("lwp_data_tab", lwp_data_tab)
+        // console.log("lwp_data_tab", lwp_data_tab)
     });
 
 });

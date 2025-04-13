@@ -23,6 +23,7 @@ require 'gateways/lwp-MessageBird/lwp-MessageBird.php';
 require 'gateways/lwp-vonage/lwp-vonage.php';
 require 'gateways/lwp-alibabacloud/lwp-alibabacloud.php';
 require 'gateways/lwp-drpayamak/lwp-drpayamak.php';
+require 'gateways/lwp-smsgatway/lwp-smsgateway.php';
 
 if (!defined("ABSPATH"))
     exit;

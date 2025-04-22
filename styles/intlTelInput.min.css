@@ -1511,7 +1511,7 @@ html body .lwp_forms_login .iti--allow-dropdown input, .iti--allow-dropdown inpu
     background-repeat: no-repeat;
     background-color: #dbdbdb;
     background-position: 40px 0;
-    background-size: auto !important;
+    /*background-size: auto !important;*/
     width: 40px !important;
 }
 

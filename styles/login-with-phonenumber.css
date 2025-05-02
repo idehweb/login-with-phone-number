@@ -274,6 +274,7 @@ input.lwp_username {
     white-space: nowrap;
     align-items: center;
     justify-content: space-between;
+    direction: ltr;
 }
 .lwp-inside-form-input{
     margin-bottom: 20px;

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.8.11
+Version: 1.8.12
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -712,12 +712,12 @@ class idehwebLwp
                     <?php $locale = get_locale();
                     if ($locale == 'fa_IR') {
                         ?>
-                        <a style="margin-top: 10px;display:block"
-                           href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"
-                           target="_blank">
-                            <img style="width: 100%;max-width: 100%"
-                                 src="<?php echo plugins_url('/images/web-design.gif', __FILE__) ?>"/>
-                        </a>
+<!--                        <a style="margin-top: 10px;display:block"-->
+<!--                           href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"-->
+<!--                           target="_blank">-->
+<!--                            <img style="width: 100%;max-width: 100%"-->
+<!--                                 src="--><?php //echo plugins_url('/images/web-design.gif', __FILE__) ?><!--"/>-->
+<!--                        </a>-->
 
                         <a style="display:block"
                            href="https://idehweb.ir/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%86%D8%B5%D8%A8-%D8%A7%D9%81%D8%B2%D9%88%D9%86%D9%87-%D9%88%D8%B1%D9%88%D8%AF-%D8%A8%D8%A7-%D8%B4%D9%85%D8%A7%D8%B1%D9%87-%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84-%D8%AF"
@@ -737,12 +737,12 @@ class idehwebLwp
                     } else {
 
                         ?>
-                        <a style="margin-top: 10px;display:block"
-                           href="https://idehweb.com/?utm_source=lwp-plugin&utm_medium=banner-webdesign&utm_campaign=plugin-install"
-                           target="_blank">
-                            <img style="width: 100%;max-width: 100%"
-                                 src="<?php echo plugins_url('/images/webdesign.gif', __FILE__) ?>"/>
-                        </a>
+<!--                        <a style="margin-top: 10px;display:block"-->
+<!--                           href="https://idehweb.com/?utm_source=lwp-plugin&utm_medium=banner-webdesign&utm_campaign=plugin-install"-->
+<!--                           target="_blank">-->
+<!--                            <img style="width: 100%;max-width: 100%"-->
+<!--                                 src="--><?php //echo plugins_url('/images/webdesign.gif', __FILE__) ?><!--"/>-->
+<!--                        </a>-->
                         <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?utm_source=lwp-plugin&utm_medium=banner-lwp&utm_campaign=plugin-install"
                            target="_blank">
                             <img style="width: 100%;max-width: 100%"

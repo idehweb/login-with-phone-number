@@ -253,7 +253,7 @@ input.lwp_username {
     text-align: left;
 }
 
-.rtl .iti__selected-flag {
+.rtl .lwp_forms_login .iti__selected-flag {
     align-items: center;
     justify-content: center;
     align-content: stretch;
@@ -262,11 +262,11 @@ input.lwp_username {
     padding: 0 2px 0 2px;
 }
 
-.iti__country-list {
+.lwp_forms_login .iti__country-list {
     left: 0;
 }
 
-.iti__country {
+.lwp_forms_login .iti__country {
     padding: 5px 10px;
     outline: 0;
     display: flex;
@@ -411,14 +411,14 @@ a.login_button {
     pointer-events: none;
 }
 
-.iti__selected-flag {
+.lwp_forms_login .iti__selected-flag {
     padding: 0 6px 0 0px !important;
 }
 
-ul.iti__country-list li.iti__country.iti__standard {
+.lwp_forms_login  ul.iti__country-list li.iti__country.iti__standard {
     margin-left: 0;
 }
 
-ul.iti__country-list li.iti__country.iti__standard:before {
+.lwp_forms_login  ul.iti__country-list li.iti__country.iti__standard:before {
     content: none;
 }

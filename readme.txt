@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.13
+Stable tag: 1.8.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, register, otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
@@ -145,6 +145,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 ##Changelog
+
+###1.8.14
+* add firebase label
 
 ###1.8.13
 * remove conflicting for iti__flags

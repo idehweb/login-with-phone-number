@@ -3,12 +3,13 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.8.13
+Version: 1.8.14
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
 Domain Path: /languages
 */
+
 require 'gateways/class-lwp-custom-api.php';
 require 'gateways/lwp-textlocal/lwp-textlocal.php';
 require 'gateways/lwp-mellipayamak/lwp-mellipayamak.php';
@@ -30,7 +31,7 @@ if (!defined("ABSPATH"))
 
 class idehwebLwp
 {
-//    global $LWP_PRO;
+
     function __construct()
     {
 //        global $LWP_PRO;
@@ -2692,7 +2693,7 @@ class idehwebLwp
                                                 for="<?php echo $gateway; ?>">
                                             <?php
                                             if ($gateway == "firebase" && (isset($localizationoptions['idehweb_localization_status']) && isset($localizationoptions['idehweb_localization_firebase_option_title']))) {
-                                                echo $localizationoptions['idehweb_localization_firebase_option_title'];
+                                                echo $localizationoptions['idehweb_localization_firebase_option_title'] ? $localizationoptions['idehweb_localization_firebase_option_title'] : $gateway;
                                             } else if ($gateway == "custom" && (isset($localizationoptions['idehweb_localization_status']) && isset($localizationoptions['idehweb_localization_custom_option_title']))) {
                                                 echo $localizationoptions['idehweb_localization_custom_option_title'];
                                             } else if ($gateway == "ultramessage" && (isset($localizationoptions['idehweb_localization_status']) && isset($localizationoptions['idehweb_localization_ultramessage_option_title']))) {

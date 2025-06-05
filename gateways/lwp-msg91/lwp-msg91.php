@@ -21,10 +21,6 @@ class lwp_msg91
     {
         add_settings_field('idehweb_msg91_authkey', __('Enter MSG91 Authkey', 'login-with-phone-number'), array(&$this, 'setting_msg91_authkey'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_msg91']);
         add_settings_field('idehweb_msg91_template_id', __('Enter MSG91 Template id', 'login-with-phone-number'), array(&$this, 'setting_msg91_template_id'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_msg91']);
-//        add_settings_field('idehweb_msg91_sender', __('Enter MSG91 Sender', 'login-with-phone-number'), array(&$this, 'setting_msg91_sender'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_msg91']);
-//        add_settings_field('idehweb_msg91_country', __('Enter Country Code', 'login-with-phone-number'), array(&$this, 'setting_msg91_country'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_msg91']);
-//        add_settings_field('idehweb_msg91_route', __('Enter Route', 'login-with-phone-number'), array(&$this, 'setting_msg91_route'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_msg91']);
-//        add_settings_field('idehweb_msg91_unicode', __('Enable Unicode', 'login-with-phone-number'), array(&$this, 'setting_msg91_unicode'), 'idehweb-lwp', 'idehweb-lwp',['label_for' => '', 'class' => 'ilwplabel lwp-gateways related_to_msg91']);
     }
 
     function lwp_send_sms_msg91($phone_number, $message)
@@ -100,29 +96,7 @@ class lwp_msg91
         echo '<p class="description">' . __('Enter the Template ID for MSG91 messages.', 'login-with-phone-number') . '</p>';
     }
 
-//    function setting_msg91_country()
-//    {
-//        $options = get_option('idehweb_lwp_settings');
-//        $country = isset($options['idehweb_msg91_country']) ? esc_attr($options['idehweb_msg91_country']) : '91';
-//        echo '<input type="text" name="idehweb_lwp_settings[idehweb_msg91_country]" class="regular-text" value="' . $country . '" />';
-//        echo '<p class="description">' . __('Enter the country code for the recipient phone number.', 'login-with-phone-number') . '</p>';
-//    }
 
-//    function setting_msg91_route()
-//    {
-//        $options = get_option('idehweb_lwp_settings');
-//        $route = isset($options['idehweb_msg91_route']) ? esc_attr($options['idehweb_msg91_route']) : '4'; // Default route for transactional
-//        echo '<input type="text" name="idehweb_lwp_settings[idehweb_msg91_route]" class="regular-text" value="' . $route . '" />';
-//        echo '<p class="description">' . __('Enter the message route (e.g., 1 for Promotional, 4 for Transactional).', 'login-with-phone-number') . '</p>';
-//    }
-
-//    function setting_msg91_unicode()
-//    {
-//        $options = get_option('idehweb_lwp_settings');
-//        $unicode = isset($options['idehweb_msg91_unicode']) ? $options['idehweb_msg91_unicode'] : false;
-//        echo '<input type="checkbox" name="idehweb_lwp_settings[idehweb_msg91_unicode]" value="1" ' . checked($unicode, true, false) . ' />';
-//        echo '<p class="description">' . __('Enable Unicode for the message (e.g., for non-Latin characters).', 'login-with-phone-number') . '</p>';
-//    }
 }
 
 global $lwp_msg91;

@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.8.18
+Version: 1.8.19
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -41,6 +41,7 @@ class idehwebLwp
         add_action('init', array(&$this, 'idehweb_lwp_textdomain'));
         add_action('admin_init', array(&$this, 'admin_init'));
         add_action('admin_menu', array(&$this, 'admin_menu'));
+        add_action('admin_footer', array(&$this, 'admin_footer'));
         add_action('wp_enqueue_scripts', array(&$this, 'enqueue_scripts'));
         add_action('wp_ajax_idehweb_lwp_merge_old_woocommerce_users', array(&$this, 'idehweb_lwp_merge_old_woocommerce_users'));
         add_action('wp_ajax_idehweb_lwp_auth_customer', array(&$this, 'idehweb_lwp_auth_customer'));
@@ -363,7 +364,8 @@ class idehwebLwp
         add_settings_field('idehweb_lwp_space3', '', array(&$this, 'setting_idehweb_lwp_space'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel idehweb_lwp_mgt100']);
         add_settings_field('idehweb_lwp_installer', __('Automatic installer', 'login-with-phone-number'), array(&$this, 'setting_installer'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
         add_settings_field('idehweb_lwp_instructions', __('Shortcode and Template Tag', 'login-with-phone-number'), array(&$this, 'setting_instructions'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
-        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-documentation-settings']);
+        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
+        add_settings_field('idehweb_usage_tracking', __('Enable usage tracking', 'login-with-phone-number'), array(&$this, 'idehweb_usage_tracking'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-installation-settings']);
 //        add_settings_field('idehweb_online_support', __('Enable online support', 'login-with-phone-number'), array(&$this, 'idehweb_online_support'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel lwp-tab-documentation-settings']);
 
         add_settings_field('idehweb_localization_disable_placeholder', __('Disable automatic placeholder', 'login-with-phone-number'), array(&$this, 'setting_idehweb_localization_disable_automatic_placeholder'), 'idehweb-lwp-localization', 'idehweb-lwp-localization', ['label_for' => '', 'class' => 'ilwplabel']);
@@ -383,6 +385,44 @@ class idehwebLwp
         add_settings_field('idehweb_lwp_whatsapp_guid', __('Whatsapp help', 'lwp-twilio'), array(&$this, 'setting_idehweb_whatsapp_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_whatsapp']);
         add_settings_field('idehweb_lwp_Telegram_guid', __('Telegram help', 'lwp-twilio'), array(&$this, 'setting_idehweb_Telegram_username'), 'idehweb-lwp', 'idehweb-lwp', ['label_for' => '', 'class' => 'ilwplabel  lwp-gateways related_to_telegram']);
 
+    }
+
+    function admin_footer()
+    {
+        $screen = get_current_screen();
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_online_support'])) $options['idehweb_online_support'] = '1';
+        if (!isset($options['idehweb_usage_tracking'])) $options['idehweb_usage_tracking'] = '1';
+
+        $is_opted_in = $options['idehweb_usage_tracking'] === '1';
+
+//        &&
+//        isset($screen->id) &&
+//        $screen->id === 'toplevel_page_idehweb-lwp'
+        if (
+            $is_opted_in // update this to your actual screen ID
+        ) {
+            ?>
+            <script type="text/javascript">
+                (function (c, l, a, r, i, t, y) {
+                    c[a] = c[a] || function () {
+                        (c[a].q = c[a].q || []).push(arguments)
+                    };
+                    t = l.createElement(r);
+                    t.async = 1;
+                    t.src = "https://www.clarity.ms/tag/rvomfxbn04";
+                    y = l.getElementsByTagName(r)[0];
+                    y.parentNode.insertBefore(t, y);
+                })(window, document, "clarity", "script", "rvomfxbn04");
+            </script>
+            <?php
+        }
+
+            if ($options['idehweb_online_support'] == '1') {
+                ?>
+               <script type="text/javascript">window.makecrispactivate = 1;</script>
+                <?php
+            }
     }
 
     function admin_menu()
@@ -713,12 +753,12 @@ class idehwebLwp
                     <?php $locale = get_locale();
                     if ($locale == 'fa_IR') {
                         ?>
-<!--                        <a style="margin-top: 10px;display:block"-->
-<!--                           href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"-->
-<!--                           target="_blank">-->
-<!--                            <img style="width: 100%;max-width: 100%"-->
-<!--                                 src="--><?php //echo plugins_url('/images/web-design.gif', __FILE__) ?><!--"/>-->
-<!--                        </a>-->
+                        <!--                        <a style="margin-top: 10px;display:block"-->
+                        <!--                           href="https://idehweb.ir/%D8%B7%D8%B1%D8%A7%D8%AD%DB%8C-%D8%B3%D8%A7%DB%8C%D8%AA-%D8%AF%D8%B1-%D8%A7%DB%8C%D8%AF%D9%87-%D9%88%D8%A8"-->
+                        <!--                           target="_blank">-->
+                        <!--                            <img style="width: 100%;max-width: 100%"-->
+                        <!--                                 src="--><?php //echo plugins_url('/images/web-design.gif', __FILE__) ?><!--"/>-->
+                        <!--                        </a>-->
 
                         <a style="display:block"
                            href="https://idehweb.ir/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D9%86%D8%B5%D8%A8-%D8%A7%D9%81%D8%B2%D9%88%D9%86%D9%87-%D9%88%D8%B1%D9%88%D8%AF-%D8%A8%D8%A7-%D8%B4%D9%85%D8%A7%D8%B1%D9%87-%D9%85%D9%88%D8%A8%D8%A7%DB%8C%D9%84-%D8%AF"
@@ -738,12 +778,12 @@ class idehwebLwp
                     } else {
 
                         ?>
-<!--                        <a style="margin-top: 10px;display:block"-->
-<!--                           href="https://idehweb.com/?utm_source=lwp-plugin&utm_medium=banner-webdesign&utm_campaign=plugin-install"-->
-<!--                           target="_blank">-->
-<!--                            <img style="width: 100%;max-width: 100%"-->
-<!--                                 src="--><?php //echo plugins_url('/images/webdesign.gif', __FILE__) ?><!--"/>-->
-<!--                        </a>-->
+                        <!--                        <a style="margin-top: 10px;display:block"-->
+                        <!--                           href="https://idehweb.com/?utm_source=lwp-plugin&utm_medium=banner-webdesign&utm_campaign=plugin-install"-->
+                        <!--                           target="_blank">-->
+                        <!--                            <img style="width: 100%;max-width: 100%"-->
+                        <!--                                 src="--><?php //echo plugins_url('/images/webdesign.gif', __FILE__) ?><!--"/>-->
+                        <!--                        </a>-->
                         <a href="https://idehweb.com/product/login-with-phone-number-in-wordpress/?utm_source=lwp-plugin&utm_medium=banner-lwp&utm_campaign=plugin-install"
                            target="_blank">
                             <img style="width: 100%;max-width: 100%"
@@ -762,11 +802,11 @@ class idehwebLwp
 
                 </div>
             <?php } ?>
-            <?php
-            if ($options['idehweb_online_support'] == '1') {
-                ?>
-                <script type="text/javascript">window.makecrispactivate = 1;</script>
-            <?php } ?>
+<!--            --><?php
+//            if ($options['idehweb_online_support'] == '1') {
+//                ?>
+<!--                <script type="text/javascript">window.makecrispactivate = 1;</script>-->
+<!--            --><?php //} ?>
 
             <script>
                 <?php
@@ -1502,6 +1542,27 @@ class idehwebLwp
         echo '<div></div>';
 
     }
+
+    function idehweb_usage_tracking()
+    {
+        $options = get_option('idehweb_lwp_settings', []);
+
+        // Default to enabled (optional; can be '0' for default off)
+        if (!isset($options['idehweb_usage_tracking'])) {
+            $options['idehweb_usage_tracking'] = '1';
+        }
+
+        ?>
+        <input type="hidden" name="idehweb_lwp_settings[idehweb_usage_tracking]" value="0"/>
+        <label>
+            <input type="checkbox" name="idehweb_lwp_settings[idehweb_usage_tracking]" value="1"
+                <?php checked($options['idehweb_usage_tracking'], '1'); ?> />
+            <?php _e('Help improve this plugin by enabling anonymous usage tracking (Microsoft Clarity).', 'login-with-phone-number'); ?>
+        </label>
+        <p class="description"><?php _e('We only track usage on this plugin’s admin pages. No visitor or personal data is collected.', 'login-with-phone-number'); ?></p>
+        <?php
+    }
+
 
 //    function setting_use_custom_gateway()
 //    {

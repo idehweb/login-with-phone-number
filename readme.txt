@@ -2,10 +2,10 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.16
+Stable tag: 1.8.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: login, register, otp, Mobile Verification, sms notifications, two step verification, woocommerce SMS
+Tags: login, phone number login, otp, SMS verification, woocommerce
 
 
 Login with phone number in WordPress

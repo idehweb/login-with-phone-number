@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.20
+Stable tag: 1.8.21
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, phone number login, otp, SMS verification, woocommerce
@@ -146,9 +146,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 ##Changelog
 
-###1.8.20
+###1.8.21
 * add usage tracking code
 * enable button to disable support chat and tracking code
+* only show chat on admin page
 
 ###1.8.15
 * solve msg91 for indian users

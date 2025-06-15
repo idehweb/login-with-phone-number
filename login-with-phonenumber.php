@@ -2634,6 +2634,13 @@ class idehwebLwp
         ob_start();
         $options = get_option('idehweb_lwp_settings');
         $localizationoptions = get_option('idehweb_lwp_settings_localization');
+        $idehweb_pro = get_option('idehweb_lwp_settings_registration_fields');
+
+
+        if (!isset($idehweb_pro['idehweb_registration_fields_status'])) $idehweb_pro['idehweb_registration_fields_status'] = '0';
+        if (!isset($idehweb_pro['idehweb_registration_fields'])) $idehweb_pro['idehweb_registration_fields'] = [];
+
+
 
         if (class_exists(LWP_PRO::class)) {
 //            $LWP_PRO = new LWP_PRO;
@@ -2845,7 +2852,79 @@ class idehwebLwp
                         <?php } ?>
                     </form>
                 <?php } ?>
+                <?php if($idehweb_pro['idehweb_registration_fields_status']){ ?>
+                <form id="lwp_update_extra_fields" data-method="<?php echo $theClasses; ?>"
+                      class="ajax-auth <?php echo $theClasses; ?>" action="update_password" method="post">
 
+                    <div class="lh1"><?php echo __('Update data', 'login-with-phone-number'); ?></div>
+                    <p class="status"></p>
+                    <?php wp_nonce_field('ajax-login-nonce', 'security'); ?>
+                    <div class="lwp-inside-form">
+                        <?php
+
+                        if (class_exists(LWP_PRO::class)) {
+                            $ROptions = get_option('idehweb_lwp_settings_registration_fields');
+                            if (!isset($ROptions['idehweb_registration_fields'])) $ROptions['idehweb_registration_fields'] = [];
+                            foreach ($ROptions['idehweb_registration_fields'] as $key => $fi) {
+//                                    print_r($fi);
+                                ?>
+                                <?php
+
+                                if ($fi['value'] == "role") {
+                                    ?>
+                                    <div class="lwp-inside-form-input">
+                                        <div class="accept_terms_and_conditions" style="
+    display: flex;
+    justify-content: space-around;
+">
+                                            <div class="choos-rol" style="
+    display: flex;
+">
+                                                <input class="required lwp_check_box" type="radio" name="role"
+                                                       value="subscriber">
+                                                <label for="subscriber" class="role_text"
+                                                       style="margin-left:0px; margin-right: 5px">Subscriber</label>
+
+                                            </div>
+                                            <div class="choos-rol" style="
+    display: flex;
+">
+
+                                                <input class="required lwp_check_box" type="radio" name="role"
+                                                       value="partner">
+                                                <label for="partner" class="role_text" style="margin-left:0px">Partner</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <?php
+                                } else {
+
+                                    ?>
+                                    <div class="lwp-inside-form-input">
+                                        <label class="lwp_labels"
+                                               for="<?php echo $fi['value']; ?>"><?php echo $fi['label']; ?>
+                                            :</label>
+                                        <input type="text" class="required lwp_auth_<?php echo $fi['value']; ?>"
+                                               name="<?php echo $fi['name']; ?>" value="<?php echo $fi['value']; ?>"
+                                               placeholder="<?php echo $fi['label']; ?>">
+                                    </div>
+                                    <?php
+                                }
+                            }
+                        }
+                        ?>
+
+                    </div>
+
+                    <button class="submit_button auth_email" type="submit">
+                        <?php echo __('Update', 'login-with-phone-number'); ?>
+                    </button>
+                    <?php if ($options['idehweb_close_button'] == "0") { ?>
+                        <a class="close" href="">(x)</a>
+                    <?php } ?>
+                </form>
+                <?php } ?>
                 <form id="lwp_activate" data-method="<?php echo $theClasses; ?>"
                       class="ajax-auth lwp-register-form-i <?php echo $theClasses; ?>" action="activate" method="post">
                     <div class="lh1"><?php echo __('Activation', 'login-with-phone-number'); ?></div>
@@ -2908,7 +2987,7 @@ class idehwebLwp
                                         $children = $fi['children'];
                                         $children = json_decode($children, true);
                                         ?>
-                                        <div class="lwp-inside-form-input">
+                                        <div class="lwp-inside-form-input lwp-extra-input">
                                             <div class="accept_terms_and_conditions" style="
     display: flex;
     justify-content: space-around;
@@ -2936,12 +3015,12 @@ class idehwebLwp
                                     } else {
 
                                         ?>
-                                        <div class="lwp-inside-form-input">
+                                        <div class="lwp-inside-form-input lwp-extra-input">
                                             <label class="lwp_labels"
                                                    for="<?php echo $fi['value']; ?>"><?php echo $fi['label']; ?>
                                                 :</label>
-                                            <input type="text" class="required lwp_auth_<?php echo $fi['value']; ?>"
-                                                   name="<?php echo $fi['value']; ?>"
+                                            <input type="text" class="lwp_auth_<?php echo $fi['value']; ?>"
+                                                   name="<?php echo $fi['name']; ?>" value="<?php echo $fi['value']; ?>"
                                                    placeholder="<?php echo $fi['label']; ?>">
                                         </div>
                                         <?php
@@ -3283,6 +3362,8 @@ class idehwebLwp
 //                    update_user_meta($user_register, '_shipping_phone', sanitize_user($phone_number));
 //                    update_user_meta($user_register, 'shipping_phone', sanitize_user($phone_number));
                     $userRegisteredNow = true;
+                    add_user_meta($user_register, 'userRegisteredNow', '1');
+
                     add_user_meta($user_register, 'updatedPass', 0);
                     $username_exists = $user_register;
 
@@ -3307,6 +3388,8 @@ class idehwebLwp
                     $log = $this->lwp_generate_token($username_exists, $phone_number, false, $method);
                 }
             }
+            update_user_meta($username_exists, 'activation_code_timestamp', time());
+
             wp_clear_auth_cookie();
             echo json_encode([
                 'success' => true,
@@ -3550,6 +3633,8 @@ class idehwebLwp
 
 
         $password = sanitize_text_field($_GET['password']);
+        $first_name = sanitize_text_field($_GET['first_name']);
+        $last_name = sanitize_text_field($_GET['last_name']);
         if ($user) {
             $update_array = [
                 'ID' => $user->ID,
@@ -3561,6 +3646,10 @@ class idehwebLwp
 //                    $update_array['role'] = $role;
 //                }
 //            }
+            if (isset($first_name)) {
+                $update_array['first_name'] = $first_name;
+
+            }
             if (isset($nickname)) {
                 $update_array['nickname'] = $nickname;
                 $update_array['display_name'] = $nickname;
@@ -3575,6 +3664,7 @@ class idehwebLwp
             }
             wp_update_user($update_array);
             update_user_meta($user->ID, 'updatedPass', 1);
+            update_user_meta($user->ID, 'userRegisteredNow', '0');
             echo json_encode([
                 'success' => true,
                 'message' => __('Password set successfully! redirecting...', 'login-with-phone-number')
@@ -4090,7 +4180,7 @@ class idehwebLwp
     function lwp_ajax_register()
     {
 
-        if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
+        if (!wp_verify_nonce(sanitize_text_field($_GET['nonce']), 'lwp_login')) {
             die ('Busted!');
         }
         $secod = sanitize_text_field($_GET['secod']);
@@ -4136,6 +4226,15 @@ class idehwebLwp
             $activation_code = get_user_meta($username_exists, 'activation_code', true);
             $activation_code_timestamp = get_user_meta($username_exists, 'activation_code_timestamp', true);
             $now = time();
+
+
+            if (!is_numeric($activation_code_timestamp)) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => __('activation code timestamp is missing or invalid.', 'login-with-phone-number')
+                ]);
+                die();
+            }
             $passed = round(($now - $activation_code_timestamp) / 60, 2);
 
 
@@ -4146,7 +4245,7 @@ class idehwebLwp
                 echo json_encode([
                     'success' => false,
                     'phone_number' => $phone_number,
-//                    'time_passed' => $passed,
+                    'time_passed' => $passed,
                     'message' => __('activation code is expired!', 'login-with-phone-number')
                 ]);
                 die();
@@ -4176,7 +4275,8 @@ class idehwebLwp
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
                         $updatedPass = (bool)(int)get_user_meta($username_exists, 'updatedPass', true);
 
-                        echo json_encode(array('success' => true, 'nonce' => wp_create_nonce('lwp_login'), 'firebase' => $response, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
+                        echo json_encode(array('success' => false, 'nonce' => wp_create_nonce('lwp_login'), 'firebase' => $response, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => false, 'authWithPass' => true));
+//                        echo json_encode(array('success' => true, 'nonce' => wp_create_nonce('lwp_login'), 'firebase' => $response, 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
 
                     } else {
                         echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', 'login-with-phone-number')));
@@ -4219,8 +4319,22 @@ class idehwebLwp
                         if (!isset($options['idehweb_password_login'])) $options['idehweb_password_login'] = '1';
                         $options['idehweb_password_login'] = (bool)(int)$options['idehweb_password_login'];
                         $updatedPass = (bool)(int)get_user_meta($username_exists, 'updatedPass', true);
+                        $userRegisteredNow=(bool)(int)get_user_meta($username_exists, 'userRegisteredNow', true);
+                        $lwp_update_extra_fields=false;
+                        if (class_exists(LWP_PRO::class)) {
+                            $ROptions = get_option('idehweb_lwp_settings_registration_fields');
+                            if (!isset($ROptions['idehweb_registration_fields'])) $ROptions['idehweb_registration_fields'] = [];
+                            if($ROptions['idehweb_registration_fields'][0]){
+                                $lwp_update_extra_fields=true;
 
-                        echo json_encode(array('success' => true, 'nonce' => wp_create_nonce('lwp_login'), 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login']));
+                            }
+                        }
+//                        echo json_encode(array('success' => false, 'nonce' => wp_create_nonce('lwp_login'), 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => true,'lwp_update_extra_fields'=>true));
+                        if($userRegisteredNow && $lwp_update_extra_fields){
+                            echo json_encode(array('success' => false, 'nonce' => wp_create_nonce('lwp_login'), 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login'],'userRegisteredNow'=>$userRegisteredNow,'lwp_update_extra_fields'=>$lwp_update_extra_fields));
+                            wp_die();
+                        }
+                        echo json_encode(array('success' => true, 'nonce' => wp_create_nonce('lwp_login'), 'loggedin' => true, 'message' => __('loading...', 'login-with-phone-number'), 'updatedPass' => $updatedPass, 'authWithPass' => $options['idehweb_password_login'],'userRegisteredNow'=>$userRegisteredNow,'lwp_update_extra_fields'=>$lwp_update_extra_fields));
 
                     } else {
                         echo json_encode(array('success' => false, 'loggedin' => false, 'message' => __('wrong', 'login-with-phone-number')));

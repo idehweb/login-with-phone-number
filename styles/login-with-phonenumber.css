@@ -385,6 +385,9 @@ a.login_button {
     width: auto;
     margin: 1px 2px;
 }
+.lwp-hide-extra .lwp-extra-input {
+    display: none;
+}
 .lwp_login_overlay {
     height: 100%;
     width: 100%;

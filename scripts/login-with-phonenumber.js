@@ -433,13 +433,47 @@ jQuery(document).ready(function ($) {
                 if (data.nonce) {
                     lwp_nonce = data.nonce;
                 }
-                if (data.authWithPass) {
+                // console.log("data");
+                // return;
+                if (!data?.authWithPass) {
 
-                    if (!data.updatedPass) {
+                    if (data?.lwp_update_extra_fields && data?.userRegisteredNow) {
+                        console.log("data.lwp_update_extra_fields && data.userRegisteredNow")
+
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_extra_fields').fadeIn(500);
+                        return;
+                    }
+                }
+                if (data?.authWithPass) {
+
+                    if (data.updatedPass && data.lwp_update_extra_fields) {
+                        console.log("data.updatedPass && data.lwp_update_extra_fields")
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_extra_fields').fadeIn(500);
+
+                    }else if (!data.updatedPass && data.lwp_update_extra_fields) {
+                        console.log("!data.updatedPass && data.lwp_update_extra_fields")
+
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_password').fadeIn(500);
+                        $('#lwp_update_password').addClass(data?.userRegisteredNow ? "" : "lwp-hide-extra");
+
+                    }else if (data.updatedPass && !data.lwp_update_extra_fields) {
+                        console.log("data.updatedPass && !data.lwp_update_extra_fields")
+
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_password').fadeIn(500);
+
+                    }else if (!data.updatedPass && !data.lwp_update_extra_fields) {
+                        console.log("!data.updatedPass && !data.lwp_update_extra_fields")
+
                         $('#lwp_activate').fadeOut(500);
                         $('#lwp_update_password').fadeIn(500);
 
                     } else {
+                        console.log("else of data.updatedPass && data.lwp_update_extra_fields")
+
                         $('p.status', ctrl).text(data.message);
                         if (data.success)
                             document.location.href = idehweb_lwp.redirecturl;
@@ -522,6 +556,60 @@ jQuery(document).ready(function ($) {
     });
 
 
+    $('body').on('submit', 'form#lwp_update_extra_fields:not(.firebase)', function (e) {
+        e.preventDefault();
+// console.log('hi')
+        if (!$(this).valid()) return false;
+        $('p.status', this).show().text(idehweb_lwp.loadingmessage);
+//        console.log('by')
+
+        var action = 'lwp_update_password_action';
+        var lwp_up_password = $('.lwp_up_password').val();
+        var update_object = {};
+        $("#lwp_update_extra_fields :input").each(function () {
+            var input = $(this);
+            let name = input.attr('name'),
+                type = input.attr('type');
+
+            if (name == "security" || name == "_wp_http_referer" || name == "lwp_up_password")
+                return
+
+            if (type == "text")
+                update_object[name] = input.val()
+
+            if (type == "radio")
+                update_object[name] = $("input[name='" + name + "']:checked").val();
+
+
+        });
+        var obj = {
+            'action': action,
+            'password': lwp_up_password,
+            'nonce': lwp_nonce,
+            ...update_object
+        };
+        if (lwp_phone_number) {
+            obj['phone_number'] = lwp_phone_number;
+        }
+        if (lwp_email) {
+            obj['email'] = lwp_email;
+        }
+        var ctrl = $(this);
+// console.log("obj",obj)
+//         return;
+        $.ajax({
+            // type: 'GET',
+            dataType: 'json',
+            url: idehweb_lwp.ajaxurl,
+            data: obj,
+            success: function (data) {
+                $('p.status', ctrl).text(data.message);
+                if (data.success)
+                    document.location.href = idehweb_lwp.redirecturl;
+
+            }
+        });
+    });
     $('body').on('submit', 'form#lwp_update_password:not(.firebase)', function (e) {
         e.preventDefault();
 // console.log('hi')

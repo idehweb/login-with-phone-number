@@ -556,7 +556,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $('body').on('submit', 'form#lwp_update_extra_fields:not(.firebase)', function (e) {
+    $('body').on('submit', 'form#lwp_update_extra_fields', function (e) {
         e.preventDefault();
 // console.log('hi')
         if (!$(this).valid()) return false;

@@ -167,13 +167,46 @@ var fb_lwp_nonce=idehweb_lwp.nonce,fb_lwp_phone_number='',fb_lwp_email='';
                 if(data.nonce){
                     fb_lwp_nonce=data.nonce;
                 }
-                if (data.authWithPass) {
+                if (!data?.authWithPass) {
 
-                    if (!data.updatedPass) {
+                    if (data?.lwp_update_extra_fields && data?.userRegisteredNow) {
+                        console.log("data.lwp_update_extra_fields && data.userRegisteredNow")
+
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_extra_fields').fadeIn(500);
+                        return;
+                    }
+                }
+
+                if (data?.authWithPass) {
+
+                    if (data.updatedPass && data.lwp_update_extra_fields) {
+                        console.log("data.updatedPass && data.lwp_update_extra_fields")
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_extra_fields').fadeIn(500);
+
+                    }else if (!data.updatedPass && data.lwp_update_extra_fields) {
+                        console.log("!data.updatedPass && data.lwp_update_extra_fields")
+
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_password').fadeIn(500);
+                        $('#lwp_update_password').addClass(data?.userRegisteredNow ? "" : "lwp-hide-extra");
+
+                    }else if (data.updatedPass && !data.lwp_update_extra_fields) {
+                        console.log("data.updatedPass && !data.lwp_update_extra_fields")
+
+                        $('#lwp_activate').fadeOut(500);
+                        $('#lwp_update_password').fadeIn(500);
+
+                    }else if (!data.updatedPass && !data.lwp_update_extra_fields) {
+                        console.log("!data.updatedPass && !data.lwp_update_extra_fields")
+
                         $('#lwp_activate').fadeOut(500);
                         $('#lwp_update_password').fadeIn(500);
 
                     } else {
+                        console.log("else of data.updatedPass && data.lwp_update_extra_fields")
+
                         $('p.status', ctrl).text(data.message);
                         if (data.success)
                             document.location.href = idehweb_lwp.redirecturl;

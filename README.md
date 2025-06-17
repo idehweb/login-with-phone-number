@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.23
+Stable tag: 1.8.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, phone number login, otp, SMS verification, woocommerce
@@ -145,6 +145,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 ##Changelog
+
+###1.8.24
+* update lwp_update_password_action function
+* update extra fields with method firebase 
 
 ###1.8.23
 * update algorithm of setting extra fields and registration

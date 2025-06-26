@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.24
+Stable tag: 1.8.25
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, phone number login, otp, SMS verification, woocommerce
@@ -66,7 +66,6 @@ Supported gateways for now:
 
 * Firebase
 * Twilio
-* Sms.ir
 * Alibabacloud
 * Messagebird
 * Kavenegar
@@ -75,15 +74,19 @@ Supported gateways for now:
 * taqnyat
 * 2factor
 * Textlocal
-* MelliPayamak
-* KavehNegar
-* Farazsms
 * BlueSoft
 * IQSMS
 * Ippanel
 * Whatsapp
 * Ultramessage
 * Telegram
+* Sms.ir
+* MelliPayamak
+* KavehNegar
+* Farazsms
+
+
+You can now choose to store phone numbers with or without the country code.
 
 [youtube https://www.youtube.com/watch?v=0B0sE9JMzCE]
 
@@ -145,6 +148,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 ##Changelog
+
+###1.8.25
+* Added Option to store phone numbers without the country code. By default, phone numbers are stored with the country code.
 
 ###1.8.24
 * update lwp_update_password_action function

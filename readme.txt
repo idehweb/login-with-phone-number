@@ -2,13 +2,13 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.26
+Stable tag: 1.8.27
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, phone number login, otp, SMS verification, woocommerce
 
 
-Login with phone number in WordPress
+Login with Phone Number for WordPress, Implement OTP-based mobile authentication with one click. Replace passwords with secure phone verification via SMS/WhatsApp. GDPR compliant solution for passwordless logins.
 
 
 ## Description

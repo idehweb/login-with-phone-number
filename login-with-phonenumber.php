@@ -3,7 +3,7 @@
 Plugin Name: Login with phone number
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.8.25
+Version: 1.8.26
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -25,6 +25,7 @@ require 'gateways/lwp-vonage/lwp-vonage.php';
 require 'gateways/lwp-alibabacloud/lwp-alibabacloud.php';
 require 'gateways/lwp-drpayamak/lwp-drpayamak.php';
 require 'gateways/lwp-smsgatway/lwp-smsgateway.php';
+require 'gateways/lwp-system/lwp-system.php';
 
 if (!defined("ABSPATH"))
     exit;
@@ -1586,7 +1587,7 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_default_gateways'])) {
-            $options['idehweb_default_gateways'] = ['firebase'];
+            $options['idehweb_default_gateways'] = ['system'];
         }
 
         $gateways = [
@@ -1596,6 +1597,7 @@ class idehwebLwp
             ["value" => "whatsapp", "label" => __("Whatsapp Meta (Pro)", 'login-with-phone-number')],
             ["value" => "ultramsg", "label" => __("Ultramsg - Whatsapp third-party (Pro)", 'login-with-phone-number')],
             ["value" => "telegram", "label" => __("Telegram (pro)", 'login-with-phone-number')],
+//            ["value" => "system", "label" => __("System default", 'login-with-phone-number')],
 
         ];
 
@@ -2521,7 +2523,7 @@ class idehwebLwp
 //        print_r("hoiihihihjihih");
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_redirect_url'])) $options['idehweb_redirect_url'] = home_url();
-        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['system'];
         if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
         if (!isset($options['idehweb_firebase_api'])) $options['idehweb_firebase_api'] = '';
         if (!isset($options['idehweb_firebase_config'])) $options['idehweb_firebase_config'] = '';
@@ -2682,7 +2684,7 @@ class idehwebLwp
         if (!isset($options['idehweb_auto_show_form'])) $options['idehweb_auto_show_form'] = '1';
         if (!isset($options['idehweb_email_force_after_phonenumber'])) $options['idehweb_email_force_after_phonenumber'] = true;
         if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
-        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['system'];
         if (!is_array($options['idehweb_default_gateways'])) {
             $options['idehweb_default_gateways'] = [];
         }
@@ -3166,7 +3168,7 @@ class idehwebLwp
         if (!isset($options['idehweb_auto_show_form'])) $options['idehweb_auto_show_form'] = '1';
         if (!isset($options['idehweb_email_force_after_phonenumber'])) $options['idehweb_email_force_after_phonenumber'] = true;
         if (!isset($options['idehweb_close_button'])) $options['idehweb_close_button'] = '0';
-        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['system'];
         if (!is_array($options['idehweb_default_gateways'])) {
             $options['idehweb_default_gateways'] = [];
         }
@@ -4172,7 +4174,7 @@ class idehwebLwp
     {
         $options = get_option('idehweb_lwp_settings');
         if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
-        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['system'];
         if ($options['idehweb_use_custom_gateway'] == '1') {
             if (!in_array($method, $options['idehweb_default_gateways'])) {
                 return false;
@@ -4224,7 +4226,7 @@ class idehwebLwp
         }
 
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['system'];
         if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
         if (!isset($options['idehweb_store_number_with_country_code'])) $options['idehweb_store_number_with_country_code'] = '1';
         if (!isset($options['idehweb_country_codes_default'])) $options['idehweb_country_codes_default'] = '';
@@ -4430,7 +4432,7 @@ class idehwebLwp
             die ('Busted!');
         }
         $options = get_option('idehweb_lwp_settings');
-        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['firebase'];
+        if (!isset($options['idehweb_default_gateways'])) $options['idehweb_default_gateways'] = ['system'];
         if (!isset($options['idehweb_use_custom_gateway'])) $options['idehweb_use_custom_gateway'] = '1';
         $current_user = wp_get_current_user();
 

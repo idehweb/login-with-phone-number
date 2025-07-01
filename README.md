@@ -2,7 +2,7 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.25
+Stable tag: 1.8.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, phone number login, otp, SMS verification, woocommerce
@@ -148,6 +148,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 ##Changelog
+
+###1.8.26
+* Added system default sms gateway (Whatsapp OTP gateway)
 
 ###1.8.25
 * Added Option to store phone numbers without the country code. By default, phone numbers are stored with the country code.

@@ -2,13 +2,13 @@
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.29
+Stable tag: 1.8.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, phone number login, otp, SMS verification, woocommerce
 
 
-OTP Verification for WordPress — Secure login via phone, SMS, or WhatsApp. Passwordless OTP authentication with custom gateways. GDPR-compliant.
+OTP Login for WordPress — OTP-based secure login via phone, SMS, or WhatsApp. Passwordless OTP auth with custom gateways. GDPR-compliant.
 
 
 ## Description

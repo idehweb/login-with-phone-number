@@ -1,14 +1,14 @@
-#OTP Login – Phone Number, WooCommerce, SMS, WhatsApp
+#OTP Login With Phone Number, WooCommerce, OTP Verification
 Contributors: glboy
 Requires at least: 3.0.1
 Tested up to: 6.8
-Stable tag: 1.8.33
+Stable tag: 1.8.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: woocommerce, sms, phone, otp, login
 
 
-OTP login with phone, SMS, or WhatsApp. Secure OTP verification for WordPress & WooCommerce using custom gateways. GDPR-compliant.
+OTP login with phone, SMS, or WhatsApp. Secure OTP verification for WordPress & WooCommerce using custom gateways. GDPR-compliant. Login with otp
 
 
 ## Description

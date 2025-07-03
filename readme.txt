@@ -2,13 +2,13 @@
 Contributors: glboy
 Requires at least: 3.0.1
 Tested up to: 6.8
-Stable tag: 1.8.35
+Stable tag: 1.8.36
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: woocommerce, sms, phone, otp, login
 
 
-OTP login with phone, SMS, or WhatsApp. Secure OTP verification for WordPress & WooCommerce using custom gateways. GDPR-compliant. Login with otp
+OTP login with phone, SMS, or WhatsApp. WooCommerce OTP verification for WordPress & WooCommerce using custom gateways. GDPR-compliant. Login with otp
 
 
 ## Description
@@ -68,6 +68,7 @@ Supported gateways for now:
 
 * Firebase
 * Twilio
+* Netgsm
 * Alibabacloud
 * Messagebird
 * Kavenegar
@@ -150,6 +151,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 ##Changelog
+
+###1.8.36
+* Added Netgsm Turkey SMS gateway
 
 ###1.8.26
 * Added system default sms gateway (Whatsapp OTP gateway)

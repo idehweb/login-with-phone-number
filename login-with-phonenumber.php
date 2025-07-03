@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Login with phone number
+Plugin Name: OTP Login with Phone Number – SMS, WhatsApp, Passwordless
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.8.30
+Version: 1.8.31
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number

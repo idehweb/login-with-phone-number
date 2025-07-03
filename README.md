@@ -1,8 +1,8 @@
-#Login with phone number
+#OTP Login with Phone Number – SMS, WhatsApp, Passwordless
 Contributors: glboy
 Requires at least: 3.4
 Tested up to: 6.8
-Stable tag: 1.8.30
+Stable tag: 1.8.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: login, phone number login, otp, SMS verification, woocommerce

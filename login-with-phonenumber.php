@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce OTP Login With Phone Number, OTP Verification
 Plugin URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Description: Login with phone number - sending sms - activate user by phone number - limit pages to login - register and login with ajax - modal
-Version: 1.8.36
+Version: 1.8.37
 Author: Hamid Alinia - idehweb
 Author URI: https://idehweb.com/product/login-with-phone-number-in-wordpress/
 Text Domain: login-with-phone-number
@@ -3310,9 +3310,6 @@ class idehwebLwp
                 $country_code=$this->get_country_code_by_code($options['idehweb_country_codes_default']);
 
                 $phone_number = preg_replace('/^' . preg_quote($country_code, '/') . '/', '', $phone_number);
-
-//                echo $phone_number;
-//                die();
             }
 
             $username_exists = $this->phone_number_exist($phone_number);
@@ -3463,6 +3460,10 @@ class idehwebLwp
         if (!wp_verify_nonce($_GET['nonce'], 'lwp_login')) {
             die ('Busted!');
         }
+        $options = get_option('idehweb_lwp_settings');
+        if (!isset($options['idehweb_store_number_with_country_code'])) $options['idehweb_store_number_with_country_code'] = '1';
+        if (!isset($options['idehweb_country_codes_default'])) $options['idehweb_country_codes_default'] = '';
+
         $log = '';
         if (!isset($_GET['email'])) $_GET['email'] = '';
         $email = sanitize_email($_GET['email']);
@@ -3485,6 +3486,11 @@ class idehwebLwp
                 'message' => __('Please enter correct phone number', 'login-with-phone-number')
             ]);
             die();
+        }
+        if($options['idehweb_store_number_with_country_code']!='1' && ($options['idehweb_country_codes_default']!='')){
+            $country_code=$this->get_country_code_by_code($options['idehweb_country_codes_default']);
+
+            $phone_number = preg_replace('/^' . preg_quote($country_code, '/') . '/', '', $phone_number);
         }
         if (isset($email) && $email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             echo json_encode([
